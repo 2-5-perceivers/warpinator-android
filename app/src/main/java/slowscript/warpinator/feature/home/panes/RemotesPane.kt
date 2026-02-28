@@ -5,11 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -86,42 +83,16 @@ fun RemoteListPane(
     // Dialog states
     var showManualConnectionDialog by remember { mutableStateOf(false) }
 
-    if (paneMode) {
-
-        Scaffold { innerPadding ->
-            val layoutDirection = LocalLayoutDirection.current
-
-            val padding = PaddingValues(
-                end = innerPadding.calculateEndPadding(layoutDirection),
-            )
-
-            Box(
-                modifier = Modifier.consumeWindowInsets(padding),
-            ) {
-                RemoteListPaneContent(
-                    remotes = currentRemotes,
-                    onRemoteClick = onRemoteClick,
-                    onFavoriteToggle = onFavoriteToggle,
-                    state = currentServiceState,
-                    isOnline = currentNetworkState.isOnline,
-                    isRefreshing = currentIsRefreshing,
-                    paneMode = true,
-                    onRescan = viewModel::rescan,
-                )
-            }
-        }
-    } else {
-        RemoteListPaneContent(
-            remotes = currentRemotes,
-            onRemoteClick = onRemoteClick,
-            onFavoriteToggle = onFavoriteToggle,
-            state = currentServiceState,
-            isOnline = currentNetworkState.isOnline,
-            isRefreshing = currentIsRefreshing,
-            paneMode = false,
-            onRescan = viewModel::rescan,
-        )
-    }
+    RemoteListPaneContent(
+        remotes = currentRemotes,
+        onRemoteClick = onRemoteClick,
+        onFavoriteToggle = onFavoriteToggle,
+        state = currentServiceState,
+        isOnline = currentNetworkState.isOnline,
+        isRefreshing = currentIsRefreshing,
+        paneMode = paneMode,
+        onRescan = viewModel::rescan,
+    )
 
     ManualConnectionDialog(showDialog = showManualConnectionDialog)
 }
