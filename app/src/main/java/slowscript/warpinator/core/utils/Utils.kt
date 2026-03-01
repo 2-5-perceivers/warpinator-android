@@ -288,20 +288,21 @@ object Utils {
     @SuppressLint("Range")
     fun getNameFromUri(ctx: Context, uri: Uri): String? {
         var result: String? = null
-        if ("content" == uri.scheme) {
-            try {
+        try {
+            if ("content" == uri.scheme) {
                 val cursor = ctx.contentResolver.query(uri, null, null, null, null)
                 if (cursor != null && cursor.moveToFirst()) {
                     result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
                     cursor.close()
                 }
-            } catch (_: Exception) {
             }
-        }
-        if (result == null) {
-            val parts: Array<String?> = URLDecoder.decode(uri.toString()).split("/".toRegex())
-                .dropLastWhile { it.isEmpty() }.toTypedArray()
-            return parts[parts.size - 1]
+            if (result == null) {
+                val parts: Array<String?> = URLDecoder.decode(uri.toString()).split("/".toRegex())
+                    .dropLastWhile { it.isEmpty() }.toTypedArray()
+                return parts[parts.size - 1]
+            }
+        } catch (_: Exception) {
+            return null
         }
         return result
     }

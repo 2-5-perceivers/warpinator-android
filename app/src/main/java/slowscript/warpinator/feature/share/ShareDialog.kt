@@ -1,12 +1,18 @@
 package slowscript.warpinator.feature.share
 
+import android.content.Context
 import android.net.Uri
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,8 +27,6 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.DevicesOther
 import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -48,6 +52,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,9 +67,14 @@ import slowscript.warpinator.R
 import slowscript.warpinator.core.data.WarpinatorViewModel
 import slowscript.warpinator.core.design.components.DynamicAvatarCircle
 import slowscript.warpinator.core.design.shapes.segmentedDynamicShapes
+import slowscript.warpinator.core.design.shapes.segmentedHorizontalDynamicShapes
+import slowscript.warpinator.core.design.theme.WarpinatorTheme
 import slowscript.warpinator.core.model.Remote
 import slowscript.warpinator.core.model.Remote.RemoteStatus
 import slowscript.warpinator.core.utils.RemoteDisplayInfo
+import slowscript.warpinator.core.utils.Utils
+import slowscript.warpinator.feature.manual_connection.ManualConnectionDialog
+import slowscript.warpinator.feature.share.components.ShareMenu
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,6 +85,9 @@ fun ShareDialog(
     viewModel: WarpinatorViewModel = hiltViewModel(),
 ) {
     val remotes = viewModel.remoteListState.collectAsStateWithLifecycle()
+
+    var showManualConnectionDialog by remember { mutableStateOf(false) }
+
     val onSendUris = { remote: Remote, uris: List<Uri> ->
         viewModel.sendUris(remote, uris, false)
         onDismiss()
@@ -81,6 +96,10 @@ fun ShareDialog(
     val onSendText = { remote: Remote, text: String ->
         viewModel.sendTextMessage(remote, text)
         onDismiss()
+    }
+
+    val onShowManualConnectionDialog = {
+        showManualConnectionDialog = true
     }
 
     BoxWithConstraints {
@@ -92,6 +111,9 @@ fun ShareDialog(
                 text = text,
                 onSendUris = onSendUris,
                 onSendText = onSendText,
+                onShowManualConnectionDialog = onShowManualConnectionDialog,
+                onRescan = viewModel::rescan,
+                onReannounce = {},
             )
         } else {
             ShareDialogFloatingWrapper(
@@ -101,9 +123,16 @@ fun ShareDialog(
                 text = text,
                 onSendUris = onSendUris,
                 onSendText = onSendText,
+                onShowManualConnectionDialog = onShowManualConnectionDialog,
+                onRescan = viewModel::rescan,
+                onReannounce = {},
             )
         }
     }
+
+    if (showManualConnectionDialog) ManualConnectionDialog(
+        onDismiss = { showManualConnectionDialog = false },
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,6 +144,9 @@ private fun ShareDialogFullscreenWrapper(
     text: String?,
     onSendUris: (Remote, List<Uri>) -> Unit = { _: Remote, _: List<Uri> -> },
     onSendText: (Remote, String) -> Unit = { _: Remote, _: String -> },
+    onShowManualConnectionDialog: () -> Unit = {},
+    onRescan: () -> Unit = {},
+    onReannounce: () -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = onDismiss,
@@ -143,12 +175,15 @@ private fun ShareDialogFullscreenWrapper(
             },
         ) { innerPadding ->
             ShareDialogContent(
-                innerPadding + PaddingValues(horizontal = 16.dp),
-                remotes,
-                uris,
-                text,
-                onSendUris,
-                onSendText,
+                innerPadding = innerPadding + PaddingValues(horizontal = 16.dp),
+                remotes = remotes,
+                uris = uris,
+                text = text,
+                onSendUris = onSendUris,
+                onSendText = onSendText,
+                onShowManualConnectionDialog = onShowManualConnectionDialog,
+                onRescan = onRescan,
+                onReannounce = onReannounce,
             )
         }
     }
@@ -162,6 +197,9 @@ private fun ShareDialogFloatingWrapper(
     text: String?,
     onSendUris: (Remote, List<Uri>) -> Unit = { _: Remote, _: List<Uri> -> },
     onSendText: (Remote, String) -> Unit = { _: Remote, _: String -> },
+    onShowManualConnectionDialog: () -> Unit = {},
+    onRescan: () -> Unit = {},
+    onReannounce: () -> Unit = {},
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -169,7 +207,17 @@ private fun ShareDialogFloatingWrapper(
         confirmButton = { TextButton(onDismiss) { Text("Cancel") } },
         icon = { Icon(Icons.Rounded.Share, contentDescription = null) },
         text = {
-            ShareDialogContent(PaddingValues(), remotes, uris, text, onSendUris, onSendText)
+            ShareDialogContent(
+                innerPadding = PaddingValues(),
+                remotes = remotes,
+                uris = uris,
+                text = text,
+                onSendUris = onSendUris,
+                onSendText = onSendText,
+                onShowManualConnectionDialog = onShowManualConnectionDialog,
+                onRescan = onRescan,
+                onReannounce = onReannounce,
+            )
         },
     )
 }
@@ -183,24 +231,44 @@ private fun ShareDialogContent(
     text: String?,
     onSendUris: (Remote, List<Uri>) -> Unit,
     onSendText: (Remote, String) -> Unit,
+    onShowManualConnectionDialog: () -> Unit,
+    onRescan: () -> Unit,
+    onReannounce: () -> Unit,
 ) {
     var editedText by rememberSaveable { mutableStateOf(text) }
     var isEditing by remember { mutableStateOf(false) }
     val textMode = uris.isEmpty() && text != null
 
+    var listTileHeight by remember { mutableStateOf(1.dp) }
+    val density = LocalDensity.current
+    val context = LocalContext.current
+
+    val filteredRemotes = if (textMode) {
+        remotes.filter { it.supportsTextMessages && it.status == RemoteStatus.Connected }
+    } else {
+        remotes.filter { it.status == RemoteStatus.Connected }
+    }
+
+    val supportingContent =
+        if (textMode) "Tap to edit" else rememberFormattedFileNames(uris, context)
 
     LazyColumn(
         contentPadding = innerPadding,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
-
-            if (textMode) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+            ) {
                 AnimatedContent(
                     targetState = isEditing,
+                    modifier = Modifier.weight(1f),
                     label = "TextEditAnimation",
-                    transitionSpec = { fadeIn().togetherWith(fadeOut()) },
+                    transitionSpec = {
+                        fadeIn() togetherWith fadeOut() using SizeTransform()
+                    },
                 ) { editing ->
+
                     if (editing) {
                         val focusRequester = remember { FocusRequester() }
                         OutlinedTextField(
@@ -224,65 +292,71 @@ private fun ShareDialogContent(
                             shape = MaterialTheme.shapes.large,
                             modifier = Modifier
                                 .focusRequester(focusRequester)
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
+                                .fillMaxWidth(),
                         )
 
                         LaunchedEffect(Unit) {
                             focusRequester.requestFocus()
                         }
-                    } else {
-                        SegmentedListItem(
-                            content = {
+                    } else SegmentedListItem(
+                        onClick = {
+                            isEditing = true
+                        },
+                        enabled = textMode,
+                        content = {
+                            Text(
+                                if (textMode) editedText.orEmpty() else "${uris.size} files selected",
+                                style = MaterialTheme.typography.labelLarge,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        },
+                        supportingContent = supportingContent?.let { text ->
+                            {
                                 Text(
-                                    editedText.orEmpty(),
-                                    style = MaterialTheme.typography.labelLarge,
+                                    text = text,
+                                    style = MaterialTheme.typography.labelSmall,
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                 )
-                            },
-                            supportingContent = {
-                                Text(
-                                    "Tap to edit",
-                                    style = MaterialTheme.typography.labelSmall,
-                                )
-                            },
-                            onClick = { isEditing = true },
-                            colors = ListItemDefaults.colors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                headlineColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                            ),
-                            shapes = ListItemDefaults.segmentedDynamicShapes(
-                                index = 0,
-                                count = 1,
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 4.dp),
-                        )
-                    }
+                            }
+                        },
+                        shapes = ListItemDefaults.segmentedHorizontalDynamicShapes(
+                            index = 0,
+                            count = 2,
+                        ),
+                        colors = ListItemDefaults.colors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            // Overriding only the disabled version of supporting content color so that
+                            // when not in text mode, the file list looks like the content
+                            disabledSupportingContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                        ),
+                        modifier = Modifier.onSizeChanged {
+                            listTileHeight = with(density) { it.height.toDp() }
+                        },
+                    )
                 }
-            } else {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 4.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                    ),
+                AnimatedVisibility(
+                    visible = !isEditing,
+                    enter = expandHorizontally(expandFrom = Alignment.Start) + fadeIn(),
+                    exit = shrinkHorizontally(shrinkTowards = Alignment.Start) + fadeOut(),
                 ) {
-                    Text(
-                        "${uris.size} files",
-                        modifier = Modifier.padding(12.dp),
-                        style = MaterialTheme.typography.labelLarge,
+                    ShareMenu(
+                        size = listTileHeight,
+                        onRescan = onRescan,
+                        onManualConnectionClick = onShowManualConnectionDialog,
+                        onReannounce = onReannounce,
                     )
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        if (remotes.isEmpty()) {
+
+        if (filteredRemotes.isEmpty()) {
             item {
                 Icon(
                     Icons.Rounded.DevicesOther,
@@ -296,15 +370,9 @@ private fun ShareDialogContent(
                     modifier = Modifier.padding(12.dp),
                 )
             }
-        } else items(remotes.size) { index ->
-            val remote = remotes[index]
+        } else items(filteredRemotes.size) { index ->
+            val remote = filteredRemotes[index]
             val isFavorite = remote.isFavorite
-            val status = remote.status
-
-            val isError = status is RemoteStatus.Error
-            val isConnecting =
-                status == RemoteStatus.Connecting || status == RemoteStatus.AwaitingDuplex
-            val isDisconnected = status == RemoteStatus.Disconnected
 
             val displayInfo = remember(remote) { RemoteDisplayInfo.fromRemote(remote) }
 
@@ -318,7 +386,7 @@ private fun ShareDialogContent(
                 },
                 shapes = ListItemDefaults.segmentedDynamicShapes(
                     index = index,
-                    count = remotes.size,
+                    count = filteredRemotes.size,
                 ),
                 colors = ListItemDefaults.colors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow),
                 content = {
@@ -329,9 +397,6 @@ private fun ShareDialogContent(
                     DynamicAvatarCircle(
                         bitmap = remote.picture,
                         isFavorite = isFavorite,
-                        hasError = isError,
-                        isLoading = isConnecting,
-                        isDisabled = isDisconnected,
                     )
                 },
                 trailingContent = {
@@ -343,40 +408,65 @@ private fun ShareDialogContent(
     }
 }
 
+@Composable
+fun rememberFormattedFileNames(uris: List<Uri>, context: Context): String? {
+    return remember(uris) {
+        val validNames = uris.mapNotNull { uri ->
+            Utils.getNameFromUri(context, uri)
+        }
+
+        when (val count = validNames.size) {
+            0 -> null
+            1 -> validNames[0]
+            2 -> "${validNames[0]}, ${validNames[1]}"
+            else -> {
+                val firstTwo = validNames.take(2).joinToString(", ")
+                val remainingCount = count - 2
+                "$firstTwo, and $remainingCount more"
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true, name = "Floating - Files")
 @Composable
 fun PreviewFloatingFiles() {
-
-    ShareDialogFloatingWrapper(
-        onDismiss = {},
-        remotes = previewRemotes,
-        uris = listOf(Uri.EMPTY, Uri.EMPTY),
-        text = null,
-    )
+    WarpinatorTheme {
+        ShareDialogFloatingWrapper(
+            onDismiss = {},
+            remotes = previewRemotes,
+            uris = listOf(Uri.EMPTY, Uri.EMPTY),
+            text = null,
+        )
+    }
 
 }
 
 @Preview(showBackground = true, name = "Floating - Text")
 @Composable
 fun PreviewFloatingText() {
-    ShareDialogFloatingWrapper(
-        onDismiss = {},
-        remotes = previewRemotes,
-        uris = emptyList(),
-        text = "Hello, this is a shared text snippet!",
-    )
+    WarpinatorTheme {
+        ShareDialogFloatingWrapper(
+            onDismiss = {},
+            remotes = previewRemotes,
+            uris = emptyList(),
+            text = "Hello, this is a shared text snippet!",
+        )
+    }
 
 }
 
 @Preview(name = "Fullscreen - Files")
 @Composable
 fun PreviewFullscreenFiles() {
-    ShareDialogFullscreenWrapper(
-        onDismiss = {},
-        remotes = previewRemotes,
-        uris = listOf(Uri.EMPTY, Uri.EMPTY),
-        text = null,
-    )
+    WarpinatorTheme {
+        ShareDialogFullscreenWrapper(
+            onDismiss = {},
+            remotes = previewRemotes,
+            uris = listOf(Uri.EMPTY, Uri.EMPTY),
+            text = null,
+        )
+    }
 
 }
 
@@ -396,5 +486,14 @@ private val previewRemotes = listOf(
         hostname = "hostname",
         status = RemoteStatus.Connected,
         isFavorite = false,
+    ),
+    Remote(
+        uuid = "remote",
+        displayName = "Test Device 3",
+        userName = "user",
+        hostname = "hostname",
+        status = RemoteStatus.Connected,
+        supportsTextMessages = true,
+        isFavorite = true,
     ),
 )

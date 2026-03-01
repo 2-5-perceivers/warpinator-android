@@ -2,6 +2,7 @@ package slowscript.warpinator.core.design.shapes
 
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.IconButtonShapes
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.ListItemShapes
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +28,7 @@ fun ListItemDefaults.segmentedDynamicShapes(
                             topEnd = overrideShape.topEnd,
                             bottomStart = overrideShape.bottomStart,
                             bottomEnd = overrideShape.bottomEnd,
-                        )
+                        ),
                     )
                 } else {
                     defaultShapes
@@ -41,7 +42,7 @@ fun ListItemDefaults.segmentedDynamicShapes(
                         shape = defaultBaseShape.copy(
                             topStart = overrideShape.topStart,
                             topEnd = overrideShape.topEnd,
-                        )
+                        ),
                     )
                 } else {
                     defaultShapes
@@ -55,7 +56,7 @@ fun ListItemDefaults.segmentedDynamicShapes(
                         shape = defaultBaseShape.copy(
                             bottomStart = overrideShape.bottomStart,
                             bottomEnd = overrideShape.bottomEnd,
-                        )
+                        ),
                     )
                 } else {
                     defaultShapes
@@ -65,4 +66,71 @@ fun ListItemDefaults.segmentedDynamicShapes(
             else -> defaultShapes
         }
     }
+}
+
+@ExperimentalMaterial3ExpressiveApi
+@Composable
+fun ListItemDefaults.segmentedHorizontalDynamicShapes(
+    index: Int,
+    count: Int,
+    defaultShapes: ListItemShapes = shapes(),
+    overrideShape: CornerBasedShape = MaterialTheme.shapes.large,
+): ListItemShapes {
+    return remember(index, count, defaultShapes, overrideShape) {
+        when {
+            count == 1 -> {
+                val defaultBaseShape = defaultShapes.shape
+                if (defaultBaseShape is CornerBasedShape) {
+                    defaultShapes.copy(
+                        shape = defaultBaseShape.copy(
+                            topStart = overrideShape.topStart,
+                            topEnd = overrideShape.topEnd,
+                            bottomStart = overrideShape.bottomStart,
+                            bottomEnd = overrideShape.bottomEnd,
+                        ),
+                    )
+                } else {
+                    defaultShapes
+                }
+            }
+
+            index == 0 -> {
+                val defaultBaseShape = defaultShapes.shape
+                if (defaultBaseShape is CornerBasedShape) {
+                    defaultShapes.copy(
+                        shape = defaultBaseShape.copy(
+                            topStart = overrideShape.topStart,
+                            bottomStart = overrideShape.topEnd,
+                        ),
+                    )
+                } else {
+                    defaultShapes
+                }
+            }
+
+            index == count - 1 -> {
+                val defaultBaseShape = defaultShapes.shape
+                if (defaultBaseShape is CornerBasedShape) {
+                    defaultShapes.copy(
+                        shape = defaultBaseShape.copy(
+                            topEnd = overrideShape.bottomStart,
+                            bottomEnd = overrideShape.bottomEnd,
+                        ),
+                    )
+                } else {
+                    defaultShapes
+                }
+            }
+
+            else -> defaultShapes
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+fun ListItemShapes.toIconButtonShapes(): IconButtonShapes {
+    return IconButtonShapes(
+        this.shape,
+        this.pressedShape,
+    )
 }
