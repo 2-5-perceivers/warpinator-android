@@ -125,7 +125,7 @@ fun HomeScreen(
                             onBack = { scope.launch { navigator.navigateBack(backBehavior) } },
                             onFavoriteToggle = { remote -> viewModel.toggleFavorite(selectedRemote!!.uuid) },
                             onOpenMessagesPane = {
-                                scope.launch {
+                                if (!viewModel.integrateMessages) scope.launch {
                                     navigator.navigateTo(
                                         ListDetailPaneScaffoldRole.Extra,
                                         RemoteRoute(selectedRemote!!.uuid),
@@ -145,7 +145,9 @@ fun HomeScreen(
                     }
                 }
             },
-            extraPane = {
+            extraPane = extraPane@{
+                if (viewModel.integrateMessages) return@extraPane
+
                 AnimatedPane(
                     Modifier.consumeWindowInsets(extraPaneCI),
                 ) {

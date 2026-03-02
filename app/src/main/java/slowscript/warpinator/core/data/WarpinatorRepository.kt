@@ -211,6 +211,12 @@ class WarpinatorRepository @Inject constructor(
         }
     }
 
+    fun clearMessage(remoteUuid: String, timestamp: Long) {
+        updateRemote(remoteUuid) { remote ->
+            remote.copy(messages = remote.messages.filterNot { it.timestamp == timestamp })
+        }
+    }
+
     fun clearAllFinishedTransfers(remoteUuid: String) {
         updateRemote(remoteUuid) { remote ->
             val activeTransfers = remote.transfers.filter {
@@ -221,7 +227,7 @@ class WarpinatorRepository @Inject constructor(
                 transfersManager.get().removeWorker(remoteUuid, t.startTime)
             }
 
-            remote.copy(transfers = activeTransfers)
+            remote.copy(transfers = activeTransfers, messages = listOf())
         }
     }
 

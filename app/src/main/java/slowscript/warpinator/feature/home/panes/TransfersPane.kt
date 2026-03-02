@@ -55,9 +55,12 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import slowscript.warpinator.core.data.WarpinatorViewModel
 import slowscript.warpinator.core.design.components.TooltipIconButton
 import slowscript.warpinator.core.design.theme.WarpinatorTheme
+import slowscript.warpinator.core.model.Message
 import slowscript.warpinator.core.model.Remote
 import slowscript.warpinator.core.model.Transfer
+import slowscript.warpinator.feature.home.components.MessageListItem
 import slowscript.warpinator.feature.home.components.RemoteLargeFlexibleTopAppBar
+import slowscript.warpinator.feature.home.components.SendMessageDialog
 import slowscript.warpinator.feature.home.components.TransferFloatingActionButton
 import slowscript.warpinator.feature.home.components.TransferListItem
 
@@ -74,8 +77,10 @@ fun TransfersPane(
     TransferPaneContent(
         remote = remote,
         paneMode = paneMode,
+        integrateMessages = viewModel.integrateMessages,
         onBack = onBack,
         onOpenMessagesPane = onOpenMessagesPane,
+        onSendMessage = viewModel::sendTextMessage,
         onFavoriteToggle = onFavoriteToggle,
         onAcceptTransfer = viewModel::acceptTransfer,
         onDeclineTransfer = viewModel::declineTransfer,
@@ -86,6 +91,7 @@ fun TransfersPane(
             viewModel.sendUris(remote, uris, isDir)
         },
         onClearTransfer = viewModel::clearTransfer,
+        onClearMessage = viewModel::clearMessage,
         onClearTransfers = viewModel::clearAllFinished,
         onReconnect = viewModel::reconnect,
     )
@@ -97,8 +103,10 @@ fun TransfersPane(
 private fun TransferPaneContent(
     remote: Remote,
     paneMode: Boolean,
+    integrateMessages: Boolean,
     onBack: () -> Unit = {},
     onOpenMessagesPane: () -> Unit = {},
+    onSendMessage: (Remote, String) -> Unit = { _: Remote, _: String -> },
     isFavoriteOverride: Boolean? = null,
     onFavoriteToggle: (Remote) -> Unit = {},
     onSendUris: (List<Uri>, Boolean) -> Unit = { _: List<Uri>, _: Boolean -> },
@@ -108,6 +116,7 @@ private fun TransferPaneContent(
     onRetryTransfer: (Transfer) -> Unit = {},
     onItemOpen: (Transfer) -> Unit = {},
     onClearTransfer: (Transfer) -> Unit = {},
+    onClearMessage: (Message) -> Unit = {},
     onClearTransfers: (String) -> Unit = {},
     onReconnect: (Remote) -> Unit = {},
 ) {
@@ -126,6 +135,8 @@ private fun TransferPaneContent(
     }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
+
+    var showMessageDialog by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -157,14 +168,13 @@ private fun TransferPaneContent(
                         ) "Remove from favorites" else "Add to favorites",
                     )
 
-                    TooltipIconButton(
+                    if (!integrateMessages) TooltipIconButton(
                         onClick = onOpenMessagesPane,
                         icon = Icons.AutoMirrored.Rounded.Message,
                         description = "Messages",
                         enabled = remote.supportsTextMessages,
                         addBadge = remote.hasUnreadMessages,
                     )
-
                 },
                 scrollBehavior = scrollBehavior,
             )
@@ -174,7 +184,10 @@ private fun TransferPaneContent(
                 TransferFloatingActionButton(
                     onSendFile = { filePicker.launch(arrayOf("*/*")) },
                     onSendFolder = { folderPicker.launch(null) },
-                    onSendMessage = onOpenMessagesPane,
+                    onSendMessage = {
+                        if (integrateMessages) showMessageDialog = true
+                        else onOpenMessagesPane()
+                    },
                 )
             }
         },
@@ -193,10 +206,14 @@ private fun TransferPaneContent(
         ) {
 
             item {
-                ConnectionStatusCard(remote.status, transfers.size) { onReconnect(remote) }
+                ConnectionStatusCard(
+                    remote.status,
+                    transfers.size,
+                    if (integrateMessages) remote.messages.size else null,
+                ) { onReconnect(remote) }
             }
 
-            if (transfers.isEmpty()) {
+            if ((transfers.isEmpty() && !integrateMessages) || (transfers.isEmpty() && remote.messages.isEmpty())) {
                 item {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -217,6 +234,33 @@ private fun TransferPaneContent(
                             modifier = Modifier.padding(16.dp),
                         )
                     }
+                }
+            }
+
+            if (integrateMessages && remote.messages.isNotEmpty()) {
+                itemsIndexed(
+                    remote.messages,
+                    key = { _, message -> message.timestamp },
+                ) { index, message ->
+                    val expanded = "mt${message.timestamp}" == expandedTransferID
+
+                    MessageListItem(
+                        message = message,
+                        expanded = expanded,
+                        onExpandRequest = {
+                            expandedTransferID = if (expanded) null else "mt${message.timestamp}"
+                        },
+                        onClear = {
+                            onClearMessage(message)
+                        },
+                        itemIndex = index,
+                        itemListCount = remote.messages.size,
+                    )
+
+                    Spacer(modifier = Modifier.height(ListItemDefaults.SegmentedGap))
+                }
+                item {
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
 
@@ -246,12 +290,22 @@ private fun TransferPaneContent(
         }
     }
 
+    if (showMessageDialog) {
+        SendMessageDialog(
+            onSendMessage = { message ->
+                onSendMessage(remote, message)
+            },
+            onDismiss = {
+                showMessageDialog = false
+            },
+        )
+    }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 private fun ConnectionStatusCard(
-    status: Remote.RemoteStatus, transfersCount: Int,
+    status: Remote.RemoteStatus, transfersCount: Int, messageCount: Int? = null,
     onReconnect: () -> Unit,
 ) {
     Card(
@@ -321,7 +375,7 @@ private fun ConnectionStatusCard(
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
-                    "$transfersCount transfers",
+                    "$transfersCount transfers" + if (messageCount != null) " • $messageCount messages" else "",
                     style = MaterialTheme.typography.labelLarge,
                     color = LocalContentColor.current.copy(alpha = 0.8f),
                 )
@@ -492,6 +546,7 @@ private fun TransfersPanePreview() {
         TransferPaneContent(
             remote = remote,
             paneMode = false,
+            integrateMessages = false,
             onBack = {},
             isFavoriteOverride = false,
         )
@@ -519,6 +574,7 @@ private fun TransfersPaneEmptyPreview() {
         TransferPaneContent(
             remote = remote,
             paneMode = false,
+            integrateMessages = false,
             onBack = {},
             isFavoriteOverride = false,
         )

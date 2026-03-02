@@ -12,15 +12,18 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import slowscript.warpinator.core.model.Message
 import slowscript.warpinator.core.model.Remote
 import slowscript.warpinator.core.model.Transfer
 import slowscript.warpinator.core.network.Server
+import slowscript.warpinator.core.system.PreferenceManager
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class WarpinatorViewModel @Inject constructor(
     val repository: WarpinatorRepository, private val server: Server,
+    private val preferenceManager: PreferenceManager,
 ) : ViewModel() {
     // UI States
     val remoteListState = repository.remoteListState.stateIn(
@@ -41,6 +44,8 @@ class WarpinatorViewModel @Inject constructor(
     val refreshState = repository.refreshingState.stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5000), false,
     )
+
+    val integrateMessages get() = preferenceManager.integrateMessages
 
     val address: String
         get() {
@@ -114,6 +119,10 @@ class WarpinatorViewModel @Inject constructor(
 
     fun clearTransfer(transfer: Transfer) {
         repository.clearTransfer(transfer.remoteUuid, transfer.uid)
+    }
+
+    fun clearMessage(message: Message) {
+        repository.clearMessage(message.remoteUuid, message.timestamp)
     }
 
     fun clearAllFinished(remoteUuid: String) {

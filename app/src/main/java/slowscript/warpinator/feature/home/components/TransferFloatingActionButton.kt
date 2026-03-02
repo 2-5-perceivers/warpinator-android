@@ -73,7 +73,10 @@ fun TransferFloatingActionButton(
         },
     ) {
         FloatingActionButtonMenuItem(
-            onClick = onSendMessage,
+            onClick = {
+                onSendMessage()
+                isMenuExpanded = false
+            },
             text = { Text("Send Message") },
             icon = { Icon(Icons.Rounded.ModeComment, contentDescription = "Send Message") },
         )
