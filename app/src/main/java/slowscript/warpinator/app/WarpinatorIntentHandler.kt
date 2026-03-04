@@ -19,7 +19,9 @@ import slowscript.warpinator.feature.manual_connection.ManualConnectionDialogSta
 import slowscript.warpinator.feature.share.ShareDialog
 
 @Composable
-fun WarpinatorIntentHandler() {
+fun WarpinatorIntentHandler(
+    onOpenRemote: (uuid: String, openMessages: Boolean) -> Unit = { _, _ -> },
+) {
     val context = LocalContext.current
     val activity = context as? ComponentActivity
 
@@ -32,6 +34,12 @@ fun WarpinatorIntentHandler() {
 
     fun handleIntent(intent: Intent?) {
         if (intent == null) return
+
+        val remoteUuid = intent.getStringExtra("remote")
+        if (remoteUuid != null) {
+            val openMessages = intent.getBooleanExtra("messages", false)
+            onOpenRemote(remoteUuid, openMessages)
+        }
 
         when (intent.action) {
             Intent.ACTION_VIEW -> {
@@ -105,6 +113,7 @@ fun WarpinatorIntentHandler() {
                 sharedUris = emptyList()
                 sharedText = null
             },
+            onOpenRemote = onOpenRemote,
             uris = sharedUris,
             text = sharedText,
         )

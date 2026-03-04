@@ -11,6 +11,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
@@ -25,6 +26,7 @@ import slowscript.warpinator.core.model.Transfer
 import slowscript.warpinator.core.network.Authenticator
 import slowscript.warpinator.core.network.CertServer
 import slowscript.warpinator.core.network.Server
+import slowscript.warpinator.core.notification.WarpinatorNotificationManager
 import slowscript.warpinator.core.utils.Utils
 import java.net.DatagramPacket
 import java.net.DatagramSocket
@@ -35,6 +37,7 @@ import javax.net.ssl.SSLException
 class RemoteWorker(
     private val uuid: String,
     private var repository: WarpinatorRepository,
+    private var notificationManager: WarpinatorNotificationManager,
     private var server: Server,
     private var authenticator: Authenticator,
 ) {
@@ -283,6 +286,16 @@ class RemoteWorker(
 
     fun onReceiveMessage(message: Message) {
         repository.addRemoteMessage(uuid, message, true)
+        repository.applicationScope.launch {
+            val remote = repository.getRemoteFlow(uuid).firstOrNull() ?: return@launch
+            notificationManager.showMessage(
+                remoteName = remote.displayName,
+                remoteUuid = uuid,
+                remoteBitmap = remote.picture,
+                message = message.text,
+                messageTimestamp = message.timestamp,
+            )
+        }
     }
 
 

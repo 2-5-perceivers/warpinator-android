@@ -47,6 +47,7 @@ import slowscript.warpinator.core.model.Message
 import slowscript.warpinator.core.model.Remote
 import slowscript.warpinator.core.model.Remote.RemoteStatus
 import slowscript.warpinator.core.model.Transfer
+import slowscript.warpinator.core.notification.components.NotificationInhibitor
 import slowscript.warpinator.core.utils.RemoteDisplayInfo
 import slowscript.warpinator.feature.home.components.MessageBubble
 
@@ -57,6 +58,11 @@ fun MessagesPane(
     onBack: () -> Unit,
     viewModel: WarpinatorViewModel = hiltViewModel(),
 ) {
+    NotificationInhibitor(
+        remoteUuid = remote.uuid,
+        messages = true,
+    )
+
     MessagesPaneContent(
         remote = remote,
         paneMode = paneMode,

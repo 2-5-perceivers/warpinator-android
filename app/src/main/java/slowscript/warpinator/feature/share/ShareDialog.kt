@@ -83,6 +83,7 @@ fun ShareDialog(
     uris: List<Uri>,
     text: String?,
     viewModel: WarpinatorViewModel = hiltViewModel(),
+    onOpenRemote: (String, Boolean) -> Unit,
 ) {
     val remotes = viewModel.remoteListState.collectAsStateWithLifecycle()
 
@@ -90,11 +91,13 @@ fun ShareDialog(
 
     val onSendUris = { remote: Remote, uris: List<Uri> ->
         viewModel.sendUris(remote, uris, false)
+        onOpenRemote(remote.uuid, false)
         onDismiss()
     }
 
     val onSendText = { remote: Remote, text: String ->
         viewModel.sendTextMessage(remote, text)
+        onOpenRemote(remote.uuid, true)
         onDismiss()
     }
 
@@ -328,10 +331,11 @@ private fun ShareDialogContent(
                         colors = ListItemDefaults.colors(
                             containerColor = MaterialTheme.colorScheme.secondaryContainer,
                             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            supportingContentColor = MaterialTheme.colorScheme.onSecondaryContainer.copy(
+                                alpha = 0.7f,
+                            ),
                             disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                             disabledContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                            // Overriding only the disabled version of supporting content color so that
-                            // when not in text mode, the file list looks like the content
                             disabledSupportingContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
                         ),
                         modifier = Modifier.onSizeChanged {

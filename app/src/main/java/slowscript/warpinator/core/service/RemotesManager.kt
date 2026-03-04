@@ -5,6 +5,7 @@ import slowscript.warpinator.core.model.Remote
 import slowscript.warpinator.core.network.Authenticator
 import slowscript.warpinator.core.network.Server
 import slowscript.warpinator.core.network.worker.RemoteWorker
+import slowscript.warpinator.core.notification.WarpinatorNotificationManager
 import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,6 +13,7 @@ import javax.inject.Singleton
 @Singleton
 class RemotesManager @Inject constructor(
     private val repository: WarpinatorRepository,
+    private val notificationManager: WarpinatorNotificationManager,
     private val server: Server,
     private val authenticator: Authenticator,
 ) {
@@ -24,6 +26,7 @@ class RemotesManager @Inject constructor(
             val newWorker = RemoteWorker(
                 uuid = remote.uuid,
                 repository = repository,
+                notificationManager = notificationManager,
                 authenticator = authenticator,
                 server = server,
             )

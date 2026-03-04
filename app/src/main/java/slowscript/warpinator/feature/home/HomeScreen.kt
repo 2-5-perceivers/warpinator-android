@@ -23,6 +23,7 @@ import androidx.compose.material3.adaptive.navigation.BackNavigationBehavior
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -44,6 +45,8 @@ import slowscript.warpinator.feature.home.panes.TransfersPane
 @Composable
 fun HomeScreen(
     viewModel: WarpinatorViewModel = hiltViewModel(),
+    remoteTarget: Pair<String, Boolean>? = null,
+    onRemoteTargetConsumed: () -> Unit = {},
 ) {
     // The Navigator controls the three panes logic automatically
     val navigator = rememberListDetailPaneScaffoldNavigator<RemoteRoute>(
@@ -55,6 +58,28 @@ fun HomeScreen(
         ),
     )
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(remoteTarget) {
+        if (remoteTarget != null) {
+            val (uuid, openMessages) = remoteTarget
+
+            navigator.navigateTo(
+                ListDetailPaneScaffoldRole.Detail,
+                RemoteRoute(uuid),
+            )
+
+            if (openMessages && !viewModel.integrateMessages) {
+                navigator.navigateTo(
+                    ListDetailPaneScaffoldRole.Extra,
+                    RemoteRoute(uuid),
+                )
+            }
+
+            // TODO(raresvanca): find a way to navigate without animations here
+
+            onRemoteTargetConsumed()
+        }
+    }
 
     // If structure changes (List -> Detail), allow back. If content changes in Detail, don't pop.
     val backBehavior = BackNavigationBehavior.PopUntilScaffoldValueChange

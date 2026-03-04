@@ -58,6 +58,7 @@ import slowscript.warpinator.core.design.theme.WarpinatorTheme
 import slowscript.warpinator.core.model.Message
 import slowscript.warpinator.core.model.Remote
 import slowscript.warpinator.core.model.Transfer
+import slowscript.warpinator.core.notification.components.NotificationInhibitor
 import slowscript.warpinator.feature.home.components.MessageListItem
 import slowscript.warpinator.feature.home.components.RemoteLargeFlexibleTopAppBar
 import slowscript.warpinator.feature.home.components.SendMessageDialog
@@ -73,6 +74,11 @@ fun TransfersPane(
     onFavoriteToggle: (Remote) -> Unit,
     viewModel: WarpinatorViewModel = hiltViewModel(),
 ) {
+    NotificationInhibitor(
+        remoteUuid = remote.uuid,
+        transfers = true,
+        messages = viewModel.integrateMessages,
+    )
 
     TransferPaneContent(
         remote = remote,

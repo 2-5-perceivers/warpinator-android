@@ -494,6 +494,7 @@ class TransferWorker(
             notificationManager.showIncomingTransfer(
                 remoteName = remoteName,
                 remoteUuid = transferData.remoteUuid,
+                transferUuid = transferData.uid,
                 fileCount = transferData.fileCount,
                 singleFileName = transferData.singleFileName,
             )
