@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DevicesOther
 import androidx.compose.material.icons.rounded.ErrorOutline
@@ -137,6 +138,8 @@ fun RemoteListPaneContent(
         remotes.isEmpty() -> RemoteListUiState.Empty
         else -> RemoteListUiState.Normal
     })
+
+    val filteredRemotes = remotes.filter { !it.hasErrorGroupCode }
 
     Scaffold(
         snackbarHost = { snackbarHostState?.let { SnackbarHost(it) } },
@@ -333,15 +336,17 @@ fun RemoteListPaneContent(
                         )
                     }
 
-                    items(remotes.size, key = { remotes[it].uuid }) { index ->
+                    itemsIndexed(
+                        filteredRemotes,
+                        key = { index, remote -> remote.uuid },
+                    ) { index, remote ->
                         Box {
-                            val remote = remotes[index]
                             RemoteListItem(
                                 remote = remote,
                                 onFavoriteToggle = { onFavoriteToggle(remote) },
                                 onClick = { onRemoteClick(remote) },
                                 index = index,
-                                itemCount = remotes.size,
+                                itemCount = filteredRemotes.size,
                             )
                         }
                     }
