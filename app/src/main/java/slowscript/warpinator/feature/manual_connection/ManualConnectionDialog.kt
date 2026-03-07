@@ -67,6 +67,8 @@ import androidx.compose.ui.platform.ClipEntry
 import androidx.compose.ui.platform.Clipboard
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
@@ -244,7 +246,7 @@ private fun ConnectingToRemoteDialog(
         ) {
             Icon(
                 Icons.Rounded.Done,
-                contentDescription = null,
+                contentDescription = "Device connected",
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(24.dp),
             )
@@ -369,7 +371,10 @@ private fun QRCodeDialog(
                             .clip(RoundedCornerShape(24.dp))
                             .clickable(
                                 onClick = copyUrl,
-                            ),
+                            )
+                            .semantics(mergeDescendants = true) {
+                                onClick(label = "Copy URL", action = null)
+                            },
                     ) {
                         Image(
                             it,
@@ -392,7 +397,11 @@ private fun QRCodeDialog(
 
                 TextButton(
                     onClick = copyUrl,
-                    modifier = Modifier.padding(top = 12.dp),
+                    modifier = Modifier
+                        .padding(top = 12.dp)
+                        .semantics {
+                            onClick(label = "Copy URL", action = null)
+                        },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.onSurface,
                     ),

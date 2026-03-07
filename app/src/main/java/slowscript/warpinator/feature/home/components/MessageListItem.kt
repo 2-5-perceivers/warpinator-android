@@ -2,6 +2,7 @@ package slowscript.warpinator.feature.home.components
 
 import android.content.ClipData
 import android.content.Intent
+import android.text.format.DateFormat
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.toClipEntry
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -92,7 +96,7 @@ fun MessageListItem(
     val isSending = message.direction == Transfer.Direction.Send
 
     val timeString = remember(message.timestamp) {
-        android.text.format.DateFormat.getTimeFormat(context).format(Date(message.timestamp))
+        DateFormat.getTimeFormat(context).format(Date(message.timestamp))
     }
 
     val accentColor = MaterialTheme.colorScheme.primary
@@ -127,6 +131,44 @@ fun MessageListItem(
         }
     }
 
+    val onCopy: () -> Unit = {
+        coroutineScope.launch {
+            val clipData = ClipData.newPlainText("Message", message.text)
+            clipboard.setClipEntry(clipData.toClipEntry())
+        }
+    }
+
+    val onShare = {
+        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+            putExtra(Intent.EXTRA_TEXT, message.text)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        context.startActivity(shareIntent)
+    }
+
+    val onDelete = {
+        coroutineScope.launch {
+            haptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
+            onClear(message)
+        }
+    }
+
+    val semanticCustomActions = listOf(
+        CustomAccessibilityAction("Delete message") {
+            onDelete()
+            true
+        },
+        CustomAccessibilityAction("Copy message") {
+            onCopy()
+            true
+        },
+        CustomAccessibilityAction("Share message") {
+            onShare()
+            true
+        },
+    )
+
     SwipeToDismissBox(
         state = swipeToDismissState,
         enableDismissFromStartToEnd = false,
@@ -134,12 +176,7 @@ fun MessageListItem(
         backgroundContent = {
             DismissBackground(swipeToDismissState)
         },
-        onDismiss = {
-            coroutineScope.launch {
-                haptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
-                onClear(message)
-            }
-        },
+        onDismiss = { onDelete() },
         content = {
             ExpandableSegmentedListItem(
                 isExpanded = expanded,
@@ -163,12 +200,7 @@ fun MessageListItem(
                 trailingContent = {
                     Row {
                         TooltipIconButton(
-                            onClick = {
-                                coroutineScope.launch {
-                                    val clipData = ClipData.newPlainText("Message", message.text)
-                                    clipboard.setClipEntry(clipData.toClipEntry())
-                                }
-                            },
+                            onClick = onCopy,
                             icon = Icons.Rounded.ContentCopy,
                             description = "Copy",
                         )
@@ -211,13 +243,7 @@ fun MessageListItem(
                                     .padding(12.dp),
                             ) {
                                 Button(
-                                    onClick = {
-                                        coroutineScope.launch {
-                                            val clipData =
-                                                ClipData.newPlainText("Message", message.text)
-                                            clipboard.setClipEntry(clipData.toClipEntry())
-                                        }
-                                    },
+                                    onClick = onCopy,
                                     modifier = Modifier.weight(1f),
                                 ) {
                                     Icon(
@@ -230,14 +256,7 @@ fun MessageListItem(
                                 }
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Button(
-                                    onClick = {
-                                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-                                            putExtra(Intent.EXTRA_TEXT, message.text)
-                                            type = "text/plain"
-                                        }
-                                        val shareIntent = Intent.createChooser(sendIntent, null)
-                                        context.startActivity(shareIntent)
-                                    },
+                                    onClick = onShare,
                                     modifier = Modifier.weight(1f),
                                     colors = ButtonDefaults.buttonColors(
                                         containerColor = MaterialTheme.colorScheme.tertiary,
@@ -260,6 +279,9 @@ fun MessageListItem(
                 subItemCount = 3,
                 itemIndex = itemIndex,
                 listItemCount = itemListCount,
+                listItemModifier = Modifier.semantics {
+                    customActions = semanticCustomActions
+                },
             )
         },
     )
@@ -299,7 +321,7 @@ private fun DismissBackground(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Delete,
-                    contentDescription = "Remove message",
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.onError,
                     modifier = Modifier
                         .padding(end = 24.dp)

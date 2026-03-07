@@ -33,6 +33,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -65,6 +70,18 @@ fun RemoteListItem(
     val displayInfo = remember(remote) { RemoteDisplayInfo.fromRemote(remote) }
     val haptics = LocalHapticFeedback.current
 
+    val accessibilityState = remember(isFavorite, isError, isConnecting, isDisconnected) {
+        buildString {
+            if (isFavorite) append("Favorite. ")
+            when {
+                isError -> append("Error.")
+                isConnecting -> append("Connecting.")
+                isDisconnected -> append("Disconnected.")
+                else -> append("Connected.")
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .padding(horizontal = 16.dp)
@@ -86,6 +103,20 @@ fun RemoteListItem(
             content = {
                 SegmentedListItem(
                     onClick = onClick,
+                    modifier = Modifier.semantics {
+                        stateDescription = accessibilityState
+                        onClick("select device", null)
+                        customActions = listOf(
+                            CustomAccessibilityAction(label = "Toggle favorite") {
+                                coroutineScope.launch {
+                                    haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                                    swipeToDismissState.reset()
+                                    onFavoriteToggle()
+                                }
+                                true
+                            },
+                        )
+                    },
                     shapes = ListItemDefaults.segmentedDynamicShapes(
                         index = index,
                         count = itemCount,

@@ -53,6 +53,9 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -89,6 +92,80 @@ fun TransferListItem(
 
     val haptics = LocalHapticFeedback.current
 
+    val onDelete = {
+        coroutineScope.launch {
+            haptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
+            onClear(transfer)
+        }
+    }
+
+    val semanticCustomActions = remember(uiState.actionButtons, uiState.allowDismiss) {
+        buildList {
+            if (uiState.allowDismiss) add(
+                CustomAccessibilityAction("Delete transfer") {
+                    onDelete()
+                    true
+                },
+            )
+
+            when (uiState.actionButtons) {
+                TransferUiActionButtons.AcceptAndDecline -> {
+                    add(
+                        CustomAccessibilityAction("Accept transfer") {
+                            onAccept(transfer)
+                            true
+                        },
+                    )
+                    add(
+                        CustomAccessibilityAction("Decline transfer") {
+                            onDecline(transfer)
+                            true
+                        },
+                    )
+                }
+
+                TransferUiActionButtons.Stop -> {
+                    add(
+                        CustomAccessibilityAction("Stop transfer") {
+                            onStop(transfer)
+                            true
+                        },
+                    )
+                }
+
+                TransferUiActionButtons.Cancel -> {
+                    add(
+                        CustomAccessibilityAction("Cancel transfer") {
+                            onStop(transfer)
+                            true
+                        },
+                    )
+                }
+
+                TransferUiActionButtons.Retry -> {
+                    add(
+                        CustomAccessibilityAction("Retry transfer") {
+                            onRetry(transfer)
+                            true
+                        },
+                    )
+                }
+
+                TransferUiActionButtons.OpenFolder -> {
+                    add(
+                        CustomAccessibilityAction("Open transfer folder") {
+                            onItemOpen(transfer)
+                            true
+                        },
+                    )
+                }
+
+                TransferUiActionButtons.None -> {}
+            }
+        }
+    }
+
+
     SwipeToDismissBox(
         state = swipeToDismissState,
         enableDismissFromStartToEnd = false,
@@ -97,10 +174,7 @@ fun TransferListItem(
             DismissBackground(swipeToDismissState)
         },
         onDismiss = {
-            coroutineScope.launch {
-                haptics.performHapticFeedback(HapticFeedbackType.GestureEnd)
-                onClear(transfer)
-            }
+            onDelete()
         },
         content = {
             ExpandableSegmentedListItem(
@@ -354,6 +428,9 @@ fun TransferListItem(
                 subItemCount = if (uiState.actionButtons != TransferUiActionButtons.None) 2 else 1,
                 itemIndex = itemIndex,
                 listItemCount = itemListCount,
+                listItemModifier = Modifier.semantics {
+                    customActions = semanticCustomActions
+                },
             )
         },
     )
@@ -393,7 +470,7 @@ private fun DismissBackground(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Delete,
-                    contentDescription = "Remove transfer",
+                    contentDescription = null,
                     tint = MaterialTheme.colorScheme.onError,
                     modifier = Modifier
                         .padding(end = 24.dp)

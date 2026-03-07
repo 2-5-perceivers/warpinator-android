@@ -35,6 +35,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.toClipEntry
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
@@ -122,11 +126,16 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
             .combinedClickable(
                 onClick = { showTimestamp = !showTimestamp },
                 onLongClick = { showMenu = true },
+                onClickLabel = if (showTimestamp) "Hide timestamp" else "Show timestamp",
+                onLongClickLabel = "Open message options",
                 // Don't show the ripple over the padded container. This allows the user to tap next
                 // to message, while looking like they're tapping the bubble.
                 indication = null,
                 interactionSource = interactionSource,
-            ),
+            )
+            .semantics(mergeDescendants = true) {
+                liveRegion = LiveRegionMode.Polite
+            },
         contentAlignment = if (isSent) Alignment.CenterEnd else Alignment.CenterStart,
     ) {
         Surface(
@@ -151,6 +160,10 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
                 Text(
                     text = annotatedMessage,
                     style = MaterialTheme.typography.bodyLarge.copy(color = textColor),
+                    modifier = Modifier.semantics {
+                        contentDescription =
+                            if (isSent) "Sent message: ${message.text}" else "Received message: ${message.text}"
+                    },
                 )
                 AnimatedVisibility(
                     visible = showTimestamp,
@@ -160,7 +173,12 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
                         text = timeString,
                         style = MaterialTheme.typography.labelSmall,
                         color = textColor.copy(alpha = 0.7f),
-                        modifier = Modifier.padding(top = 4.dp),
+                        modifier = Modifier
+                            .padding(top = 4.dp)
+                            .semantics {
+                                contentDescription =
+                                    if (isSent) "Sent at: $timeString" else "Received at: $timeString"
+                            },
                     )
                 }
             }

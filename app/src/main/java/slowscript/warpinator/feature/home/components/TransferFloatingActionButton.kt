@@ -26,7 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.traversalIndex
@@ -51,7 +54,24 @@ fun TransferFloatingActionButton(
                 modifier = Modifier.semantics {
                     traversalIndex = -1f
                     stateDescription = if (isMenuExpanded) "Expanded" else "Collapsed"
-                    contentDescription = "Toggle menu"
+                    contentDescription = "Send menu"
+                    onClick("Expand", null)
+                    if (!isMenuExpanded) {
+                        customActions = listOf(
+                            CustomAccessibilityAction("Send Message") {
+                                onSendMessage()
+                                true
+                            },
+                            CustomAccessibilityAction("Send Folder") {
+                                onSendFolder()
+                                true
+                            },
+                            CustomAccessibilityAction("Send File") {
+                                onSendFile()
+                                true
+                            },
+                        )
+                    }
                 },
                 checked = isMenuExpanded,
                 onCheckedChange = {

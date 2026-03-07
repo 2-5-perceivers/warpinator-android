@@ -30,6 +30,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,6 +46,7 @@ fun ExpandableSegmentedListItem(
     isExpanded: Boolean,
     toggleExpand: () -> Unit,
     modifier: Modifier = Modifier,
+    listItemModifier: Modifier = Modifier,
     colors: ListItemColors = ListItemDefaults.colors(
         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
     ),
@@ -72,8 +76,13 @@ fun ExpandableSegmentedListItem(
     ) {
         SegmentedListItem(
             onClick = toggleExpand,
-            modifier = Modifier.semantics {
+            modifier = listItemModifier.semantics {
                 stateDescription = if (isExpanded) "Expanded" else "Collapsed"
+
+                val actionLabel = if (isExpanded) "collapse" else "expand details"
+                onClick(label = actionLabel, action = null)
+
+                role = Role.Button
             },
             colors = colors,
             selected = isExpanded,

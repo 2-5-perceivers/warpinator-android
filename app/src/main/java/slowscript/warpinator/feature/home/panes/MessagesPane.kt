@@ -37,6 +37,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -140,7 +144,11 @@ private fun MessagesPaneContent(
                 .imePadding(),
         ) {
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .semantics {
+                        contentDescription = "Message history with ${titleFormat.title}"
+                    },
                 contentPadding = innerPadding + PaddingValues(bottom = 92.dp, top = 8.dp),
                 reverseLayout = true,
                 state = listState,
@@ -198,6 +206,19 @@ private fun MessagesPaneContent(
                             }
                         },
                         enabled = sendingEnabled,
+                        modifier = Modifier.semantics {
+                            onClick("Send", null)
+
+                            if (!sendingEnabled) {
+                                stateDescription = when {
+                                    !remote.supportsTextMessages -> "Device does not support text messages"
+                                    remote.status != RemoteStatus.Connected -> "Device is disconnected"
+                                    messageText.isBlank() -> "Message is empty"
+                                    else -> "Cannot send"
+                                }
+                            }
+
+                        },
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.Send,
