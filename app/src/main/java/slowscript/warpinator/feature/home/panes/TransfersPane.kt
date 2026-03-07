@@ -48,6 +48,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.semantics.toggleableState
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -161,7 +168,7 @@ private fun TransferPaneContent(
                         onClick = {
                             onClearTransfers(remote.uuid)
                         },
-                        icon = Icons.Rounded.ClearAll, description = "Clear completed transfers",
+                        icon = Icons.Rounded.ClearAll, description = "Clear transfer history",
                     )
 
                     TooltipIconButton(
@@ -172,6 +179,16 @@ private fun TransferPaneContent(
                         description = if (isFavoriteOverride
                                 ?: remote.isFavorite
                         ) "Remove from favorites" else "Add to favorites",
+                        modifier = Modifier.semantics {
+                            stateDescription = if (isFavoriteOverride
+                                    ?: remote.isFavorite
+                            ) "Favorite" else "Not favorite"
+
+                            toggleableState = if (isFavoriteOverride
+                                    ?: remote.isFavorite
+                            ) ToggleableState.On else ToggleableState.Off
+
+                        },
                     )
 
                     if (!integrateMessages) TooltipIconButton(
@@ -208,7 +225,10 @@ private fun TransferPaneContent(
             ),
             modifier = Modifier
                 .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
+                .semantics {
+                    contentDescription = "Transfers history"
+                },
         ) {
 
             item {
@@ -317,7 +337,10 @@ private fun ConnectionStatusCard(
     Card(
         modifier = Modifier
             .padding(vertical = 16.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .semantics(true) {
+                liveRegion = LiveRegionMode.Polite
+            },
         colors = if (status is Remote.RemoteStatus.Error) CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.errorContainer,
             contentColor = MaterialTheme.colorScheme.onErrorContainer,

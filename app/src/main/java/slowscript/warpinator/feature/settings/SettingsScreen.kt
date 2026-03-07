@@ -41,6 +41,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -175,6 +177,10 @@ fun SettingsScreenContent(
     var showThemeDialog by remember { mutableStateOf(false) }
     var showInterfaceDialog by remember { mutableStateOf(false) }
 
+    val editSemanticModifierBase = Modifier.semantics {
+        onClick("Edit", null)
+    }
+
     fun openEdit(
         titleRes: Int, currentValue: String, isNumber: Boolean = false, onConfirm: (String) -> Unit,
     ) {
@@ -225,7 +231,7 @@ fun SettingsScreenContent(
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(0, 3),
                     colors = listItemColors,
-                    modifier = Modifier.padding(bottom = ListItemDefaults.SegmentedGap),
+                    modifier = editSemanticModifierBase.padding(bottom = ListItemDefaults.SegmentedGap),
                 )
                 val profilePictureBitmap = remember(
                     state.profilePictureKey, state.profileImageSignature,
@@ -241,6 +247,7 @@ fun SettingsScreenContent(
                     onClick = { showProfileDialog = true },
                     shapes = ListItemDefaults.segmentedDynamicShapes(2, 3),
                     colors = listItemColors,
+                    modifier = editSemanticModifierBase,
                 )
             }
 
@@ -262,7 +269,7 @@ fun SettingsScreenContent(
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(0, 3),
                     colors = listItemColors,
-                    modifier = Modifier.padding(bottom = ListItemDefaults.SegmentedGap),
+                    modifier = editSemanticModifierBase.padding(bottom = ListItemDefaults.SegmentedGap),
                 )
 
                 SwitchListItem(
@@ -355,7 +362,7 @@ fun SettingsScreenContent(
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(0, 3),
                     colors = listItemColors,
-                    modifier = Modifier.padding(bottom = ListItemDefaults.SegmentedGap),
+                    modifier = editSemanticModifierBase.padding(bottom = ListItemDefaults.SegmentedGap),
                 )
 
                 SegmentedListItem(
@@ -368,7 +375,7 @@ fun SettingsScreenContent(
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
                     colors = listItemColors,
-                    modifier = Modifier.padding(bottom = ListItemDefaults.SegmentedGap),
+                    modifier = editSemanticModifierBase.padding(bottom = ListItemDefaults.SegmentedGap),
                 )
 
                 SegmentedListItem(
@@ -381,7 +388,7 @@ fun SettingsScreenContent(
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
                     colors = listItemColors,
-                    modifier = Modifier.padding(bottom = ListItemDefaults.SegmentedGap),
+                    modifier = editSemanticModifierBase.padding(bottom = ListItemDefaults.SegmentedGap),
                 )
 
                 SegmentedListItem(
@@ -397,9 +404,8 @@ fun SettingsScreenContent(
                     onClick = { showInterfaceDialog = true },
                     shapes = ListItemDefaults.segmentedDynamicShapes(2, 3),
                     colors = listItemColors,
-
-                    )
-
+                    modifier = editSemanticModifierBase,
+                )
             }
 
             item {
@@ -423,7 +429,7 @@ fun SettingsScreenContent(
                     onClick = { showThemeDialog = true },
                     shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
                     colors = listItemColors,
-                    modifier = Modifier.padding(bottom = ListItemDefaults.SegmentedGap),
+                    modifier = editSemanticModifierBase.padding(bottom = ListItemDefaults.SegmentedGap),
                 )
 
                 SwitchListItem(

@@ -28,6 +28,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.paneTitle
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -116,7 +118,10 @@ fun HomeScreen(
                 AnimatedPane(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .consumeWindowInsets(listPaneCI),
+                        .consumeWindowInsets(listPaneCI)
+                        .semantics {
+                            paneTitle = "Devices list"
+                        },
                 ) {
                     RemoteListPane(
                         onRemoteClick = { remote ->
@@ -134,9 +139,12 @@ fun HomeScreen(
                 }
             },
             detailPane = {
-
                 AnimatedPane(
-                    Modifier.consumeWindowInsets(detailPaneCI),
+                    Modifier
+                        .consumeWindowInsets(detailPaneCI)
+                        .semantics {
+                            paneTitle = "Transfers list"
+                        },
                 ) {
                     val selectedUuid = navigator.currentDestination?.contentKey?.uuid
 
@@ -174,7 +182,11 @@ fun HomeScreen(
                 if (viewModel.integrateMessages) return@extraPane
 
                 AnimatedPane(
-                    Modifier.consumeWindowInsets(extraPaneCI),
+                    Modifier
+                        .consumeWindowInsets(extraPaneCI)
+                        .semantics {
+                            paneTitle = "Messages history"
+                        },
                 ) {
                     val selectedUuid = navigator.currentDestination?.contentKey?.uuid
                     val selectedRemote by viewModel.getRemote(selectedUuid)

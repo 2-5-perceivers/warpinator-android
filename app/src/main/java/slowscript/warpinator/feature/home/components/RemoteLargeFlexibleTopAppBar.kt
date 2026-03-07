@@ -17,9 +17,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.TwoRowsTopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +48,15 @@ fun RemoteLargeFlexibleTopAppBar(
 
     val titleFormat = RemoteDisplayInfo.fromRemote(remote)
 
+    val semanticContentDescription = remember(titleFormat) {
+        buildString {
+            if (isFavorite) append("Favorite. ")
+            append(titleFormat.title, " ")
+            append(titleFormat.subtitle, ". ")
+            if (titleFormat.label != null) append("IP: ", titleFormat.label)
+        }
+    }
+
     TwoRowsTopAppBar(
         title = { expanded ->
             if (expanded) {
@@ -52,7 +64,10 @@ fun RemoteLargeFlexibleTopAppBar(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(0.dp, 12.dp),
+                        .padding(0.dp, 12.dp)
+                        .clearAndSetSemantics {
+                            contentDescription = semanticContentDescription
+                        },
                 ) {
                     DynamicAvatarCircle(
                         bitmap = remote.picture,
@@ -88,7 +103,12 @@ fun RemoteLargeFlexibleTopAppBar(
                         }
                     }
                 }
-            } else Row(verticalAlignment = Alignment.CenterVertically) {
+            } else Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clearAndSetSemantics {
+                    contentDescription = semanticContentDescription
+                },
+            ) {
                 DynamicAvatarCircle(bitmap = remote.picture, isFavorite = isFavorite)
                 Text(titleFormat.title, modifier = Modifier.padding(8.dp))
             }

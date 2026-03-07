@@ -44,6 +44,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -148,7 +150,7 @@ fun ProfilePictureDialog(
                                 ) {
                                     Icon(
                                         Icons.Default.AddPhotoAlternate,
-                                        contentDescription = "Add Custom Profile",
+                                        contentDescription = "Add Custom Picture",
                                     )
                                 }
                             }
@@ -171,11 +173,15 @@ fun ProfilePictureDialog(
                                     modifier = Modifier
                                         .size(64.dp)
                                         .clip(CircleShape)
-                                        .clickable { selectedKey = key }) {
+                                        .semantics {
+                                            selected = isSelected
+                                        }
+                                        .clickable { selectedKey = key },
+                                ) {
                                     Image(
                                         bitmap = bmp.asImageBitmap(),
-                                        contentDescription = "Profile $index",
-                                        modifier = Modifier.fillMaxSize()
+                                        contentDescription = "Profile picture ${index + 1}",
+                                        modifier = Modifier.fillMaxSize(),
                                     )
                                     if (isSelected) {
                                         Box(
