@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalClipboard
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.toClipEntry
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import kotlinx.coroutines.launch
+import slowscript.warpinator.R
 import slowscript.warpinator.core.design.components.MenuAction
 import slowscript.warpinator.core.design.components.MenuGroup
 import slowscript.warpinator.core.design.components.MenuGroupsPopup
@@ -126,8 +128,10 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
             .combinedClickable(
                 onClick = { showTimestamp = !showTimestamp },
                 onLongClick = { showMenu = true },
-                onClickLabel = if (showTimestamp) "Hide timestamp" else "Show timestamp",
-                onLongClickLabel = "Open message options",
+                onClickLabel = if (showTimestamp) stringResource(R.string.hide_timestamp_label) else stringResource(
+                    R.string.show_timestamp_label,
+                ),
+                onLongClickLabel = stringResource(R.string.open_message_options_label),
                 // Don't show the ripple over the padded container. This allows the user to tap next
                 // to message, while looking like they're tapping the bubble.
                 indication = null,
@@ -157,12 +161,21 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
                 ),
         ) {
             Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)) {
+                val messageContentDescription = if (isSent) stringResource(
+                    R.string.sent_message_content_description,
+                    message.text,
+                ) else stringResource(R.string.received_message_content_description, message.text)
+
+                val timestampContentDescription = if (isSent) stringResource(
+                    R.string.sent_at_content_description,
+                    timeString,
+                ) else stringResource(R.string.received_at_content_description, timeString)
+
                 Text(
                     text = annotatedMessage,
                     style = MaterialTheme.typography.bodyLarge.copy(color = textColor),
                     modifier = Modifier.semantics {
-                        contentDescription =
-                            if (isSent) "Sent message: ${message.text}" else "Received message: ${message.text}"
+                        contentDescription = messageContentDescription
                     },
                 )
                 AnimatedVisibility(
@@ -176,8 +189,7 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
                         modifier = Modifier
                             .padding(top = 4.dp)
                             .semantics {
-                                contentDescription =
-                                    if (isSent) "Sent at: $timeString" else "Received at: $timeString"
+                                contentDescription = timestampContentDescription
                             },
                     )
                 }
@@ -199,7 +211,7 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
                     MenuGroup(
                         listOf(
                             MenuAction(
-                                title = "Copy",
+                                title = stringResource(R.string.copy_label),
                                 leadingIcon = Icons.Rounded.ContentCopy,
                                 onClick = {
                                     coroutineScope.launch {
@@ -211,7 +223,7 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
                                 },
                             ),
                             MenuAction(
-                                title = "Share",
+                                title = stringResource(R.string.share_label),
                                 leadingIcon = Icons.Rounded.Share,
                                 onClick = {
                                     val sendIntent = Intent(Intent.ACTION_SEND).apply {
@@ -228,7 +240,7 @@ fun MessageBubble(message: Message, onDeleteMessage: () -> Unit = {}) {
                     MenuGroup(
                         listOf(
                             MenuAction(
-                                title = "Delete",
+                                title = stringResource(R.string.delete_label),
                                 leadingIcon = Icons.Rounded.Delete,
                                 onClick = onDeleteMessage,
                             ),

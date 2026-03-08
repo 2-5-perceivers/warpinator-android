@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.onClick
@@ -42,6 +43,7 @@ import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import slowscript.warpinator.R
 import slowscript.warpinator.core.design.components.DynamicAvatarCircle
 import slowscript.warpinator.core.design.shapes.segmentedDynamicShapes
 import slowscript.warpinator.core.design.theme.WarpinatorTheme
@@ -70,15 +72,19 @@ fun RemoteListItem(
     val displayInfo = remember(remote) { RemoteDisplayInfo.fromRemote(remote) }
     val haptics = LocalHapticFeedback.current
 
+    val favoriteLabel = stringResource(R.string.favorite_label)
+    val connectionStateLabel = when {
+        isError -> stringResource(R.string.connection_error)
+        isConnecting -> stringResource(R.string.remote_connecting)
+        isDisconnected -> stringResource(R.string.remote_disconnected)
+        else -> stringResource(R.string.remote_connected)
+    }
+
+
     val accessibilityState = remember(isFavorite, isError, isConnecting, isDisconnected) {
         buildString {
-            if (isFavorite) append("Favorite. ")
-            when {
-                isError -> append("Error.")
-                isConnecting -> append("Connecting.")
-                isDisconnected -> append("Disconnected.")
-                else -> append("Connected.")
-            }
+            if (isFavorite) append(favoriteLabel, " ")
+            append(connectionStateLabel)
         }
     }
 
@@ -101,13 +107,15 @@ fun RemoteListItem(
                 }
             },
             content = {
+                val onClickLabel = stringResource(R.string.select_device_action)
+                val toggleActionLabel = stringResource(R.string.toggle_favorite_action)
                 SegmentedListItem(
                     onClick = onClick,
                     modifier = Modifier.semantics {
                         stateDescription = accessibilityState
-                        onClick("select device", null)
+                        onClick(onClickLabel, null)
                         customActions = listOf(
-                            CustomAccessibilityAction(label = "Toggle favorite") {
+                            CustomAccessibilityAction(label = toggleActionLabel) {
                                 coroutineScope.launch {
                                     haptics.performHapticFeedback(HapticFeedbackType.Confirm)
                                     swipeToDismissState.reset()
@@ -190,7 +198,7 @@ private fun SwipeBackground(
             ) {
                 Icon(
                     imageVector = favoriteIcon,
-                    contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites",
+                    contentDescription = null,
                     tint = favoriteIconColor,
                     modifier = Modifier
                         .padding(end = 24.dp)

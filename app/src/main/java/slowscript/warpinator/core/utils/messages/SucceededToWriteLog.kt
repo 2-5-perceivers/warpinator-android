@@ -2,6 +2,8 @@ package slowscript.warpinator.core.utils.messages
 
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import slowscript.warpinator.R
 import slowscript.warpinator.core.model.ui.UiMessage
 import slowscript.warpinator.core.model.ui.UiMessageState
 
@@ -9,7 +11,7 @@ class SucceededToWriteLog : UiMessage() {
     @Composable
     override fun getState(): UiMessageState {
         return UiMessageState(
-            message = "Dumped log file to selected destination",
+            message = stringResource(R.string.dumped_log_file_to_selected_destination),
             duration = SnackbarDuration.Short,
         )
     }

@@ -220,11 +220,11 @@ fun RemoteListPaneContent(
                                     Spacer(modifier = Modifier.size(16.dp))
                                     Column {
                                         Text(
-                                            "No Internet Connection",
+                                            stringResource(R.string.no_internet_connection_title),
                                             style = MaterialTheme.typography.labelLarge,
                                         )
                                         Text(
-                                            "Connect via WiFi, LAN, or Hotspot, then restart the app.",
+                                            stringResource(R.string.no_internet_connection_subtitle),
                                             style = MaterialTheme.typography.labelMedium,
                                         )
                                     }
@@ -257,7 +257,7 @@ fun RemoteListPaneContent(
                                         Button(
                                             onClick = onShowManualConnectionDialog,
                                         ) {
-                                            Text(stringResource(R.string.manual_connection))
+                                            Text(stringResource(R.string.manual_connection_label))
                                         }
                                     }
 
@@ -275,12 +275,14 @@ fun RemoteListPaneContent(
                                             ),
                                         )
                                         Text(
-                                            if (listUiState == RemoteListUiState.NetworkChangeRestart) "Restarting Warpinator..." else "Starting Warpinator...",
+                                            if (listUiState == RemoteListUiState.NetworkChangeRestart) stringResource(
+                                                R.string.restarting_warpinator_service,
+                                            ) else stringResource(R.string.starting_warpinator_service),
                                             style = MaterialTheme.typography.titleLarge,
                                             modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
                                         )
                                         if (listUiState == RemoteListUiState.NetworkChangeRestart) Text(
-                                            "Network changed",
+                                            stringResource(R.string.network_changed_state),
                                             style = MaterialTheme.typography.labelLarge,
                                         )
                                     }
@@ -293,7 +295,7 @@ fun RemoteListPaneContent(
                                             modifier = Modifier.size(150.dp),
                                         )
                                         Text(
-                                            "Stopping Warpinator...",
+                                            stringResource(R.string.stopping_warpinator_service),
                                             style = MaterialTheme.typography.titleLarge,
                                             modifier = Modifier.padding(24.dp),
                                         )
@@ -310,7 +312,7 @@ fun RemoteListPaneContent(
                                             modifier = Modifier.size(150.dp),
                                         )
                                         Text(
-                                            "Failed to start Warpinator",
+                                            stringResource(R.string.failed_to_start_warpinator),
                                             style = MaterialTheme.typography.titleLarge,
                                             modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
 
@@ -336,7 +338,7 @@ fun RemoteListPaneContent(
 
                     item {
                         Text(
-                            stringResource(R.string.available_devices),
+                            stringResource(R.string.available_devices_title),
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier

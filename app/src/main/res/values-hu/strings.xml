@@ -1,51 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  Main Activity  -->
-    <string name="title_activity_transfers">Átvitelek</string>
-    <string name="send_files">Fájlok küldése</string>
-    <string name="quit">Kilépés</string>
-    <string name="about">Névjegy</string>
-    <string name="settings">Beállítások</string>
-    <string name="title_activity_share">Megosztás a következővel</string>
-    <string name="available_devices">Választható eszközök</string>
+    <string name="quit_label">Kilépés</string>
+    <string name="about_title">Névjegy</string>
+    <string name="settings_title">Beállítások</string>
+    <string name="share_with_title">Megosztás a következővel</string>
+    <string name="available_devices_title">Választható eszközök</string>
     <string name="no_devices_found">Nem található más eszköz</string>
-    <string name="wrong_group_code">A kapcsolat sikertelen: Helytelen csoportkód</string>
     <string name="connection_error">Csatlakozási hiba</string>
-    <string name="not_connected_to_wifi">Nincs csatlakoztatva a WiFi-hez vagy a helyi hálózathoz. Használja az elérési pontját, ha egyik sem érhető el.
-        Indítsa újra az alkalmazást, amikor csatlakozik.</string>
-    <!--  Transfers activity  -->
-    <string name="waiting_for_permission">Engedélyre vár…</string>
-    <string name="files_overwritten_warning">(A fájlok felülírhatók!)</string>
-    <string name="remaining">maradt</string>
-    <string name="a_few_seconds">néhány másodperc</string>
-    <string name="service_unavailable">, a szolgáltatás nem elérhető</string>
-    <string name="errors_during_transfer">Átviteli hibák:</string>
-    <string name="dont_close_when_sharing">A tevékenység bezárása megosztás közben az átvitel sikertelenségét okozhatja </string>
-    <!--  About activity  -->
+    <string name="transfer_state_waiting_permission">Engedélyre vár…</string>
     <string name="version">Verzió: %1$s</string>
-    <string name="about_description">Ez a Warpinator nem hivatalos portja.\nFájlok küldése és fogadása helyi hálózaton keresztül.</string>
-    <string name="warranty_html">Ez a program nyílt forráskódú szoftver, amelyet a &lt;a href=\"https://hu.wikisource.org/wiki/GNU_General_Public_License_(magyar)\"&gt;GNU általános nyilvános licencével &lt;/a&gt;licenceltek.&lt;br&gt; A forráskódot a következő helyeken szerezheti be: &lt;a href=\"https://github.com/slowscript/warpinator-android/\"&gt;GitHub&lt;/a&gt;.&lt;br&gt; &lt;br&gt; Ez a program semmilyen garanciával nem jár.&lt;br&gt;További részletekért tekintse meg a licenc feltételeit.</string>
-    <!--  Share activity  -->
-    <string name="devices_to_share_with">Eszközök a megosztáshoz</string>
-    <string name="no_share_devices">Nincs elérhető eszköz, amellyel meg lehetne osztani </string>
-    <string name="unsupported_intent">Kaptunk egy nem támogatott szándékú műveletet</string>
-    <string name="nothing_to_share">Nincs mit megosztani</string>
-    <!--  Setting  -->
     <string name="identity_settings_category">Azonosító</string>
-    <string name="transfer_setting_category">Átviteli beállítások</string>
-    <string name="network_setting_category">Hálózat</string>
-    <string name="aspect_setting_category">Oldalarány</string>
+    <string name="transfer_settings_category">Átviteli beállítások</string>
+    <string name="network_settings_category">Hálózat</string>
+    <string name="aspect_settings_category">Oldalarány</string>
     <string name="display_settings_title">Megjelenítendő név</string>
     <string name="picture_settings_title">Profilkép</string>
     <string name="download_dir_settings_title">Letöltési könyvtár</string>
     <string name="notification_settings_title">Értesítés megjelenítése a bejövő fájlokról</string>
     <string name="overwrite_settings_title">Felülírás engedélyezése</string>
     <string name="accept_settings_title">Átvitelek automatikus fogadása</string>
-    <string name="accept_setting_summary_on">Áviteleket automatikus el fogja fogadni</string>
-    <string name="accept_setting_summary_off">Kérjen minden átvitelről jóváhagyást</string>
-    <string name="background_settings_title">Futtatás a háttérben</string>
+    <string name="accept_settings_summary_on">Áviteleket automatikus el fogja fogadni</string>
+    <string name="accept_settings_summary_off">Kérjen minden átvitelről jóváhagyást</string>
     <string name="boot_settings_title">Automatikus indítás</string>
-    <string name="export_log_settings_tile">Hibakeresési napló írása fájlba</string>
+    <string name="export_log_settings_title">Hibakeresési napló írása fájlba</string>
     <string name="group_code_settings_title">Csoportkód</string>
     <string name="port_settings_title">Port az átvitelekhez</string>
     <string name="theme_settings_title">Téma</string>
@@ -54,75 +31,24 @@
     <string name="requires_restart_warning">A beállítás megváltoztatásához újra kell indítani az alkalmazást</string>
     <string name="overwrite_settings_summary_on">A már létező nevű bejövő fájlok felülírják a meglévő fájlokat</string>
     <string name="overwrite_settings_summary_off">A már létező nevű bejövő fájlokat átnevezzük</string>
-    <string name="custom">Egyéni</string>
-    <string name="unsupported_provider">Nem támogatott tartalomszolgáltatót választott. Válasszon egy könyvtárat a belső tárhelyről.</string>
-    <!--  Theme settings -->
-    <string name="sysDefault">A rendszer alapértelmezett használata</string>
-    <string name="lightTheme">Világos téma</string>
-    <string name="darkTheme">Sötét téma</string>
-    <!--  Notification  -->
+    <string name="system_default_theme">A rendszer alapértelmezett használata</string>
+    <string name="light_theme">Világos téma</string>
+    <string name="dark_theme">Sötét téma</string>
     <string name="warpinator_notification_title">A Warpinator szolgáltatás fut</string>
     <string name="warpinator_notification_button">Szolgáltatás leállítása</string>
-    <string name="transfers_complete">Minden átvitel befejeződött</string>
     <string name="transfer_notification">%1$.1f%%, %2$d átvitel, %3$s/s</string>
-    <string name="incoming_transfer">Bejövő átvitel innen: %s</string>
-    <string name="num_files">%d fájl</string>
+    <string name="incoming_transfer_notification">Bejövő átvitel innen: %s</string>
     <string name="service_running">A szolgáltatás fut</string>
     <string name="notification_channel_description">Tartós szolgáltatási értesítés</string>
     <string name="incoming_transfer_channel">Bejövő átvitel</string>
     <string name="transfer_progress_channel">Az átvitel előrehaladása</string>
-    <!--  Other  -->
-    <string name="please_select_download_dir">Valószínűleg ez az első alkalom, amikor elindítja ezt az alkalmazást.
-        Kérjük, válasszon egy könyvtárat, ahová a Warpinator menti a fájlokat.</string>
-    <string name="error_download_dir">A beállításokban ki kell választania egy letöltési könyvtárat</string>
-    <string-array name="connected_states">
-        <item>Csatlakoztatva</item>
-        <item>Kapcsolat bontva</item>
-        <item>Csatlakozás…</item>
-        <item>Sikertelen csatlakozás</item>
-        <item>Kétirányú várakozása…</item>
-    </string-array>
-    <string-array name="transfer_states">
-        <item>Előkészítés</item>
-        <item>Engedélyre vár…</item>
-        <item>Elutasítva</item>
-        <item>Átvitel folyamatban</item>
-        <item>Szüneteltetve</item>
-        <item>Leállítva</item>
-        <item>Sikertelen (érintse meg a hibák megtekintéséhez)</item>
-        <item>Helyrehozhatatlan hiba</item>
-        <item>Nem található a fájl</item>
-        <item>Befejezve</item>
-        <item>Befejezve hibákkal (érintse meg a hibák megtekintéséhez)</item>
-    </string-array>
-    <string name="connection_issues">Csatlakozási problémák</string>
-    <string name="reannounce">Újra bejelentés</string>
-    <string name="rescan">Eszközök keresése újra</string>
-    <string name="files_being_sent">Elküldött fájlok:</string>
-    <string name="stop_svc_when_leaving">Alkalmazás elhagyása után a szolgáltatás leállítása</string>
-    <string name="reconnect_button_cnt_des">Újracsatlakozás</string>
-    <string name="status_image_cnt_des">Kapcsolat állapota</string>
-    <string name="application_icon_cnt_des">Alkalmazás ikon</string>
-    <string name="meh_face_cnt_des">Csalódott arc ikon</string>
-    <string name="selected_picture_cnt_des">Választott kép</string>
-    <string name="decline_button_cnt_des">Átvitel elutasítása</string>
-    <string name="accept_button_cnt_des">Átvitel elfogadása</string>
-    <string name="stop_button_cnt_des">Átvitel leállítása</string>
-    <string name="error_network_unavailable">A hálózat nem elérhető – kipróbáljuk a hotspotot\?</string>
-    <string name="open_failed">Fogadott fájl nem megnyitható</string>
-    <string name="send_folder_toast">Küldeni kívánt mappa kiválasztása</string>
-    <string name="stop_svc_when_leaving_summary_off">Indítást követően a szolgáltatás a kézi leállításig tovább fut</string>
-    <string name="required_dialog_not_found">A telefon forgalmazója nem valósította meg a szükséges párbeszédpanelt. Ezt egy jövőbeli kiadásban meg fogják oldani.</string>
-    <string name="profile_image_cnt_des">Profilkép</string>
-    <string name="error_service_not_running">Szolgáltatás nem fut</string>
-    <string name="changed_network">A hálózat megváltozott – szolgáltatás újraindítása…</string>
+    <string name="connection_issues_label">Csatlakozási problémák</string>
+    <string name="reannounce_label">Újra bejelentés</string>
+    <string name="rescan_label">Eszközök keresése újra</string>
+    <string name="stop_service_when_leaving_title">Alkalmazás elhagyása után a szolgáltatás leállítása</string>
+    <string name="reconnect_button_label">Újracsatlakozás</string>
+    <string name="stop_service_when_leaving_summary_off">Indítást követően a szolgáltatás a kézi leállításig tovább fut</string>
     <string name="compression_settings_title">Próbáljon tömörítést használni</string>
     <string name="auth_port_settings_title">Port a regisztrációhoz</string>
-    <string name="clear_transfers">Kész átvitelek törlése</string>
-    <string name="reset_cnt_des">Visszaállítás alapértelmezettre</string>
-    <string name="devices_outside_group">Csoporton kívüli eszközök: %1$d</string>
-    <string name="stop_svc_when_leaving_summary_on">Szolgáltatás automatikusan leáll, ha törli a legutóbbi tartalmakat, vagy egy ideig inaktív</string>
-    <string name="warning_lastmod">A nem alapértelmezett helyek nem támogatják az utoljára módosított időbélyegek megőrzését. A visszaállítás gombbal visszaállíthatja az alapértelmezést.</string>
-    <string name="retry_button_cnt_des">Átvitel újrapróbállása</string>
-    <string name="cert_not_received">Nem sikerült fogadni a tanúsítványt a következőtől: %1$s. Győződjünk meg arról, hogy engedélyeztük az UDP (valamint a TCP) forgalmat a távvezérlő tűzfalának %2$d portján.</string>
+    <string name="stop_service_when_leaving_summary_on">Szolgáltatás automatikusan leáll, ha törli a legutóbbi tartalmakat, vagy egy ideig inaktív</string>
 </resources>

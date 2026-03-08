@@ -162,13 +162,15 @@ private fun ConnectingToRemoteDialog(
     onTryRegisterWithHost: suspend (String) -> ManualConnectionResult?,
     forceState: ManualConnectionResult? = null,
 ) {
+    val unknownErrorLabel = stringResource(R.string.unknown_error)
+
     val connectionResult by produceState(
         initialValue = forceState, key1 = address,
     ) {
         value = try {
             onTryRegisterWithHost(address)
         } catch (e: Exception) {
-            ManualConnectionResult.Error(e.message ?: "Unknown error")
+            ManualConnectionResult.Error(e.message ?: unknownErrorLabel)
         }
     }
 
@@ -246,7 +248,7 @@ private fun ConnectingToRemoteDialog(
         ) {
             Icon(
                 Icons.Rounded.Done,
-                contentDescription = "Device connected",
+                contentDescription = stringResource(R.string.manual_connection_success_label),
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(24.dp),
             )
@@ -257,12 +259,12 @@ private fun ConnectingToRemoteDialog(
         onDismissRequest = {
             if (connectionResult != null) onDismiss()
         },
-        title = { Text(text = "Connecting to") },
+        title = { Text(stringResource(R.string.manual_connection_connecting_title)) },
         icon = { Icon(Icons.Rounded.AddLink, contentDescription = null) },
         modifier = Modifier.widthIn(max = 350.dp),
         confirmButton = {
             TextButton(onClick = onDismiss, enabled = connectionResult != null) {
-                Text(text = "Done")
+                Text(stringResource(R.string.done_label))
             }
         },
         text = {
@@ -279,23 +281,23 @@ private fun ConnectingToRemoteDialog(
 
                 when (connectionResult) {
                     ManualConnectionResult.AlreadyConnected -> {
-                        warningContainer("Device already connected")
+                        warningContainer(stringResource(R.string.manual_connection_already_connected))
                     }
 
                     is ManualConnectionResult.Error -> {
                         errorContainer(
-                            "Connection failed",
+                            stringResource(R.string.manual_connection_failed),
                             (connectionResult as ManualConnectionResult.Error).message,
                         )
 
                     }
 
                     ManualConnectionResult.NotOnSameSubnet -> {
-                        errorContainer("Device not on same subnet")
+                        errorContainer(stringResource(R.string.manual_connection_not_same_subnet))
                     }
 
                     ManualConnectionResult.RemoteDoesNotSupportManualConnect -> {
-                        errorContainer("Device does not support manual connection")
+                        errorContainer(stringResource(R.string.manual_connection_not_supported))
                     }
 
                     ManualConnectionResult.Success -> {
@@ -341,20 +343,21 @@ private fun QRCodeDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         modifier = Modifier.widthIn(max = 350.dp),
-        title = { Text(text = "Manual Connection") },
+        title = { Text(stringResource(R.string.manual_connection_label)) },
         confirmButton = {
             Row {
                 TextButton(onClick = onShowQuickSelectDialog) {
-                    Text(text = "Add connection")
+                    Text(stringResource(R.string.add_connection_label))
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(onClick = onDismiss) {
-                    Text(text = "Close")
+                    Text(stringResource(R.string.close_label))
                 }
             }
         },
         icon = { Icon(Icons.Rounded.AddLink, contentDescription = null) },
         text = {
+            val copyUrlActionLabel = stringResource(R.string.copy_url_action)
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
@@ -373,12 +376,15 @@ private fun QRCodeDialog(
                                 onClick = copyUrl,
                             )
                             .semantics(mergeDescendants = true) {
-                                onClick(label = "Copy URL", action = null)
+                                onClick(
+                                    label = copyUrlActionLabel,
+                                    action = null,
+                                )
                             },
                     ) {
                         Image(
                             it,
-                            contentDescription = "QR Code of a connection URL",
+                            contentDescription = stringResource(R.string.qr_code_content_description),
                             colorFilter = BlendModeColorFilter(
                                 MaterialTheme.colorScheme.primary, BlendMode.SrcIn,
                             ),
@@ -400,7 +406,7 @@ private fun QRCodeDialog(
                     modifier = Modifier
                         .padding(top = 12.dp)
                         .semantics {
-                            onClick(label = "Copy URL", action = null)
+                            onClick(label = copyUrlActionLabel, action = null)
                         },
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.onSurface,
@@ -465,15 +471,15 @@ private fun QuickSelectRemoteDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         modifier = Modifier.widthIn(max = 350.dp),
-        title = { Text(text = "Manual Connection") },
+        title = { Text(stringResource(R.string.manual_connection_label)) },
         confirmButton = {
             Button(onClick = onSubmit) {
-                Text(text = "Add connection")
+                Text(stringResource(R.string.add_connection_label))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "Close")
+                Text(stringResource(R.string.close_label))
             }
         },
         icon = { Icon(Icons.Rounded.AddLink, contentDescription = null) },
@@ -483,7 +489,7 @@ private fun QuickSelectRemoteDialog(
             ) {
                 OutlinedTextField(
                     textFieldState,
-                    label = { Text("IP Address") },
+                    label = { Text(stringResource(R.string.ip_address_label)) },
                     modifier = Modifier.fillMaxWidth(),
                     prefix = {
                         Text(ProtocolAddressInputValidator.scheme)
@@ -491,7 +497,7 @@ private fun QuickSelectRemoteDialog(
                     isError = !validAddressSelected && showValidationError,
                     supportingText = {
                         if (!validAddressSelected && showValidationError) {
-                            Text("Please select or type a valid address")
+                            Text(stringResource(R.string.invalid_address_error))
                         }
                     },
                     lineLimits = TextFieldLineLimits.SingleLine,
@@ -507,7 +513,7 @@ private fun QuickSelectRemoteDialog(
                 )
 
                 Text(
-                    "Recent remotes",
+                    stringResource(R.string.recent_remotes_label),
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
@@ -524,7 +530,10 @@ private fun QuickSelectRemoteDialog(
                             .size(32.dp),
                         tint = MaterialTheme.colorScheme.primary,
                     )
-                    Text("No recent remotes", style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        stringResource(R.string.no_recent_remotes),
+                        style = MaterialTheme.typography.titleSmall,
+                    )
                 } else {
                     Spacer(modifier = Modifier.size(16.dp))
                 }
@@ -571,7 +580,7 @@ private fun RecentRemoteSegmentedListTile(
         trailingContent = {
             if (remote.fromClipboard) Icon(
                 Icons.Rounded.ContentPasteGo,
-                contentDescription = "Paste address from clipboard",
+                contentDescription = stringResource(R.string.paste_address_from_clipboard_label),
 
                 )
             else Icon(Icons.Rounded.ChevronRight, contentDescription = null)

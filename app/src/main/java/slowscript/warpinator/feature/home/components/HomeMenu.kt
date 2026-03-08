@@ -31,7 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import slowscript.warpinator.R
 import slowscript.warpinator.app.LocalNavController
 import slowscript.warpinator.core.design.components.MenuAction
 import slowscript.warpinator.core.design.components.MenuGroup
@@ -70,20 +72,22 @@ fun HomeMenu(
         MenuGroup(
             listOf(
                 MenuAction(
-                    "Manual connection",
+                    stringResource(R.string.manual_connection_label),
                     trailingIcon = Icons.Rounded.AddLink,
                     onClick = onManualConnectionClick,
                 ),
                 MenuAction(
-                    "Reannounce",
+                    stringResource(R.string.reannounce_label),
                     trailingIcon = Icons.Rounded.WifiTethering,
                     onClick = onReannounce,
                 ),
                 MenuAction(
-                    "Rescan", trailingIcon = Icons.Rounded.Refresh, onClick = onRescan,
+                    stringResource(R.string.rescan_label),
+                    trailingIcon = Icons.Rounded.Refresh,
+                    onClick = onRescan,
                 ),
                 MenuAction(
-                    "Connection issues",
+                    stringResource(R.string.connection_issues_label),
                     trailingIcon = Icons.AutoMirrored.Rounded.MenuBook,
                     onClick = {
                         uriHandler.openUri(helpUrl)
@@ -94,18 +98,18 @@ fun HomeMenu(
         MenuGroup(
             listOf(
                 MenuAction(
-                    "Settings",
+                    stringResource(R.string.settings_title),
                     trailingIcon = Icons.Rounded.Settings,
                     onClick = { navController?.navigate("settings") },
                 ),
                 MenuAction(
-                    "Save log", trailingIcon = Icons.Rounded.Archive,
+                    stringResource(R.string.save_log_label), trailingIcon = Icons.Rounded.Archive,
                     onClick = {
                         saveLocationPicker.launch("warpinator-log.txt")
                     },
                 ),
                 MenuAction(
-                    "About",
+                    stringResource(R.string.about_title),
                     trailingIcon = Icons.Outlined.Info,
                     onClick = { navController?.navigate("about") },
                 ),
@@ -114,7 +118,7 @@ fun HomeMenu(
         MenuGroup(
             listOf(
                 MenuAction(
-                    "Exit",
+                    stringResource(R.string.quit_label),
                     trailingIcon = Icons.Rounded.Close,
                     onClick = {
                         (context as? Activity)?.finish()
@@ -128,7 +132,7 @@ fun HomeMenu(
         modifier = Modifier.wrapContentSize(Alignment.TopEnd),
     ) {
         TooltipIconButton(
-            description = "Open menu",
+            description = stringResource(R.string.open_menu_label),
             icon = Icons.Rounded.MoreVert,
             onClick = { menuOpen = true },
         )

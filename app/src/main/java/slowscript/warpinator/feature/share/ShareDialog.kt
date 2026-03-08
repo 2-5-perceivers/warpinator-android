@@ -55,6 +55,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -66,6 +67,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import slowscript.warpinator.R
 import slowscript.warpinator.core.data.WarpinatorViewModel
 import slowscript.warpinator.core.design.components.DynamicAvatarCircle
+import slowscript.warpinator.core.design.components.TooltipIconButton
 import slowscript.warpinator.core.design.shapes.segmentedDynamicShapes
 import slowscript.warpinator.core.design.shapes.segmentedHorizontalDynamicShapes
 import slowscript.warpinator.core.design.theme.WarpinatorTheme
@@ -166,12 +168,17 @@ private fun ShareDialogFullscreenWrapper(
                     ),
                     title = {
                         Text(
-                            "Share with", maxLines = 1, overflow = TextOverflow.Ellipsis,
+                            stringResource(R.string.share_with_title),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     },
                     navigationIcon = {
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Rounded.Close, contentDescription = "Cancel")
+                            Icon(
+                                Icons.Rounded.Close,
+                                contentDescription = stringResource(android.R.string.cancel),
+                            )
                         }
                     },
                 )
@@ -206,8 +213,8 @@ private fun ShareDialogFloatingWrapper(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Share with") },
-        confirmButton = { TextButton(onDismiss) { Text("Cancel") } },
+        title = { Text(stringResource(R.string.share_with_title)) },
+        confirmButton = { TextButton(onDismiss) { Text(stringResource(android.R.string.cancel)) } },
         icon = { Icon(Icons.Rounded.Share, contentDescription = null) },
         text = {
             ShareDialogContent(
@@ -253,7 +260,10 @@ private fun ShareDialogContent(
     }
 
     val supportingContent =
-        if (textMode) "Tap to edit" else rememberFormattedFileNames(uris, context)
+        if (textMode) stringResource(R.string.tap_to_edit_hint) else rememberFormattedFileNames(
+            uris,
+            context,
+        )
 
     LazyColumn(
         contentPadding = innerPadding,
@@ -278,9 +288,11 @@ private fun ShareDialogContent(
                             value = editedText.orEmpty(),
                             onValueChange = { editedText = it },
                             suffix = {
-                                IconButton(onClick = { isEditing = false }) {
-                                    Icon(Icons.Rounded.Check, contentDescription = "Confirm")
-                                }
+                                TooltipIconButton(
+                                    onClick = { isEditing = false },
+                                    icon = Icons.Rounded.Check,
+                                    description = stringResource(R.string.confirm_edit_label),
+                                )
                             },
                             colors = OutlinedTextFieldDefaults.colors(
                                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -308,7 +320,11 @@ private fun ShareDialogContent(
                         enabled = textMode,
                         content = {
                             Text(
-                                if (textMode) editedText.orEmpty() else "${uris.size} files selected",
+                                if (textMode) editedText.orEmpty() else pluralStringResource(
+                                    R.plurals.files_selected,
+                                    uris.size,
+                                    uris.size,
+                                ),
                                 style = MaterialTheme.typography.labelLarge,
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
@@ -426,7 +442,12 @@ fun rememberFormattedFileNames(uris: List<Uri>, context: Context): String? {
             else -> {
                 val firstTwo = validNames.take(2).joinToString(", ")
                 val remainingCount = count - 2
-                "$firstTwo, and $remainingCount more"
+                context.resources.getQuantityString(
+                    R.plurals.and_more,
+                    remainingCount,
+                    firstTwo,
+                    remainingCount,
+                )
             }
         }
     }

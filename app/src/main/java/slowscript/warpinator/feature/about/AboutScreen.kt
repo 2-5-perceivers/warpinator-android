@@ -52,6 +52,13 @@ import slowscript.warpinator.core.design.shapes.segmentedDynamicShapes
 import slowscript.warpinator.core.design.theme.WarpinatorTheme
 import slowscript.warpinator.core.utils.Utils
 
+private const val TRANSLATE_URL = "https://hosted.weblate.org/engage/warpinator-android/"
+private const val GOOGLE_PLAY_URL =
+    "https://play.google.com/store/apps/details?id=slowscript.warpinator"
+private const val SOURCE_URL = "https://github.com/slowscript/warpinator-android"
+private const val ISSUES_URL = "$SOURCE_URL/issues"
+private const val LICENSE_URL = "https://www.gnu.org/licenses/gpl-3.0.html"
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun AboutScreen() {
@@ -63,11 +70,13 @@ fun AboutScreen() {
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             MediumFlexibleTopAppBar(
-                title = { Text("About") }, navigationIcon = {
-                IconButton(onClick = { navController?.popBackStack() }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                }
-            }, scrollBehavior = scrollBehavior
+                title = { Text(stringResource(R.string.about_title)) },
+                navigationIcon = {
+                    IconButton(onClick = { navController?.popBackStack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { innerPadding ->
@@ -107,7 +116,7 @@ fun AboutScreen() {
                         Spacer(Modifier.size(16.dp))
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                "Warpinator",
+                                stringResource(R.string.app_name),
                                 style = MaterialTheme.typography.headlineSmall,
                             )
                             Text(
@@ -128,7 +137,7 @@ fun AboutScreen() {
                 SegmentedListItem(
                     onClick = {
                         Utils.openUrl(
-                            context, "https://hosted.weblate.org/engage/warpinator-android/"
+                            context, TRANSLATE_URL,
                         )
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(0, 3),
@@ -136,10 +145,10 @@ fun AboutScreen() {
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     ),
                     content = {
-                        Text("Help translate Warpinator")
+                        Text(stringResource(R.string.help_translate_title))
                     },
                     supportingContent = {
-                        Text("Translate Warpinator in your language")
+                        Text(stringResource(R.string.help_translate_subtitle))
                     },
                     leadingContent = {
                         Icon(
@@ -157,7 +166,7 @@ fun AboutScreen() {
                     onClick = {
                         Utils.openUrl(
                             context,
-                            "https://play.google.com/store/apps/details?id=slowscript.warpinator"
+                            GOOGLE_PLAY_URL,
                         )
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
@@ -165,10 +174,10 @@ fun AboutScreen() {
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     ),
                     content = {
-                        Text("Rate on Google Play")
+                        Text(stringResource(R.string.rate_on_google_play_title))
                     },
                     supportingContent = {
-                        Text("Enjoying the app? Rate it on Google Play!")
+                        Text(stringResource(R.string.rate_on_google_play_subtitle))
                     },
                     leadingContent = {
                         Icon(
@@ -181,17 +190,17 @@ fun AboutScreen() {
                 Spacer(Modifier.height(ListItemDefaults.SegmentedGap))
                 SegmentedListItem(
                     onClick = {
-                        Utils.openUrl(context, "https://github.com/slowscript/warpinator-android")
+                        Utils.openUrl(context, SOURCE_URL)
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(2, 3),
                     colors = ListItemDefaults.segmentedColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     ),
                     content = {
-                        Text("See the source code")
+                        Text(stringResource(R.string.see_the_source_code_title))
                     },
                     supportingContent = {
-                        Text("Contributions are welcome")
+                        Text(stringResource(R.string.contributions_are_welcome_subtitle))
                     },
                     leadingContent = {
                         Icon(
@@ -208,7 +217,7 @@ fun AboutScreen() {
                 SegmentedListItem(
                     onClick = {
                         Utils.openUrl(
-                            context, "https://github.com/slowscript/warpinator-android/issues"
+                            context, ISSUES_URL,
                         )
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(0, 2),
@@ -216,10 +225,10 @@ fun AboutScreen() {
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     ),
                     content = {
-                        Text("Issues")
+                        Text(stringResource(R.string.issues_title))
                     },
                     supportingContent = {
-                        Text("Have an issue? Report it here!")
+                        Text(stringResource(R.string.issues_subtitle))
                     },
                     leadingContent = {
                         Icon(
@@ -231,7 +240,7 @@ fun AboutScreen() {
                 Spacer(Modifier.height(ListItemDefaults.SegmentedGap))
                 SegmentedListItem(
                     onClick = {
-                        Utils.openUrl(context, "https://www.gnu.org/licenses/gpl-3.0.html")
+                        Utils.openUrl(context, LICENSE_URL)
                         // TODO: add a license screen to show all OSS licenses of dependencies and the project
                     },
                     shapes = ListItemDefaults.segmentedDynamicShapes(1, 2),
@@ -239,10 +248,10 @@ fun AboutScreen() {
                         containerColor = MaterialTheme.colorScheme.surfaceContainer,
                     ),
                     content = {
-                        Text("License")
+                        Text(stringResource(R.string.license_title))
                     },
                     supportingContent = {
-                        Text("GNU General Public License v3.0")
+                        Text(stringResource(R.string.license_type))
                     },
                     leadingContent = {
                         Icon(

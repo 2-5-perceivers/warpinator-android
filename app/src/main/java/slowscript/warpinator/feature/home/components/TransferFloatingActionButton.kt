@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
@@ -34,6 +35,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.tooling.preview.Preview
+import slowscript.warpinator.R
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -45,6 +47,10 @@ fun TransferFloatingActionButton(
 ) {
     var isMenuExpanded by rememberSaveable { mutableStateOf(initiallyExpanded) }
     val haptics = LocalHapticFeedback.current
+
+    val sendMessageLabel = stringResource(R.string.send_message_label)
+    val sendFolderLabel = stringResource(R.string.send_folder_label)
+    val sendFileLabel = stringResource(R.string.send_file_label)
 
     BackHandler(isMenuExpanded) { isMenuExpanded = false }
     FloatingActionButtonMenu(
@@ -58,15 +64,15 @@ fun TransferFloatingActionButton(
                     onClick("Expand", null)
                     if (!isMenuExpanded) {
                         customActions = listOf(
-                            CustomAccessibilityAction("Send Message") {
+                            CustomAccessibilityAction(sendMessageLabel) {
                                 onSendMessage()
                                 true
                             },
-                            CustomAccessibilityAction("Send Folder") {
+                            CustomAccessibilityAction(sendFolderLabel) {
                                 onSendFolder()
                                 true
                             },
-                            CustomAccessibilityAction("Send File") {
+                            CustomAccessibilityAction(sendFileLabel) {
                                 onSendFile()
                                 true
                             },
@@ -97,18 +103,18 @@ fun TransferFloatingActionButton(
                 onSendMessage()
                 isMenuExpanded = false
             },
-            text = { Text("Send Message") },
-            icon = { Icon(Icons.Rounded.ModeComment, contentDescription = "Send Message") },
+            text = { Text(sendMessageLabel) },
+            icon = { Icon(Icons.Rounded.ModeComment, contentDescription = null) },
         )
         FloatingActionButtonMenuItem(
             onClick = onSendFolder,
-            text = { Text("Send Folder") },
-            icon = { Icon(Icons.Rounded.Folder, contentDescription = "Send Folder") },
+            text = { Text(sendFolderLabel) },
+            icon = { Icon(Icons.Rounded.Folder, contentDescription = null) },
         )
         FloatingActionButtonMenuItem(
             onClick = onSendFile,
-            text = { Text("Send File") },
-            icon = { Icon(Icons.Rounded.FilePresent, contentDescription = "Send File") },
+            text = { Text(sendFileLabel) },
+            icon = { Icon(Icons.Rounded.FilePresent, contentDescription = null) },
         )
 
     }

@@ -8,11 +8,11 @@ import slowscript.warpinator.core.system.PreferenceManager
  * Represents the available application theme modes.
  */
 enum class ThemeOptions(val key: String, @param:StringRes val label: Int) {
-    SYSTEM_DEFAULT(PreferenceManager.VAL_THEME_DEFAULT, R.string.sysDefault), LIGHT_THEME(
+    SYSTEM_DEFAULT(PreferenceManager.VAL_THEME_DEFAULT, R.string.system_default_theme), LIGHT_THEME(
         PreferenceManager.VAL_THEME_LIGHT,
-        R.string.lightTheme,
+        R.string.light_theme,
     ),
-    DARK_THEME(PreferenceManager.VAL_THEME_DARK, R.string.darkTheme);
+    DARK_THEME(PreferenceManager.VAL_THEME_DARK, R.string.dark_theme);
 
     companion object {
         fun fromKey(key: String?): ThemeOptions {

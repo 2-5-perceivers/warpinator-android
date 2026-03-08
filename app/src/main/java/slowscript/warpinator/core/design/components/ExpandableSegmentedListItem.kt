@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
@@ -37,6 +38,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import slowscript.warpinator.R
 import slowscript.warpinator.core.design.shapes.segmentedDynamicShapes
 import slowscript.warpinator.core.design.theme.WarpinatorTheme
 
@@ -74,12 +76,22 @@ fun ExpandableSegmentedListItem(
     Column(
         modifier = modifier,
     ) {
+
+        val stateDescription =
+            if (isExpanded) stringResource(R.string.expanded_state) else stringResource(
+                R.string.collapsed_state,
+            )
+
+        val actionLabel =
+            if (isExpanded) stringResource(R.string.collapse_action) else stringResource(
+                R.string.expand_details_action,
+            )
+
+
         SegmentedListItem(
             onClick = toggleExpand,
             modifier = listItemModifier.semantics {
-                stateDescription = if (isExpanded) "Expanded" else "Collapsed"
-
-                val actionLabel = if (isExpanded) "collapse" else "expand details"
+                this.stateDescription = stateDescription
                 onClick(label = actionLabel, action = null)
 
                 role = Role.Button

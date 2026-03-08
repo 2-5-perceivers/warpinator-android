@@ -142,7 +142,7 @@ private fun Transfer.getStatusStrings(
             val remaining = this.getRemainingTime()
             val remainingString = when {
                 remaining == null -> stringResource(R.string.time_indefinite)
-                remaining <= 5 -> stringResource(R.string.a_few_seconds)
+                remaining <= 5 -> stringResource(R.string.time_few_seconds_remaining)
                 remaining < 60 -> pluralStringResource(
                     R.plurals.time_seconds_remaining,
                     remaining,

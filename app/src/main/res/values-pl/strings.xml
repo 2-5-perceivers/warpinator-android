@@ -1,148 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  App Name  -->
-    <!--  Main Activity  -->
-    <string name="title_activity_transfers">Przesyłanie plików</string>
-    <string name="send_files">Wysłane pliki</string>
-    <string name="quit">Wyjdź</string>
-    <string name="connection_issues">Problemy z połączeniem</string>
-    <string name="reannounce">Rozgłoś ponownie</string>
-    <string name="rescan">Ponownie wyszukaj urządzenia</string>
-    <string name="about">O programie</string>
-    <string name="settings">Ustawienia</string>
-    <string name="title_activity_share">Wyślij do</string>
-    <string name="available_devices">Dostępne urządzenia</string>
+    <string name="quit_label">Wyjdź</string>
+    <string name="connection_issues_label">Problemy z połączeniem</string>
+    <string name="reannounce_label">Rozgłoś ponownie</string>
+    <string name="rescan_label">Ponownie wyszukaj urządzenia</string>
+    <string name="about_title">O programie</string>
+    <string name="settings_title">Ustawienia</string>
+    <string name="share_with_title">Wyślij do</string>
+    <string name="available_devices_title">Dostępne urządzenia</string>
     <string name="no_devices_found">Nie znaleziono innych urządzeń</string>
-    <string name="wrong_group_code">Nie udało się połączyć: błędny kod grupy</string>
     <string name="connection_error">Błąd połączenia</string>
-    <string name="not_connected_to_wifi">Urządzenie nie jest połączone z siecią Wi-Fi lub LAN. Użyj hotspotu Wi-Fi, jeżeli inne połączenia nie są dostępne.
-Uruchom ponownie aplikację po połączeniu.</string>
-    <string name="changed_network">Połączenie zostało zmienione — restartowanie usługi…</string>
-    <!--  Transfers activity  -->
-    <string name="waiting_for_permission">Oczekiwanie na zgodę…</string>
-    <string name="files_overwritten_warning">(Pliki mogą zostać nadpisane!)</string>
-    <string name="remaining">pozostało</string>
-    <string name="open_failed">Nie udało się otworzyć odebranego pliku</string>
-    <string name="a_few_seconds">kilka sekund</string>
-    <string name="service_unavailable">, usługa niedostępna</string>
-    <string name="errors_during_transfer">Błędy podczas przesyłania:</string>
-    <string name="dont_close_when_sharing">Zamknięcie tej usługi podczas przesyłania plików może spowodować, że przesyłanie się nie powiedzie</string>
-    <string name="files_being_sent">Przesyłane pliki:</string>
-    <!--  About activity  -->
+    <string name="transfer_state_waiting_permission">Oczekiwanie na zgodę…</string>
     <string name="version">Wersja: %1$s</string>
-    <string name="about_description">To nieoficjalny port programu Warpinator. \nWysyłaj i odbieraj pliki przez sieć lokalną.</string>
-    <string name="warranty_html">Ta aplikacja jest otwartym oprogramowaniem, dostępnym na licencji &lt;a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"&gt;GNU General Public License&lt;/a&gt;.&lt;br&gt; Możesz pobrać kod źródłowy z serwisu &lt;a href=\"https://github.com/slowscript/warpinator-android/\"&gt;GitHub&lt;/a&gt;.&lt;br&gt; &lt;br&gt; Ta aplikacja jest dostarczona bez jakichkolwiek gwarancji.&lt;br&gt;Sprawdź zasady licencji w celu uzyskania szczegółowych informacji.</string>
-    <!--  Share activity  -->
-    <string name="devices_to_share_with">Dostępne urządzenia</string>
-    <string name="no_share_devices">Brak dostępnych urządzeń</string>
-    <string name="unsupported_intent">Otrzymano nieobsługiwane żądanie</string>
-    <string name="nothing_to_share">Nie ma nic do udostępnienia</string>
-    <!--  Setting  -->
     <string name="identity_settings_category">Tożsamość</string>
-    <string name="transfer_setting_category">Ustawienia przesyłania</string>
-    <string name="network_setting_category">Sieć</string>
-    <string name="aspect_setting_category">Wygląd</string>
+    <string name="transfer_settings_category">Ustawienia przesyłania</string>
+    <string name="network_settings_category">Sieć</string>
+    <string name="aspect_settings_category">Wygląd</string>
     <string name="display_settings_title">Wyświetlana nazwa</string>
     <string name="picture_settings_title">Obrazek profilowy</string>
     <string name="download_dir_settings_title">Folder na odebrane pliki</string>
     <string name="notification_settings_title">Pokaż powiadomienie o przychodzących plikach</string>
     <string name="overwrite_settings_title">Zezwól na nadpisywanie</string>
     <string name="accept_settings_title">Automatycznie akceptuj pliki</string>
-    <string name="accept_setting_summary_on">Przychodzące pliki będą automatycznie akceptowane</string>
-    <string name="accept_setting_summary_off">Wszystkie przychodzące pliki muszą być zaakceptowane przez Ciebie</string>
-    <string name="background_settings_title">Działaj w tle</string>
+    <string name="accept_settings_summary_on">Przychodzące pliki będą automatycznie akceptowane</string>
+    <string name="accept_settings_summary_off">Wszystkie przychodzące pliki muszą być zaakceptowane przez Ciebie</string>
     <string name="boot_settings_title">Uruchamiaj automatycznie</string>
-    <string name="export_log_settings_tile">Zapisz dziennik debugowania do pliku</string>
+    <string name="export_log_settings_title">Zapisz dziennik debugowania do pliku</string>
     <string name="group_code_settings_title">Kod grupy</string>
     <string name="port_settings_title">Port do transferów</string>
     <string name="theme_settings_title">Motyw aplikacji</string>
     <string name="notification_settings_summary">Może zależeć od ustawień powiadomień Androida</string>
     <string name="port_range_warning">Numer portu musi być pomiędzy 1024 a 65535</string>
     <string name="requires_restart_warning">Zmaina tego ustawienia wymaga ponownego uruchomienia aplikacji</string>
-    <string name="required_dialog_not_found">Producent telefonu nie zaimplementował wymaganego okna dialogowego. Zostanie to poprawione w przyszłej wersji.</string>
     <string name="overwrite_settings_summary_on">Przychodzące pliki nadpiszą istniejące pliki o takiej samej nazwie</string>
     <string name="overwrite_settings_summary_off">Jeżeli istnieją już pliki o identycznej nazwie, nazwy przychodzących plików zostaną zmienione</string>
-    <string name="custom">Własny</string>
-    <string name="unsupported_provider">Wybrałeś pliki z nieobsługiwanego źródła. Wybierz katalog w pamięci urządzenia.</string>
-    <!--  Theme settings -->
-    <string name="sysDefault">Użyj motywu systemu</string>
-    <string name="lightTheme">Jasny motyw</string>
-    <string name="darkTheme">Ciemny motyw</string>
-    <!--  Notification  -->
+    <string name="system_default_theme">Użyj motywu systemu</string>
+    <string name="light_theme">Jasny motyw</string>
+    <string name="dark_theme">Ciemny motyw</string>
     <string name="warpinator_notification_title">Warpinator działa w tle</string>
     <string name="warpinator_notification_button">Zatrzymaj</string>
-    <string name="transfers_complete">Przesyłanie zakończone</string>
     <string name="transfer_notification">%1$.1f%%, %2$d transfer(y), %3$s/s</string>
-    <string name="incoming_transfer">Przychodzące pliki od %s</string>
-    <string name="num_files">%d plik(i)</string>
+    <string name="incoming_transfer_notification">Przychodzące pliki od %s</string>
     <string name="service_running">Warpinator jest aktywny</string>
     <string name="notification_channel_description">Stałe powiadomienie o działaniu w tle</string>
     <string name="incoming_transfer_channel">Przychodzące pliki</string>
     <string name="transfer_progress_channel">Postęp przesyłania plików</string>
-    <!--  Content descriptions  -->
-    <string name="reconnect_button_cnt_des">Połącz ponownie</string>
-    <string name="status_image_cnt_des">Status połączenia</string>
-    <string name="profile_image_cnt_des">Obrazek profilowy</string>
-    <string name="application_icon_cnt_des">Ikona aplikacji</string>
-    <string name="meh_face_cnt_des">Ikona rozczarowanej twarzy</string>
-    <string name="selected_picture_cnt_des">Wybrany obrazek</string>
-    <string name="decline_button_cnt_des">Odmów zgody na przesłanie plików</string>
-    <string name="accept_button_cnt_des">Wyraź zgodę na przesłanie plików</string>
-    <string name="stop_button_cnt_des">Zatrzymaj przesyłanie plików</string>
-    <string name="retry_button_cnt_des">Wznów przesyłanie plików</string>
-    <!--  Other  -->
-    <string name="please_select_download_dir">Uruchamiasz aplikację po raz pierwszy.
-        Wybierz folder, w którym Warpinator będzie zapisywał otrzymane pliki.</string>
-    <string name="error_download_dir">Musisz wybrać folder dla pobieranych plików w ustawieniach aplikacji</string>
-    <string name="error_network_unavailable">Sieć niedostępna — połączyć z hotspotem?</string>
-    <string name="error_service_not_running">Usługa nie jest uruchomiona</string>
-    <string name="cert_not_received">Nie udało się odebrać certyfikatu od urządzenia %1$s. Upewnij się, że zezwolono na połączenia poprzez protokół UDP (oraz TCP) na porcie %2$d w ustawieniach zapory sieciowej drugiego urządzenia.</string>
-    <string-array name="connected_states">
-        <item>Połączony</item>
-        <item>Rozłączony</item>
-        <item>Łączenie</item>
-        <item>Połączenie się nie powiodło</item>
-        <item>Oczekiwanie na połączenie dwukierunkowe</item>
-    </string-array>
-    <string-array name="transfer_states">
-        <item>Inicjalizacja</item>
-        <item>Oczekiwanie na zgodę…</item>
-        <item>Odmówiono zgody</item>
-        <item>Przesyłanie</item>
-        <item>Wstrzymane</item>
-        <item>Zatrzymane</item>
-        <item>Wystąpił błąd, dotknij aby poznać szczegóły</item>
-        <item>Błąd niemożliwy do naprawienia</item>
-        <item>Nie znaleziono pliku</item>
-        <item>Ukończone</item>
-        <item>Ukończono z błędami (dotknij aby poznać szczegóły)</item>
-    </string-array>
-    <string name="stop_svc_when_leaving_summary_on">Usługa zostanie automatycznie zatrzymana po usunięciu z ostatnich lub po okresie bezczynności</string>
-    <string name="stop_svc_when_leaving_summary_off">Po uruchomieniu usługa będzie działać do momentu ręcznego zatrzymania</string>
-    <string name="send_folder_toast">Wybierz folder do wysłania</string>
-    <string name="stop_svc_when_leaving">Zatrzymaj usługę po zamknięciu aplikacji</string>
-    <string name="warning_lastmod">Lokalizacje inne niż domyślne nie obsługują zachowywania sygnatur czasowych ostatniej modyfikacji. Możesz przywrócić ustawienia domyślne za pomocą przycisku resetowania.</string>
-    <string name="reset_cnt_des">Przywróć wartość domyślną</string>
-    <string name="clear_transfers">Wyczyść zakończone transfery</string>
+    <string name="reconnect_button_label">Połącz ponownie</string>
+    <string name="stop_service_when_leaving_summary_on">Usługa zostanie automatycznie zatrzymana po usunięciu z ostatnich lub po okresie bezczynności</string>
+    <string name="stop_service_when_leaving_summary_off">Po uruchomieniu usługa będzie działać do momentu ręcznego zatrzymania</string>
+    <string name="stop_service_when_leaving_title">Zatrzymaj usługę po zamknięciu aplikacji</string>
     <string name="compression_settings_title">Spróbuj użyć kompresji</string>
     <string name="auth_port_settings_title">Port do rejestracji</string>
-    <string name="devices_outside_group">Urządzenia spoza grupy: %1$d</string>
-    <string name="initiate_connection">Nowe połączenie</string>
     <string name="manual_connect_text">Zeskanuj powyższy kod QR za pomocą aplikacji aparatu i otwórz łącze lub użyj poniższego adresu, aby zainicjować połączenie z innego urządzenia:</string>
-    <string name="manual_connection">Połączenie ręczne</string>
-    <string name="save_log">Zapisz dziennik</string>
-    <string name="confirm_connection">Połączyć się z \'%s\'?</string>
-    <string name="qs_discovered_count">Połączone: %d</string>
-    <string name="enter_address">Wprowadź adres i port</string>
-    <string name="manual_connect_hint">Wypróbuj połączenie ręczne w menu</string>
-    <string name="address_copied">Adres skopiowano do schowka</string>
-    <string name="qr_code_cnt_des">Kod QR</string>
-    <string name="same_network_hint">Urządzenia muszą znajdować się w tej samej sieci i używać tego samego kodu grupy</string>
-    <string name="error_no_duplex">Inne urządzenie nie nawiązało połączenia. Może nas nie widzi?</string>
+    <string name="manual_connection_label">Połączenie ręczne</string>
+    <string name="save_log_label">Zapisz dziennik</string>
     <string name="network_interface_settings_title">Preferowany interfejs sieciowy</string>
     <string name="network_interface_settings_summary">%s (wraca do trybu automatycznego, jeśli niedostępny)</string>
     <string name="boot_settings_summary_a15">Autostart niedostępny w systemie Android 15 i nowszych</string>
-    <string name="wrong_subnet">, nie w tej samej podsieci</string>
-    <string name="warning">Uwaga</string>
-    <string name="warning_subnet">To urządzenie nie znajduje się w tej samej podsieci. Połączenie z nim prawdopodobnie się nie powiedzie. Sprawdź w ustawieniach obu urządzeń, czy Warpinator korzysta z prawidłowego interfejsu sieciowego.</string>
 </resources>

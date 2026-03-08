@@ -200,7 +200,7 @@ fun SettingsScreenContent(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             MediumFlexibleTopAppBar(
-                title = { Text(stringResource(R.string.settings)) },
+                title = { Text(stringResource(R.string.settings_title)) },
 
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
@@ -252,7 +252,7 @@ fun SettingsScreenContent(
             }
 
             item {
-                SettingsCategoryLabel(stringResource(R.string.transfer_setting_category))
+                SettingsCategoryLabel(stringResource(R.string.transfer_settings_category))
 
                 SegmentedListItem(
                     content = { Text(stringResource(R.string.download_dir_settings_title)) },
@@ -293,8 +293,8 @@ fun SettingsScreenContent(
 
                 SwitchListItem(
                     title = stringResource(R.string.accept_settings_title),
-                    summary = if (state.autoAccept) stringResource(R.string.accept_setting_summary_on)
-                    else stringResource(R.string.accept_setting_summary_off),
+                    summary = if (state.autoAccept) stringResource(R.string.accept_settings_summary_on)
+                    else stringResource(R.string.accept_settings_summary_off),
                     checked = state.autoAccept,
                     onCheckedChange = onAutoAcceptChange,
                     shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
@@ -311,7 +311,7 @@ fun SettingsScreenContent(
             }
 
             item {
-                SettingsCategoryLabel(stringResource(R.string.app_behavior_setting_category))
+                SettingsCategoryLabel(stringResource(R.string.app_behavior_settings_category))
 
                 // Boot Start (Only for Android < 15/Vanilla Ice Cream)
                 val isBootStartSupported =
@@ -328,9 +328,9 @@ fun SettingsScreenContent(
                 )
 
                 SwitchListItem(
-                    title = stringResource(R.string.stop_svc_when_leaving),
-                    summary = if (state.autoStop) stringResource(R.string.stop_svc_when_leaving_summary_on)
-                    else stringResource(R.string.stop_svc_when_leaving_summary_off),
+                    title = stringResource(R.string.stop_service_when_leaving_title),
+                    summary = if (state.autoStop) stringResource(R.string.stop_service_when_leaving_summary_on)
+                    else stringResource(R.string.stop_service_when_leaving_summary_off),
                     checked = state.autoStop,
                     enabled = state.isAutoStopEnabled, // DISABLED if BootStart is ON
                     onCheckedChange = onAutoStopChange,
@@ -339,7 +339,7 @@ fun SettingsScreenContent(
                 )
 
                 SwitchListItem(
-                    title = stringResource(R.string.export_log_settings_tile),
+                    title = stringResource(R.string.export_log_settings_title),
                     summary = "Android/data/slowscript.warpinator/files/", // Hardcoded per XML
                     checked = state.debugLog,
                     onCheckedChange = onDebugLogChange,
@@ -350,7 +350,7 @@ fun SettingsScreenContent(
             }
 
             item {
-                SettingsCategoryLabel(stringResource(R.string.network_setting_category))
+                SettingsCategoryLabel(stringResource(R.string.network_settings_category))
 
                 SegmentedListItem(
                     content = { Text(stringResource(R.string.group_code_settings_title)) },
@@ -409,13 +409,15 @@ fun SettingsScreenContent(
             }
 
             item {
-                SettingsCategoryLabel(stringResource(R.string.aspect_setting_category))
+                SettingsCategoryLabel(stringResource(R.string.aspect_settings_category))
 
                 val themeLabelResId = state.themeMode.label
 
                 SwitchListItem(
-                    title = "Integrate messages with transfers",
-                    summary = if (state.integrateMessages) "Messages and file transfers are shown in a single list" else "Messages and transfers are being kept in separate views",
+                    title = stringResource(R.string.integrate_messages_with_transfers_title),
+                    summary = if (state.integrateMessages) stringResource(R.string.integrate_messages_with_transfers_subtitle_on) else stringResource(
+                        R.string.integrate_messages_with_transfers_subtitle_off,
+                    ),
                     checked = state.integrateMessages,
                     onCheckedChange = onIntegrateMessagesChange,
                     shapes = ListItemDefaults.segmentedDynamicShapes(0, 3),
@@ -433,7 +435,7 @@ fun SettingsScreenContent(
                 )
 
                 SwitchListItem(
-                    title = "Use dynamic colors",
+                    title = stringResource(R.string.use_dynamic_colors_title),
                     checked = state.dynamicColors,
                     onCheckedChange = onUseDynamicColorsChange,
                     shapes = ListItemDefaults.segmentedDynamicShapes(2, 3),

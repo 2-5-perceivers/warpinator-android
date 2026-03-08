@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
@@ -51,6 +52,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import slowscript.warpinator.R
 import slowscript.warpinator.core.utils.ProfilePicturePainter
 
 /**
@@ -93,12 +95,17 @@ fun ProfilePictureDialog(
                 TopAppBar(
                     title = {
                         Text(
-                            "Change profile picture", maxLines = 1, overflow = TextOverflow.Ellipsis
+                            stringResource(R.string.change_profile_picture_title),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                     },
                     navigationIcon = {
                         IconButton(onClick = onDismiss) {
-                            Icon(Icons.Rounded.Close, contentDescription = "Close")
+                            Icon(
+                                Icons.Rounded.Close,
+                                contentDescription = stringResource(R.string.close_label),
+                            )
                         }
                     },
                     actions = {
@@ -107,7 +114,7 @@ fun ProfilePictureDialog(
                                 onSelectKey(selectedKey)
                             }, modifier = Modifier.padding(horizontal = 8.dp)
                         ) {
-                            Text("Save")
+                            Text(stringResource(R.string.save_label))
                         }
                     },
                 )
@@ -150,7 +157,7 @@ fun ProfilePictureDialog(
                                 ) {
                                     Icon(
                                         Icons.Default.AddPhotoAlternate,
-                                        contentDescription = "Add Custom Picture",
+                                        contentDescription = stringResource(R.string.add_custom_picture),
                                     )
                                 }
                             }
@@ -180,7 +187,10 @@ fun ProfilePictureDialog(
                                 ) {
                                     Image(
                                         bitmap = bmp.asImageBitmap(),
-                                        contentDescription = "Profile picture ${index + 1}",
+                                        contentDescription = stringResource(
+                                            R.string.profile_picture_label,
+                                            index + 1,
+                                        ),
                                         modifier = Modifier.fillMaxSize(),
                                     )
                                     if (isSelected) {

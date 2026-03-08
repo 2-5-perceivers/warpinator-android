@@ -27,10 +27,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import slowscript.warpinator.R
 import slowscript.warpinator.core.design.components.MenuAction
 import slowscript.warpinator.core.design.components.MenuGroup
 import slowscript.warpinator.core.design.components.MenuGroupsPopup
@@ -54,17 +56,19 @@ fun ShareMenu(
         MenuGroup(
             listOf(
                 MenuAction(
-                    "Manual connection",
+                    stringResource(R.string.manual_connection_label),
                     trailingIcon = Icons.Rounded.AddLink,
                     onClick = onManualConnectionClick,
                 ),
                 MenuAction(
-                    "Reannounce",
+                    stringResource(R.string.reannounce_label),
                     trailingIcon = Icons.Rounded.WifiTethering,
                     onClick = onReannounce,
                 ),
                 MenuAction(
-                    "Rescan", trailingIcon = Icons.Rounded.Refresh, onClick = onRescan,
+                    stringResource(R.string.rescan_label),
+                    trailingIcon = Icons.Rounded.Refresh,
+                    onClick = onRescan,
                 ),
             ),
         ),
@@ -90,7 +94,10 @@ fun ShareMenu(
                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
             ),
         ) {
-            Icon(Icons.Rounded.MoreVert, contentDescription = "Open menu")
+            Icon(
+                Icons.Rounded.MoreVert,
+                contentDescription = stringResource(R.string.open_menu_label),
+            )
         }
         MenuGroupsPopup(
             menuOpen,

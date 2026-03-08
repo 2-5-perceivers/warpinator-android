@@ -99,10 +99,19 @@ fun TransferListItem(
         }
     }
 
+    val deleteTransferActionLabel = stringResource(R.string.delete_transfer_action)
+    val acceptTransferActionLabel = stringResource(R.string.accept_transfer_action)
+    val declineTransferActionLabel = stringResource(R.string.decline_transfer_action)
+    val stopTransferActionLabel = stringResource(R.string.stop_transfer_action)
+    val cancelTransferActionLabel = stringResource(R.string.cancel_transfer_action)
+    val retryTransferActionLabel = stringResource(R.string.retry_transfer_action)
+    val openTransferActionLabel = stringResource(R.string.open_transfer_item_action)
+
+
     val semanticCustomActions = remember(uiState.actionButtons, uiState.allowDismiss) {
         buildList {
             if (uiState.allowDismiss) add(
-                CustomAccessibilityAction("Delete transfer") {
+                CustomAccessibilityAction(deleteTransferActionLabel) {
                     onDelete()
                     true
                 },
@@ -111,13 +120,13 @@ fun TransferListItem(
             when (uiState.actionButtons) {
                 TransferUiActionButtons.AcceptAndDecline -> {
                     add(
-                        CustomAccessibilityAction("Accept transfer") {
+                        CustomAccessibilityAction(acceptTransferActionLabel) {
                             onAccept(transfer)
                             true
                         },
                     )
                     add(
-                        CustomAccessibilityAction("Decline transfer") {
+                        CustomAccessibilityAction(declineTransferActionLabel) {
                             onDecline(transfer)
                             true
                         },
@@ -126,7 +135,7 @@ fun TransferListItem(
 
                 TransferUiActionButtons.Stop -> {
                     add(
-                        CustomAccessibilityAction("Stop transfer") {
+                        CustomAccessibilityAction(stopTransferActionLabel) {
                             onStop(transfer)
                             true
                         },
@@ -135,7 +144,7 @@ fun TransferListItem(
 
                 TransferUiActionButtons.Cancel -> {
                     add(
-                        CustomAccessibilityAction("Cancel transfer") {
+                        CustomAccessibilityAction(cancelTransferActionLabel) {
                             onStop(transfer)
                             true
                         },
@@ -144,7 +153,7 @@ fun TransferListItem(
 
                 TransferUiActionButtons.Retry -> {
                     add(
-                        CustomAccessibilityAction("Retry transfer") {
+                        CustomAccessibilityAction(retryTransferActionLabel) {
                             onRetry(transfer)
                             true
                         },
@@ -153,7 +162,7 @@ fun TransferListItem(
 
                 TransferUiActionButtons.OpenFolder -> {
                     add(
-                        CustomAccessibilityAction("Open transfer folder") {
+                        CustomAccessibilityAction(openTransferActionLabel) {
                             onItemOpen(transfer)
                             true
                         },
@@ -216,13 +225,13 @@ fun TransferListItem(
                             TransferUiActionButtons.AcceptAndDecline -> {
                                 TooltipIconButton(
                                     onClick = { onAccept(transfer) }, icon = Icons.Rounded.Check,
-                                    description = "Accept",
+                                    description = stringResource(R.string.accept_label),
                                     tint = MaterialTheme.colorScheme.primary,
                                 )
                                 TooltipIconButton(
                                     onClick = { onDecline(transfer) },
                                     icon = Icons.Rounded.Close,
-                                    description = "Decline",
+                                    description = stringResource(R.string.decline_label),
                                     tint = MaterialTheme.colorScheme.error,
                                 )
                             }
@@ -231,14 +240,14 @@ fun TransferListItem(
                                 TooltipIconButton(
                                     onClick = { onStop(transfer) },
                                     icon = Icons.Rounded.Stop,
-                                    description = "Stop",
+                                    description = stringResource(R.string.stop_label),
                                 )
 
                             }
 
                             TransferUiActionButtons.Retry -> {
                                 TooltipIconButton(
-                                    description = "Retry",
+                                    description = stringResource(R.string.retry_label),
                                     onClick = { onRetry(transfer) },
                                     icon = Icons.Rounded.Refresh,
                                 )
@@ -246,7 +255,7 @@ fun TransferListItem(
 
                             TransferUiActionButtons.OpenFolder -> {
                                 TooltipIconButton(
-                                    description = "Open folder",
+                                    description = stringResource(R.string.open_item_label),
                                     onClick = { onItemOpen(transfer) },
                                     icon = Icons.Rounded.FolderOpen,
                                 )
@@ -256,7 +265,7 @@ fun TransferListItem(
                                 TooltipIconButton(
                                     onClick = { onStop(transfer) },
                                     icon = Icons.Rounded.Clear,
-                                    description = "Cancel",
+                                    description = stringResource(R.string.cancel_label),
                                 )
                             }
 
@@ -273,7 +282,13 @@ fun TransferListItem(
                             Column {
                                 // Detailed stats (Speed, Transferred/Total)
                                 ListItem(
-                                    headlineContent = { Text(if (uiState.isSending) "Outgoing transfer" else "Incoming transfer") },
+                                    headlineContent = {
+                                        Text(
+                                            if (uiState.isSending) stringResource(R.string.outgoing_transfer) else stringResource(
+                                                R.string.incoming_transfer,
+                                            ),
+                                        )
+                                    },
                                     supportingContent = { Text(uiState.statusLongText) },
                                     colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                                 )
@@ -329,7 +344,7 @@ fun TransferListItem(
                                                 modifier = Modifier.size(ButtonDefaults.IconSize),
                                             )
                                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                            Text("Accept")
+                                            Text(stringResource(R.string.accept_label))
                                         }
                                         Spacer(modifier = Modifier.width(8.dp))
                                         Button(
@@ -346,7 +361,7 @@ fun TransferListItem(
                                                 modifier = Modifier.size(ButtonDefaults.IconSize),
                                             )
                                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                            Text("Decline")
+                                            Text(stringResource(R.string.decline_label))
                                         }
                                     }
 
@@ -365,7 +380,7 @@ fun TransferListItem(
                                                 modifier = Modifier.size(ButtonDefaults.IconSize),
                                             )
                                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                            Text("Stop")
+                                            Text(stringResource(R.string.stop_label))
                                         }
                                     }
 
@@ -380,7 +395,7 @@ fun TransferListItem(
                                                 modifier = Modifier.size(ButtonDefaults.IconSize),
                                             )
                                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                            Text("Retry")
+                                            Text(stringResource(R.string.retry_label))
                                         }
                                     }
 
@@ -395,7 +410,7 @@ fun TransferListItem(
                                                 modifier = Modifier.size(ButtonDefaults.IconSize),
                                             )
                                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                            Text("Open")
+                                            Text(stringResource(R.string.open_item_label))
                                         }
                                     }
 
@@ -414,7 +429,7 @@ fun TransferListItem(
                                                 modifier = Modifier.size(ButtonDefaults.IconSize),
                                             )
                                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                            Text("Cancel")
+                                            Text(stringResource(R.string.cancel_label))
                                         }
                                     }
 

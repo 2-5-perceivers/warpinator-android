@@ -1,148 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  App Name  -->
-    <!--  Main Activity  -->
-    <string name="title_activity_transfers">传输</string>
-    <string name="send_files">发送文件</string>
-    <string name="quit">退出</string>
-    <string name="connection_issues">连接问题</string>
-    <string name="reannounce">重新宣告</string>
-    <string name="rescan">重新扫描设备</string>
-    <string name="about">关于</string>
-    <string name="settings">设置</string>
-    <string name="title_activity_share">分享给</string>
-    <string name="available_devices">可用设备</string>
+    <string name="quit_label">退出</string>
+    <string name="connection_issues_label">连接问题</string>
+    <string name="reannounce_label">重新宣告</string>
+    <string name="rescan_label">重新扫描设备</string>
+    <string name="about_title">关于</string>
+    <string name="settings_title">设置</string>
+    <string name="share_with_title">分享给</string>
+    <string name="available_devices_title">可用设备</string>
     <string name="no_devices_found">没有发现其他设备</string>
-    <string name="wrong_group_code">连接失败: 错误的分组代码</string>
     <string name="connection_error">连接错误</string>
-    <string name="not_connected_to_wifi">您没有连接到 WiFi 或 LAN。如果两者都不可用，请使用您的热点。
-         连接后重新启动应用。</string>
-    <string name="changed_network">网络已更改 - 正在重新启动服务…</string>
-    <!--  Transfers activity  -->
-    <string name="waiting_for_permission">正在等待批准……</string>
-    <string name="files_overwritten_warning">（文件可能会被覆盖！）</string>
-    <string name="remaining">剩余时间</string>
-    <string name="open_failed">无法打开收到的文件</string>
-    <string name="a_few_seconds">马上就好</string>
-    <string name="service_unavailable">，服务不可用</string>
-    <string name="errors_during_transfer">传输过程中的错误：</string>
-    <string name="dont_close_when_sharing">分享时关闭此 Activity 可能会导致转移失败</string>
-    <string name="files_being_sent">发送的文件：</string>
-    <!--  About activity  -->
+    <string name="transfer_state_waiting_permission">正在等待批准……</string>
     <string name="version">版本: %1$s</string>
-    <string name="about_description">这是 Warpinator 的非官方移植版本。\n通过本地网络发送和接收文件。</string>
-    <string name="warranty_html">此程序是在 &lt;a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"&gt;GNU General Public License&lt;/a&gt; 许可下的开源软件。&lt;br&gt; 您可以从 &lt;a href=\"https://github.com/slowscript/warpinator-android/\"&gt;GitHub&lt;/a&gt; 获取源代码。&lt;br&gt; &lt;br&gt; 此程序绝对不提供任何担保。&lt;br&gt;有关更多详细信息，请参阅许可条款。</string>
-    <!--  Share activity  -->
-    <string name="devices_to_share_with">与之分享的设备</string>
-    <string name="no_share_devices">没有可以与之分享的设备</string>
-    <string name="unsupported_intent">我们收到了不受支持的 Intent 操作</string>
-    <string name="nothing_to_share">没有什么可分享的</string>
-    <!--  Setting  -->
     <string name="identity_settings_category">身份识别</string>
-    <string name="transfer_setting_category">传输设置</string>
-    <string name="network_setting_category">网络</string>
-    <string name="aspect_setting_category">外观</string>
+    <string name="transfer_settings_category">传输设置</string>
+    <string name="network_settings_category">网络</string>
+    <string name="aspect_settings_category">外观</string>
     <string name="display_settings_title">显示名称</string>
     <string name="picture_settings_title">设备头像</string>
     <string name="download_dir_settings_title">下载目录</string>
     <string name="notification_settings_title">有文件传入时显示通知</string>
     <string name="overwrite_settings_title">允许覆盖</string>
     <string name="accept_settings_title">自动接受传输</string>
-    <string name="accept_setting_summary_on">会自动接受传输</string>
-    <string name="accept_setting_summary_off">每次传输都需要您确认</string>
-    <string name="background_settings_title">后台运行</string>
+    <string name="accept_settings_summary_on">会自动接受传输</string>
+    <string name="accept_settings_summary_off">每次传输都需要您确认</string>
     <string name="boot_settings_title">自动启动</string>
-    <string name="export_log_settings_tile">将调试日志写入文件</string>
+    <string name="export_log_settings_title">将调试日志写入文件</string>
     <string name="group_code_settings_title">分组代码</string>
     <string name="port_settings_title">传输端口</string>
     <string name="theme_settings_title">主题</string>
     <string name="notification_settings_summary">这可能会受到 Android 的通知设置的影响</string>
     <string name="port_range_warning">端口号必须介于 1024 和 65535 之间</string>
     <string name="requires_restart_warning">更改此设置需要重新启动应用</string>
-    <string name="required_dialog_not_found">您手机的系统没有实现所需的对话框。这将在未来的版本中解决。</string>
     <string name="overwrite_settings_summary_on">传入文件重名时，传入文件会覆盖现有文件</string>
     <string name="overwrite_settings_summary_off">传入文件重名时，传入文件会被重命名</string>
-    <string name="custom">自定义</string>
-    <string name="unsupported_provider">你选择了不受支持的内容提供商。 请在内部存储上选择一个目录。</string>
-    <!--  Theme settings -->
-    <string name="sysDefault">跟随系统</string>
-    <string name="lightTheme">浅色模式</string>
-    <string name="darkTheme">深色模式</string>
-    <!--  Notification  -->
+    <string name="system_default_theme">跟随系统</string>
+    <string name="light_theme">浅色模式</string>
+    <string name="dark_theme">深色模式</string>
     <string name="warpinator_notification_title">Warpinator 服务正在运行</string>
     <string name="warpinator_notification_button">停止服务</string>
-    <string name="transfers_complete">已完成所有的传输</string>
     <string name="transfer_notification">%1$.1f%%, %2$d 传输, %3$s/s</string>
-    <string name="incoming_transfer">来自 %s 的传输</string>
-    <string name="num_files">%d 文件</string>
+    <string name="incoming_transfer_notification">来自 %s 的传输</string>
     <string name="service_running">服务正在运行</string>
     <string name="notification_channel_description">服务通知常驻</string>
     <string name="incoming_transfer_channel">传入的传输</string>
     <string name="transfer_progress_channel">传输进度</string>
-    <!--  Content descriptions  -->
-    <string name="reconnect_button_cnt_des">重新连接</string>
-    <string name="status_image_cnt_des">连接状态</string>
-    <string name="profile_image_cnt_des">设备头像</string>
-    <string name="application_icon_cnt_des">应用图标</string>
-    <string name="meh_face_cnt_des">失望样子的图标</string>
-    <string name="selected_picture_cnt_des">选中的图片</string>
-    <string name="decline_button_cnt_des">拒绝传输</string>
-    <string name="accept_button_cnt_des">接受传输</string>
-    <string name="stop_button_cnt_des">停止传输</string>
-    <string name="retry_button_cnt_des">重试传输</string>
-    <!--  Other  -->
-    <string name="please_select_download_dir">这可能是您第一次启动此应用。
-         请选择您希望 Warpinator 保存文件的目录。</string>
-    <string name="error_download_dir">您必须在设置中选择下载目录</string>
-    <string name="error_network_unavailable">网络不可用 - 开热点试试？</string>
-    <string name="error_service_not_running">服务未运行</string>
-    <string name="cert_not_received">未能从 %1$s 接收证书。请确保远程防火墙允许 %2$d 端口上的 UDP（以及 TCP）流量。</string>
-    <string-array name="connected_states">
-        <item>已连接</item>
-        <item>已断开连接</item>
-        <item>正在连接</item>
-        <item>连接失败</item>
-        <item>等待双工</item>
-    </string-array>
-    <string-array name="transfer_states">
-        <item>正在初始化</item>
-        <item>正在等待批准……</item>
-        <item>已拒绝</item>
-        <item>正在传输</item>
-        <item>已暂停</item>
-        <item>已停止</item>
-        <item>已失败（点击查看）</item>
-        <item>不可恢复的故障</item>
-        <item>未找到文件</item>
-        <item>已完成</item>
-        <item>已完成但有错误（点击查看）</item>
-    </string-array>
-    <string name="stop_svc_when_leaving_summary_off">一启动就一直运行，停止需手动操作</string>
-    <string name="stop_svc_when_leaving">退出应用后停止服务</string>
-    <string name="stop_svc_when_leaving_summary_on">从最近使用的应用被清除或一段时间不活动后，该服务将自动停止</string>
-    <string name="send_folder_toast">选择要发送的文件夹</string>
-    <string name="warning_lastmod">非默认位置不支持保留上次修改的时间戳。 你可以使用重置按钮恢复默认。</string>
-    <string name="reset_cnt_des">重置为默认值</string>
-    <string name="clear_transfers">清除已完成的传输</string>
+    <string name="reconnect_button_label">重新连接</string>
+    <string name="stop_service_when_leaving_summary_off">一启动就一直运行，停止需手动操作</string>
+    <string name="stop_service_when_leaving_title">退出应用后停止服务</string>
+    <string name="stop_service_when_leaving_summary_on">从最近使用的应用被清除或一段时间不活动后，该服务将自动停止</string>
     <string name="compression_settings_title">尝试使用压缩</string>
     <string name="auth_port_settings_title">注册用端口</string>
-    <string name="devices_outside_group">你的群组之外的设备：%1$d</string>
-    <string name="initiate_connection">发起连接</string>
     <string name="manual_connect_text">用相机应用扫描上方二维码并打开链接或使用下列地址从其他设备发起连接：</string>
-    <string name="manual_connection">手动连接</string>
-    <string name="save_log">保存日志</string>
-    <string name="enter_address">输入地址和端口</string>
-    <string name="manual_connect_hint">尝试菜单中的手动连接</string>
-    <string name="confirm_connection">连接到“%s“？</string>
-    <string name="qs_discovered_count">%d 已连接</string>
-    <string name="address_copied">地址已复制到剪贴板</string>
-    <string name="qr_code_cnt_des">二维码</string>
-    <string name="same_network_hint">设备必须在相同网络上并使用相同的群组码</string>
-    <string name="error_no_duplex">其他设备未回连。可能它没看到我们？</string>
+    <string name="manual_connection_label">手动连接</string>
+    <string name="save_log_label">保存日志</string>
     <string name="network_interface_settings_title">首选的网络接口</string>
     <string name="network_interface_settings_summary">%s （如不可用将回退到自动）</string>
-    <string name="wrong_subnet">, 不在相同子网上</string>
     <string name="boot_settings_summary_a15">在 Android 15+ 上不可用</string>
-    <string name="warning">警告</string>
-    <string name="warning_subnet">此设备不在相同子网上。连接到设备可能失败。请检查两台设备的设置，确认 Warpinator 使用的是正确的网络接口。</string>
 </resources>

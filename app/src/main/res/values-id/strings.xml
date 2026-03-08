@@ -1,52 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  App Name  -->
-    <!--  Main Activity  -->
-    <string name="title_activity_transfers">Transfer</string>
-    <string name="send_files">Mengirim berkas</string>
-    <string name="quit">Keluar</string>
-    <string name="about">Tentang</string>
-    <string name="settings">Pengaturan</string>
-    <string name="title_activity_share">Bagikan dengan</string>
-    <string name="available_devices">Perangkat yang tersedia</string>
+    <string name="quit_label">Keluar</string>
+    <string name="about_title">Tentang</string>
+    <string name="settings_title">Pengaturan</string>
+    <string name="share_with_title">Bagikan dengan</string>
+    <string name="available_devices_title">Perangkat yang tersedia</string>
     <string name="no_devices_found">Tidak ada perangkat yang ditemukan</string>
-    <string name="wrong_group_code">Koneksi gagal: Salah kode grup</string>
     <string name="connection_error">Koneksi gagal</string>
-    <string name="not_connected_to_wifi">Anda tidak terkoneksi ke WiFi atau LAN. Gunakan hotspot jika keduanya tidak tersedia.
-        Jalankan ulang aplikasi ketika anda sudah terkoneksi.</string>
-    <!--  Transfers activity  -->
-    <string name="waiting_for_permission">Menunggu perizinan…</string>
-    <string name="files_overwritten_warning">(Berkas mungkin akan tertimpa!)</string>
-    <string name="remaining">tersisa</string>
-    <string name="a_few_seconds">Beberapa detik</string>
-    <string name="service_unavailable">, Layanan tidak tersedia</string>
-    <string name="errors_during_transfer">Kesalahan saat melakukan transfer:</string>
-    <string name="dont_close_when_sharing">Menutup aktivitas ini saat sedang berbagi mungkin akan menimbulkan kegagalan transfer berkas</string>
-    <!--  About activity  -->
     <string name="version">Versi: %1$s</string>
-    <string name="about_description">Ini adalah port tidak resmi dari Warpinator. \nKirim dan terima berkas melintasi jaringan lokal .</string>
-    <string name="warranty_html">Program ini merupakan perangkat lunak open source dilisensikan di bawah &lt;a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"&gt;GNU General Public License&lt;/a&gt;.&lt;br&gt; Anda dapat mendapatkan kode sumbernya dari &lt;a href=\"https://github.com/slowscript/warpinator-android/\"&gt;GitHub&lt;/a&gt;.&lt;br&gt; &lt;br&gt; Program ini dihadirkan tanpa garansi sama sekali.&lt;br&gt;Lihat ketentuan lisensinya untuk keterangan lebih rinci.</string>
-    <!--  Share activity  -->
-    <string name="devices_to_share_with">Perangkat untuk berbagi</string>
-    <string name="no_share_devices">Tidak ada perangkat yang dapat digunakan untuk berbagi</string>
-    <string name="unsupported_intent">Aplikasi mendapatkan perintah aksi yang tidak didukung</string>
-    <string name="nothing_to_share">Tidak ada hal untuk dibagikan</string>
-    <!--  Setting  -->
     <string name="identity_settings_category">Identitas</string>
-    <string name="transfer_setting_category">Pengaturan transfer</string>
-    <string name="network_setting_category">Jaringan</string>
-    <string name="aspect_setting_category">Aspek</string>
+    <string name="transfer_settings_category">Pengaturan transfer</string>
+    <string name="network_settings_category">Jaringan</string>
+    <string name="aspect_settings_category">Aspek</string>
     <string name="display_settings_title">Nama yang ditampilkan</string>
     <string name="picture_settings_title">Foto profil</string>
     <string name="download_dir_settings_title">Direktori unduhan</string>
     <string name="notification_settings_title">Tampilkan notifkasi tentang berkas yang sedang dikirim</string>
     <string name="overwrite_settings_title">Perbolehkan menimpa berkas</string>
     <string name="accept_settings_title">Terima transfer secara otomatis</string>
-    <string name="accept_setting_summary_on">Transfer berkas akan diterima secara otomatis</string>
-    <string name="accept_setting_summary_off">Setiap aktivitas transfer perlu anda setujui</string>
-    <string name="background_settings_title">Tetap berjalan di latar belakang</string>
+    <string name="accept_settings_summary_on">Transfer berkas akan diterima secara otomatis</string>
+    <string name="accept_settings_summary_off">Setiap aktivitas transfer perlu anda setujui</string>
     <string name="boot_settings_title">Mulai secara otomatis</string>
-    <string name="export_log_settings_tile">Tulis catatan debug pada file</string>
+    <string name="export_log_settings_title">Tulis catatan debug pada file</string>
     <string name="group_code_settings_title">Kode grup</string>
     <string name="port_settings_title">Port untuk pemindahan</string>
     <string name="theme_settings_title">Tema</string>
@@ -55,93 +30,30 @@
     <string name="requires_restart_warning">Pergantian pengaturan ini membutuhkan aplikasi di jalankan ulang</string>
     <string name="overwrite_settings_summary_on">Berkas yang masuk dengan nama berkas yang sudah ada sebelumnya akan ditimpa</string>
     <string name="overwrite_settings_summary_off">Berkas yang masuk dengan nama berkas yang sudah ada akan diganti namanya</string>
-    <string name="custom">Custom</string>
-    <string name="unsupported_provider">Anda telah memilih penyedia konten yang tidak didukung. Tolong pilih direktori yang ada pada penyimmpanan internal anda.</string>
-    <!--  Theme settings -->
-    <string name="sysDefault">Gunakan default sistem</string>
-    <string name="lightTheme">Tema Terang</string>
-    <string name="darkTheme">Tema Gelap</string>
-    <!--  Notification  -->
+    <string name="system_default_theme">Gunakan default sistem</string>
+    <string name="light_theme">Tema Terang</string>
+    <string name="dark_theme">Tema Gelap</string>
     <string name="warpinator_notification_title">Layanan Warpinator sedang berjalan</string>
     <string name="warpinator_notification_button">Hentikan layanan</string>
-    <string name="transfers_complete">Seluruh transfer sudah selesai</string>
     <string name="transfer_notification">%1$.1f%%, %2$d transfer, %3$s/s</string>
-    <string name="incoming_transfer">Transfer masuk dari %s</string>
-    <string name="num_files">%d berkas</string>
+    <string name="incoming_transfer_notification">Transfer masuk dari %s</string>
     <string name="service_running">Layanan sedang berjalan</string>
     <string name="notification_channel_description">Notifikasi layanan tetap</string>
     <string name="incoming_transfer_channel">Tranfer masuk</string>
     <string name="transfer_progress_channel">Kemajuan transfer</string>
-    <!--  Other  -->
-    <string name="please_select_download_dir">Ini mungkin baru pertama kalinya anda menjalankan aplikasi.
-        Tolong pilih direktori dimana kamu ingin Warpinator untuk menyimpan berkas.</string>
-    <string name="error_download_dir">Anda harus memilih direktori unduhan pada pengaturan </string>
-    <string-array name="connected_states">
-        <item>Tersambung</item>
-        <item>Terputus</item>
-        <item>Sedang menyambungkan</item>
-        <item>Sambungan gagal</item>
-        <item>Menunggu duplex</item>
-    </string-array>
-    <string-array name="transfer_states">
-        <item>Inisialisasi</item>
-        <item>Menunggu perizinan…</item>
-        <item>Ditolak</item>
-        <item>Sedang mengirim</item>
-        <item>Dijeda</item>
-        <item>Dihentikan</item>
-        <item>Gagal (ketuk untuk melihat error)</item>
-        <item>Kegagalan yang tidak dapat dipulihkan</item>
-        <item>File tidak ditemukan</item>
-        <item>Selesai</item>
-        <item>Selesai dengan error (ketuk untuk melihat)</item>
-    </string-array>
-    <string name="connection_issues">Masalah Koneksi</string>
-    <string name="rescan">Scan Ulang Perangkat</string>
-    <string name="reannounce">Melepaskan</string>
-    <string name="open_failed">Gagal membuka berkas yang diterima</string>
-    <string name="files_being_sent">Berkas yang sedang dikirim:</string>
-    <string name="stop_svc_when_leaving_summary_off">Sekali mulai, layanan akan berjalan terus sampai dihentikan secara manual</string>
-    <string name="stop_svc_when_leaving">Hentikan layanan setelah meninggalkan aplikasi</string>
-    <string name="stop_svc_when_leaving_summary_on">Layanan ini akan berhenti otomatis saat dibersihkan dari recents dan setelah periode tidak aktif</string>
-    <string name="required_dialog_not_found">Dialog belum didukung pada perangkat anda. Akan bekerja di rilis yang akan datang</string>
-    <string name="reconnect_button_cnt_des">Koneksi ulang</string>
-    <string name="status_image_cnt_des">Status koneksi</string>
-    <string name="profile_image_cnt_des">Gambar profil</string>
-    <string name="selected_picture_cnt_des">Gambar yang dipilih</string>
-    <string name="decline_button_cnt_des">Menolak transfer</string>
-    <string name="accept_button_cnt_des">Menerima transfer</string>
-    <string name="stop_button_cnt_des">Hentikan transfer</string>
-    <string name="retry_button_cnt_des">Mencoba transfer ulang</string>
-    <string name="error_network_unavailable">Jaringan tidak tersedia - coba hotspot\?</string>
-    <string name="error_service_not_running">Layanan tidak berjalan</string>
-    <string name="cert_not_received">Gagal mendapatkan sertifikat dari %1$s. Pastikan port trafik UDP dan TCP %2$d di remote firewall.</string>
-    <string name="changed_network">Jaringan berubah - layanan distart ulang…</string>
-    <string name="application_icon_cnt_des">Ikon Applikasi</string>
-    <string name="meh_face_cnt_des">Ikon wajah kecewa</string>
-    <string name="devices_outside_group">Perangkat-perangkat di luar grup anda: %1$d</string>
-    <string name="send_folder_toast">Pilih folder untuk mengirim</string>
+    <string name="connection_issues_label">Masalah Koneksi</string>
+    <string name="rescan_label">Scan Ulang Perangkat</string>
+    <string name="reannounce_label">Melepaskan</string>
+    <string name="stop_service_when_leaving_summary_off">Sekali mulai, layanan akan berjalan terus sampai dihentikan secara manual</string>
+    <string name="stop_service_when_leaving_title">Hentikan layanan setelah meninggalkan aplikasi</string>
+    <string name="stop_service_when_leaving_summary_on">Layanan ini akan berhenti otomatis saat dibersihkan dari recents dan setelah periode tidak aktif</string>
+    <string name="reconnect_button_label">Koneksi ulang</string>
     <string name="compression_settings_title">Coba gunakan kompresi</string>
     <string name="auth_port_settings_title">Port untuk pendaftaran</string>
-    <string name="warning_lastmod">Lokasi non-default tidak mendukung penyimpanan timestamps yang terakhir dimodifikasi. Anda dapat kembali ke default dengan tombol reset.</string>
-    <string name="reset_cnt_des">Atur ulang ke nilai default</string>
-    <string name="clear_transfers">Hapus transfer yang sudah selesai</string>
-    <string name="manual_connection">Koneksi manual</string>
-    <string name="save_log">Simpan log</string>
-    <string name="address_copied">Alamat disalin ke papan klip</string>
+    <string name="manual_connection_label">Koneksi manual</string>
+    <string name="save_log_label">Simpan log</string>
     <string name="boot_settings_summary_a15">Pemulaian otomatis tidak tersedia di Android 15+</string>
     <string name="network_interface_settings_title">Antarmuka jaringan yang disukai</string>
     <string name="network_interface_settings_summary">%s (akan kembali ke otomatis jika tidak tersedia)</string>
-    <string name="qr_code_cnt_des">Kode QR</string>
     <string name="manual_connect_text">Pindai kode QR di atas dengan aplikasi kamera dan buka tautan atau gunakan alamat berikut untuk memulai koneksi dari perangkat lain:</string>
-    <string name="initiate_connection">Koneksi baru</string>
-    <string name="enter_address">Masukkan alamat dan port</string>
-    <string name="same_network_hint">Perangkat harus berada di jaringan yang sama dan menggunakan kode grup yang sama</string>
-    <string name="manual_connect_hint">Coba Koneksi manual di menu</string>
-    <string name="confirm_connection">Sambungkan ke \'%s\'?</string>
-    <string name="qs_discovered_count">%d tersambung</string>
-    <string name="error_no_duplex">Perangkat lain tidak menyambung kembali. Mungkin perangkat tersebut tidak melihat kita?</string>
-    <string name="warning">Peringatan</string>
-    <string name="warning_subnet">Perangkat ini tidak berada pada subnet yang sama. Koneksi ke perangkat ini kemungkinan akan gagal. Harap periksa di pengaturan kedua perangkat bahwa Warpinator menggunakan antarmuka jaringan yang benar.</string>
-    <string name="wrong_subnet">, tidak berada pada subnet yang sama</string>
 </resources>

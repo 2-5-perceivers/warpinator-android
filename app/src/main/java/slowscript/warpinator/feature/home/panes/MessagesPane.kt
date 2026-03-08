@@ -37,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.semantics
@@ -44,6 +45,7 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import slowscript.warpinator.R
 import slowscript.warpinator.core.data.WarpinatorViewModel
 import slowscript.warpinator.core.design.components.DynamicAvatarCircle
 import slowscript.warpinator.core.design.theme.WarpinatorTheme
@@ -111,7 +113,7 @@ private fun MessagesPaneContent(
         topBar = {
             TopAppBar(
                 title = {
-                    if (paneMode) Text("Messages") else Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (paneMode) Text(stringResource(R.string.messages)) else Row(verticalAlignment = Alignment.CenterVertically) {
                         DynamicAvatarCircle(
                             bitmap = remote.picture,
                             isFavorite = remote.isFavorite,
@@ -143,11 +145,13 @@ private fun MessagesPaneContent(
                 .consumeWindowInsets(innerPadding)
                 .imePadding(),
         ) {
+            val listContentDescription =
+                stringResource(R.string.message_history_with_content_description, titleFormat.title)
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .semantics {
-                        contentDescription = "Message history with ${titleFormat.title}"
+                        contentDescription = listContentDescription
                     },
                 contentPadding = innerPadding + PaddingValues(bottom = 92.dp, top = 8.dp),
                 reverseLayout = true,
@@ -182,7 +186,7 @@ private fun MessagesPaneContent(
                     TextField(
                         value = messageText,
                         onValueChange = { messageText = it },
-                        placeholder = { Text("Message...") },
+                        placeholder = { Text(stringResource(R.string.message_text_field_placeholder)) },
                         modifier = Modifier.weight(1f),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
@@ -198,6 +202,15 @@ private fun MessagesPaneContent(
                     val sendingEnabled =
                         messageText.isNotBlank() && remote.status == RemoteStatus.Connected && remote.supportsTextMessages
 
+                    val sendButtonClickLabel = stringResource(R.string.send_action)
+                    val sendButtonStateDescription = when {
+                        !remote.supportsTextMessages -> stringResource(R.string.device_does_not_support_text_messages_state)
+                        remote.status != RemoteStatus.Connected -> stringResource(R.string.device_is_disconnected_state)
+                        messageText.isBlank() -> stringResource(R.string.message_is_empty_state)
+                        else -> ""
+                    }
+
+
                     IconButton(
                         onClick = {
                             if (messageText.isNotBlank()) {
@@ -207,22 +220,17 @@ private fun MessagesPaneContent(
                         },
                         enabled = sendingEnabled,
                         modifier = Modifier.semantics {
-                            onClick("Send", null)
+                            onClick(sendButtonClickLabel, null)
 
                             if (!sendingEnabled) {
-                                stateDescription = when {
-                                    !remote.supportsTextMessages -> "Device does not support text messages"
-                                    remote.status != RemoteStatus.Connected -> "Device is disconnected"
-                                    messageText.isBlank() -> "Message is empty"
-                                    else -> "Cannot send"
-                                }
+                                stateDescription = sendButtonStateDescription
                             }
 
                         },
                     ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Rounded.Send,
-                            contentDescription = "Send",
+                            contentDescription = stringResource(R.string.send_label),
                             tint = if (sendingEnabled) {
                                 MaterialTheme.colorScheme.primary
                             } else {

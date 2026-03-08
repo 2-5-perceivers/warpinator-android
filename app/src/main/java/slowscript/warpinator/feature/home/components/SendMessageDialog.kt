@@ -12,7 +12,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import slowscript.warpinator.R
 
 @Composable
 fun SendMessageDialog(
@@ -27,7 +29,7 @@ fun SendMessageDialog(
         icon = {
             Icon(Icons.AutoMirrored.Rounded.Send, contentDescription = null)
         },
-        title = { Text("Send a message") },
+        title = { Text(stringResource(R.string.send_message_dialog_title)) },
         confirmButton = {
             Button(
                 onClick = {
@@ -35,7 +37,7 @@ fun SendMessageDialog(
                     onSendMessage(text)
                 },
                 enabled = text.isNotBlank(),
-            ) { Text("Send") }
+            ) { Text(stringResource(R.string.send_label)) }
         },
         text = {
             OutlinedTextField(
@@ -43,7 +45,7 @@ fun SendMessageDialog(
                 onValueChange = {
                     text = it
                 },
-                label = { Text("Message") },
+                placeholder = { Text(stringResource(R.string.message_text_field_placeholder)) },
             )
         },
     )

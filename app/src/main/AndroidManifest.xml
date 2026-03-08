@@ -90,6 +90,7 @@
 
         <service
             android:name=".core.service.MainService"
+            android:description="@string/main_service_description"
             android:foregroundServiceType="dataSync" />
 
         <service

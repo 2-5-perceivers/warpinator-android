@@ -48,6 +48,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
@@ -59,6 +61,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import slowscript.warpinator.R
 import slowscript.warpinator.core.data.WarpinatorViewModel
 import slowscript.warpinator.core.design.components.TooltipIconButton
 import slowscript.warpinator.core.design.theme.WarpinatorTheme
@@ -158,7 +161,10 @@ private fun TransferPaneContent(
                 navigationIcon = {
                     if (!paneMode) {
                         IconButton(onClick = onBack) {
-                            Icon(Icons.AutoMirrored.Rounded.ArrowBack, contentDescription = "Back")
+                            Icon(
+                                Icons.AutoMirrored.Rounded.ArrowBack,
+                                contentDescription = stringResource(R.string.back_button_label),
+                            )
                         }
                     }
                 },
@@ -168,8 +174,13 @@ private fun TransferPaneContent(
                         onClick = {
                             onClearTransfers(remote.uuid)
                         },
-                        icon = Icons.Rounded.ClearAll, description = "Clear transfer history",
+                        icon = Icons.Rounded.ClearAll,
+                        description = stringResource(R.string.clear_transfer_history_label),
                     )
+
+                    val favouriteButtonSemanticState = if (isFavoriteOverride
+                            ?: remote.isFavorite
+                    ) stringResource(R.string.favorite_label) else stringResource(R.string.not_favorite_label)
 
                     TooltipIconButton(
                         onClick = { onFavoriteToggle(remote) },
@@ -178,11 +189,11 @@ private fun TransferPaneContent(
                         ) Icons.Rounded.Star else Icons.Rounded.StarBorder,
                         description = if (isFavoriteOverride
                                 ?: remote.isFavorite
-                        ) "Remove from favorites" else "Add to favorites",
+                        ) stringResource(R.string.remove_from_favorites_label) else stringResource(
+                            R.string.add_to_favorites_label,
+                        ),
                         modifier = Modifier.semantics {
-                            stateDescription = if (isFavoriteOverride
-                                    ?: remote.isFavorite
-                            ) "Favorite" else "Not favorite"
+                            stateDescription = favouriteButtonSemanticState
 
                             toggleableState = if (isFavoriteOverride
                                     ?: remote.isFavorite
@@ -194,7 +205,7 @@ private fun TransferPaneContent(
                     if (!integrateMessages) TooltipIconButton(
                         onClick = onOpenMessagesPane,
                         icon = Icons.AutoMirrored.Rounded.Message,
-                        description = "Messages",
+                        description = stringResource(R.string.messages),
                         enabled = remote.supportsTextMessages,
                         addBadge = remote.hasUnreadMessages,
                     )
@@ -217,6 +228,10 @@ private fun TransferPaneContent(
     ) { padding ->
         val transfers = remote.transfers
         var expandedTransferID by rememberSaveable { mutableStateOf<String?>(null) }
+
+        val listContentDescription =
+            stringResource(R.string.transfers_history_list_content_description)
+
         LazyColumn(
             contentPadding = padding.plus(
                 PaddingValues(
@@ -227,7 +242,7 @@ private fun TransferPaneContent(
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
                 .semantics {
-                    contentDescription = "Transfers history"
+                    contentDescription = listContentDescription
                 },
         ) {
 
@@ -255,7 +270,7 @@ private fun TransferPaneContent(
                             modifier = Modifier.size(100.dp),
                         )
                         Text(
-                            "No transfers yet",
+                            stringResource(R.string.no_transfers_yet),
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.padding(16.dp),
                         )
@@ -395,16 +410,37 @@ private fun ConnectionStatusCard(
             Column {
                 Text(
                     when (status) {
-                        Remote.RemoteStatus.AwaitingDuplex -> "Awaiting duplex"
-                        Remote.RemoteStatus.Connecting -> "Connecting"
-                        Remote.RemoteStatus.Connected -> "Connected"
-                        Remote.RemoteStatus.Disconnected -> "Disconnected"
-                        is Remote.RemoteStatus.Error -> "Failed to connect\n${status.message}"
+                        Remote.RemoteStatus.AwaitingDuplex -> stringResource(R.string.remote_awaiting_duplex)
+                        Remote.RemoteStatus.Connecting -> stringResource(R.string.remote_connecting)
+                        Remote.RemoteStatus.Connected -> stringResource(R.string.remote_connected)
+                        Remote.RemoteStatus.Disconnected -> stringResource(R.string.remote_disconnected)
+                        is Remote.RemoteStatus.Error -> stringResource(
+                            R.string.remote_failed_to_connect,
+                            status.message,
+                        )
                     },
                     style = MaterialTheme.typography.titleMedium,
                 )
                 Text(
-                    "$transfersCount transfers" + if (messageCount != null) " • $messageCount messages" else "",
+                    buildString {
+                        append(
+                            pluralStringResource(
+                                R.plurals.transfers_count,
+                                transfersCount,
+                                transfersCount,
+                            ),
+                        )
+                        if (messageCount != null) {
+                            append(" • ")
+                            append(
+                                pluralStringResource(
+                                    R.plurals.messages_count,
+                                    messageCount,
+                                    messageCount,
+                                ),
+                            )
+                        }
+                    },
                     style = MaterialTheme.typography.labelLarge,
                     color = LocalContentColor.current.copy(alpha = 0.8f),
                 )
@@ -423,7 +459,7 @@ private fun ConnectionStatusCard(
                         onReconnect()
                     },
                 ) {
-                    Text("Reconnect")
+                    Text(stringResource(R.string.reconnect_button_label))
                 }
             }
         }

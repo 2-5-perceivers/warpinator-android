@@ -1,66 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_activity_transfers">Přenosy</string>
-    <string name="send_files">Poslat soubory</string>
-    <string name="quit">Ukončit</string>
-    <string name="about">O aplikaci</string>
-    <string name="manual_connection">Ruční spojení</string>
-    <string name="save_log">Uložit ladící záznam</string>
-    <string name="reannounce">Znovu se ohlásit</string>
-    <string name="rescan">Znovu vyhledat zařízení</string>
-    <string name="settings">Nastavení</string>
-    <string name="title_activity_share">Sdílet</string>
-    <string name="available_devices">Dostupná zařízení</string>
+    <string name="quit_label">Ukončit</string>
+    <string name="about_title">O aplikaci</string>
+    <string name="manual_connection_label">Ruční spojení</string>
+    <string name="save_log_label">Uložit ladící záznam</string>
+    <string name="reannounce_label">Znovu se ohlásit</string>
+    <string name="rescan_label">Znovu vyhledat zařízení</string>
+    <string name="settings_title">Nastavení</string>
+    <string name="share_with_title">Sdílet</string>
+    <string name="available_devices_title">Dostupná zařízení</string>
     <string name="no_devices_found">Žádná zařízení nenalezena</string>
-    <string name="wrong_group_code">Spojení selhalo: špatný kód skupiny</string>
     <string name="connection_error">Chyba spojení</string>
-    <string name="not_connected_to_wifi">Nejste připojeni k WiFi ani k LAN. Pokud ani jedno není k dispozici,
-    použijte hotspot. Až budete připojeni restartujte aplikaci.</string>
-    <string name="devices_outside_group">Zařízení mimo vaši skupinu: %1$d</string>
-    <string name="address_copied">Adresa zkopírována do schránky</string>
-    <string name="waiting_for_permission">Čeká na přijetí…</string>
-    <string name="files_overwritten_warning">(Soubory mohou být přepsány!)</string>
-    <string name="remaining">zbývá</string>
-    <string name="a_few_seconds">několik vteřin</string>
-    <string name="open_failed">Soubor se nepodařilo otevřít</string>
-    <string name="service_unavailable">, služba není dostupná</string>
-    <string name="wrong_subnet">, není ve stejné podsíti</string>
-    <string name="errors_during_transfer">Chyby během přenosu:</string>
-    <string name="dont_close_when_sharing">Zavření této aktivity během sdílení může způsobit že odesílání selže</string>
-    <string name="enter_message">Vložte zprávu</string>
-    <string name="message_hint">Vaše zpráva</string>
-    <string name="message_copied">Zpráva zkopírována</string>
-    <string name="sent">Odesláno</string>
-    <string name="received">Přijato</string>
+    <string name="transfer_state_waiting_permission">Čeká na přijetí…</string>
     <string name="version">Verze: %1$s</string>
-    <string name="about_description">Toto je neoficiální port Warpinatoru. \nPosílejte a přijímejte soubory v místní síti.</string>
-    <string name="warranty_html">
-        Tento program je svobodný software licencovaný pod &lt;a href="https://www.gnu.org/licenses/gpl-3.0.html"&gt;GNU General Public License&lt;/a&gt;.&lt;br&gt;
-        Zdrojový kód můžete nalézt na &lt;a href="https://github.com/slowscript/warpinator-android/"&gt;GitHubu&lt;/a&gt;.&lt;br&gt;
-        &lt;br&gt;
-        Tento program je šířen bez jakékoliv záruky.&lt;br&gt;Více informací naleznete v podmínkách licence.</string>
-    <string name="devices_to_share_with">Dostupná zařízení</string>
-    <string name="nothing_to_share">Neobdrželi jsme nic ke sdílení</string>
-    <string name="edit_message_before_sending">Upravte zprávu před odesláním:</string>
-    <!--  Setting  -->
     <string name="identity_settings_category">Identita</string>
-    <string name="transfer_setting_category">Přenos</string>
-    <string name="network_setting_category">Síť</string>
-    <string name="aspect_setting_category">Vzhled</string>
+    <string name="transfer_settings_category">Přenos</string>
+    <string name="network_settings_category">Síť</string>
+    <string name="aspect_settings_category">Vzhled</string>
     <string name="display_settings_title">Zobrazované jméno</string>
     <string name="picture_settings_title">Profilový obrázek</string>
     <string name="download_dir_settings_title">Složka pro stahování</string>
     <string name="notification_settings_title">Zobrazit oznámení o příchozích souborech</string>
     <string name="overwrite_settings_title">Povolit přepisování</string>
     <string name="accept_settings_title">Automaticky přijímat přenosy</string>
-    <string name="accept_setting_summary_on">Přenos bude přijat automaticky</string>
-    <string name="accept_setting_summary_off">Každý přenos bude vyžadovat vaše schválení</string>
+    <string name="accept_settings_summary_on">Přenos bude přijat automaticky</string>
+    <string name="accept_settings_summary_off">Každý přenos bude vyžadovat vaše schválení</string>
     <string name="compression_settings_title">Pokusit se použít kompresi</string>
-    <string name="background_settings_title">Běžet na pozadí</string>
     <string name="boot_settings_title">Spouštět při startu</string>
     <string name="boot_settings_summary_a15">Automatické spouštění na Androidu 15+ dostupné</string>
-    <string name="stop_svc_when_leaving">Zastavit službu po opuštění aplikace</string>
-    <string name="export_log_settings_tile">Zapisovat ladící záznamy do souboru</string>
+    <string name="stop_service_when_leaving_title">Zastavit službu po opuštění aplikace</string>
+    <string name="export_log_settings_title">Zapisovat ladící záznamy do souboru</string>
     <string name="group_code_settings_title">Kód skupiny</string>
     <string name="port_settings_title">Port pro přenosy</string>
     <string name="auth_port_settings_title">Port pro registraci</string>
@@ -70,81 +39,23 @@
     <string name="notification_settings_summary">Toto může být ovlivněno systémovým nastavením oznámení</string>
     <string name="port_range_warning">Port musí být mezi 1024 a 65535</string>
     <string name="requires_restart_warning">Změna tohoto nastavení vyžaduje restart aplikace</string>
-    <string name="required_dialog_not_found">Výrobce vašeho zařízení neimplementoval vyždovaný dialog.</string>
     <string name="overwrite_settings_summary_on">Příchozí soubory se jménem které již existuje budou přepsány</string>
     <string name="overwrite_settings_summary_off">Příchozí soubory se jménem které již existuje budou přejmenovány</string>
-    <string name="custom">Vlastní</string>
-    <string name="unsupported_provider">Zvolili jste obsah nepodporovaného poskytovatele. Vyberte prosím složku z vnitřního úložiště.</string>
-    <string name="sysDefault">Motiv systému</string>
-    <string name="lightTheme">Světlý motiv</string>
-    <string name="darkTheme">Tmavý motiv</string>
+    <string name="system_default_theme">Motiv systému</string>
+    <string name="light_theme">Světlý motiv</string>
+    <string name="dark_theme">Tmavý motiv</string>
     <string name="warpinator_notification_title">Služba Warpinatoru běží</string>
     <string name="warpinator_notification_button">Zastavit</string>
-    <string name="transfers_complete">Všechny přenosy byly dokončeny</string>
     <string name="transfer_notification">%1$.1f%%, %2$d přenosů, %3$s/s</string>
-    <string name="incoming_transfer">%s posílá soubory</string>
-    <string name="incoming_message">%s posílá zprávu</string>
-    <string name="num_files">%d souborů</string>
+    <string name="incoming_transfer_notification">%s posílá soubory</string>
     <string name="service_running">Služba běží</string>
     <string name="incoming_transfer_channel">Příchozí přenos</string>
     <string name="transfer_progress_channel">Průběh přenosu</string>
-    <string name="please_select_download_dir">Pravděpodobně tuto aplikaci spouštíte poprvé. Vyberte prosím složku kam má Warpinator ukládat soubory.</string>
-    <string name="error_download_dir">Vyberte složku pro ukládání souborů v nastavení</string>
     <string name="notification_channel_description">Oznámení o bežící službě</string>
-    <string name="no_share_devices">Žádná zařízení se kterými by bylo možné sdílet</string>
-    <string name="unsupported_intent">Přijali jsme příkaz který není podporován</string>
-    <string name="cert_not_received">Nepovedlo se nám získat certifikát od %1$s. Ujistěte se že máte povolen protokol UDP (i TCP) na portu %2$d ve firewallu protějšku.</string>
-    <string name="warning">Varování</string>
-    <string name="warning_subnet">Toto zařízení není ve stejné podsíti. Pravděpodobně nebude možné se k němu připojit. Zkontrolujte v nastavení obou zařízení že Warpinator používá správné síťové rozhraní.</string>
-    <string-array name="connected_states">
-        <item>Připojeno</item>
-        <item>Odpojeno</item>
-        <item>Připojuje se</item>
-        <item>Připojení selhalo</item>
-        <item>Čeká se na přpojení druhého zařízení</item>
-    </string-array>
-    <string-array name="transfer_states">
-        <item>Inicializuje se</item>
-        <item>Čeká na přijetí…</item>
-        <item>Odmítnuto</item>
-        <item>Probíhá</item>
-        <item>Pozastaveno</item>
-        <item>Zastaveno</item>
-        <item>Selhalo (stisknutím zobrazíte chyby)</item>
-        <item>Nenapravitelná chyba</item>
-        <item>Soubor nenalezen</item>
-        <item>Dokončeno</item>
-        <item>Dokončeno s chybami (stisknutím zobrazíte)</item>
-    </string-array>
-    <string name="error_network_unavailable">Síť není dostupná - zkuste hotspot?</string>
-    <string name="error_service_not_running">Služba neběží</string>
-    <string name="connection_issues">Problémy s připojením</string>
-    <string name="files_being_sent">Posílané soubory:</string>
-    <!--  Content descriptions  -->
-    <string name="reconnect_button_cnt_des">Znovu se pokusit o připojení</string>
-    <string name="status_image_cnt_des">Stav spojení</string>
-    <string name="profile_image_cnt_des">Profilový obrázek</string>
-    <string name="application_icon_cnt_des">Ikona aplikace</string>
-    <string name="meh_face_cnt_des">Ikona smutný obličej</string>
-    <string name="selected_picture_cnt_des">Vybraný obrázek</string>
-    <string name="decline_button_cnt_des">Odmítnout přenos</string>
-    <string name="accept_button_cnt_des">Přijmout přenos</string>
-    <string name="stop_button_cnt_des">Zastavit přenos</string>
-    <string name="retry_button_cnt_des">Znovu odeslat</string>
-    <string name="copy_button_cnt_des">Zkopírovat zprávu</string>
-    <string name="qr_code_cnt_des">QR kód</string>
-    <string name="changed_network">Změna sítě - restartuji službu…</string>
-    <string name="stop_svc_when_leaving_summary_on">Služba bude automaticky zastavena po odstranění z nedávných nebo době bez aktivity</string>
-    <string name="stop_svc_when_leaving_summary_off">Služba poběží dokud nebude ručně zastavena</string>
-    <string name="send_folder_toast">Vyberte složku k odeslání</string>
-    <string name="warning_lastmod">Jiné než výchozí umístění nepodporují zachování časové známky poslední změny. Výchozí vrátíte tlačítkem reset.</string>
-    <string name="reset_cnt_des">Vrátit výchozí hodnotu</string>
-    <string name="clear_transfers">Odstranit ukončené přenosy</string>
+    <string name="connection_issues_label">Problémy s připojením</string>
+    <string name="reconnect_button_label">Znovu se pokusit o připojení</string>
+    <string name="copy_label">Zkopírovat zprávu</string>
+    <string name="stop_service_when_leaving_summary_on">Služba bude automaticky zastavena po odstranění z nedávných nebo době bez aktivity</string>
+    <string name="stop_service_when_leaving_summary_off">Služba poběží dokud nebude ručně zastavena</string>
     <string name="manual_connect_text">Naskenujte QR kód pomocí libovolné aplikace a otevřete odkaz nebo použijte následující adresu:</string>
-    <string name="initiate_connection">Nové spojení</string>
-    <string name="manual_connect_hint">Zkuste Ruční spojení v menu</string>
-    <string name="same_network_hint">Zařízení musí být ve stejné síti a mít stejný kód skupiny</string>
-    <string name="confirm_connection">Připojit k \'%s\'?</string>
-    <string name="qs_discovered_count">%d v dosahu</string>
-    <string name="error_no_duplex">Druhé zařízení nevytvořilo zpětné spojení. Možná nás nevidí?</string>
 </resources>

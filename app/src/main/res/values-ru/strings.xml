@@ -1,142 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--  App Name  -->
-    <!--  Main Activity  -->
-    <string name="title_activity_transfers">Передачи</string>
-    <string name="send_files">Отправить файлы</string>
-    <string name="quit">Выход</string>
-    <string name="connection_issues">Проблемы с подключением</string>
-    <string name="reannounce">Повторная регистрация устройства</string>
-    <string name="rescan">Повторный поиск устройств</string>
-    <string name="about">О приложении</string>
-    <string name="settings">Настройки</string>
-    <string name="title_activity_share">Поделиться с</string>
-    <string name="available_devices">Доступные устройства</string>
+    <string name="quit_label">Выход</string>
+    <string name="connection_issues_label">Проблемы с подключением</string>
+    <string name="reannounce_label">Повторная регистрация устройства</string>
+    <string name="rescan_label">Повторный поиск устройств</string>
+    <string name="about_title">О приложении</string>
+    <string name="settings_title">Настройки</string>
+    <string name="share_with_title">Поделиться с</string>
+    <string name="available_devices_title">Доступные устройства</string>
     <string name="no_devices_found">Устройства не обнаружены</string>
-    <string name="wrong_group_code">Ошибка подключения: неверный групповой код</string>
     <string name="connection_error">Ошибка подключения</string>
-    <string name="not_connected_to_wifi">Вы не подключены к Wi-Fi или локальной сети. Используйте свою точку доступа, если ни одна из них не доступна. После подключения перезапустите приложение.</string>
-    <string name="changed_network">Сеть изменена - перезапуск службы…</string>
-    <!--  Transfers activity  -->
-    <string name="waiting_for_permission">Ожидание подтверждения…</string>
-    <string name="files_overwritten_warning">(Файлы могут быть перезаписаны!)</string>
-    <string name="remaining">осталось</string>
-    <string name="open_failed">Не удалось открыть полученный файл</string>
-    <string name="a_few_seconds">ещё несколько секунд</string>
-    <string name="service_unavailable">, служба недоступна</string>
-    <string name="errors_during_transfer">Ошибки при передаче:</string>
-    <string name="dont_close_when_sharing">Закрытие этой операции при совместном использовании может привести к сбою передачи</string>
-    <string name="files_being_sent">Список передаваемых файлов:</string>
-    <!--  About activity  -->
+    <string name="transfer_state_waiting_permission">Ожидание подтверждения…</string>
     <string name="version">Версия: %1$s</string>
-    <string name="about_description">Это неофициальный порт Warpinator. \nОтправляйте и получайте файлы по локальной сети.</string>
-    <string name="warranty_html">Это приложение представляет собой программное обеспечение с открытым исходным кодом, лицензированное под &lt;a href=\"https://www.gnu.org/licenses/gpl-3.0.html\"&gt;Основной Общественной Лицензией GNU&lt;/a&gt;.&lt;br&gt; Вы можете получить исходный код на &lt;a href=\"https://github.com/slowscript/warpinator-android/\"&gt;GitHub&lt;/a&gt;.&lt;br&gt; &lt;br&gt; Приложение поставляется без каких-либо гарантий.&lt;br&gt;Подробнее см. условия лицензии.</string>
-    <!--  Share activity  -->
-    <string name="devices_to_share_with">Устройства, с которыми можно поделиться</string>
-    <string name="no_share_devices">Нет доступных устройств, с которыми можно поделиться</string>
-    <string name="unsupported_intent">Получено неподдерживаемое действие</string>
-    <string name="nothing_to_share">Нечем поделиться</string>
-    <!--  Setting  -->
     <string name="identity_settings_category">Идентичность</string>
-    <string name="transfer_setting_category">Настройки передачи</string>
-    <string name="network_setting_category">Сеть</string>
-    <string name="aspect_setting_category">Внешний вид</string>
+    <string name="transfer_settings_category">Настройки передачи</string>
+    <string name="network_settings_category">Сеть</string>
+    <string name="aspect_settings_category">Внешний вид</string>
     <string name="display_settings_title">Отображаемое имя</string>
     <string name="picture_settings_title">Изображение профиля</string>
     <string name="download_dir_settings_title">Папка для загрузок</string>
     <string name="notification_settings_title">Показывать уведомления</string>
     <string name="overwrite_settings_title">Разрешить перезапись</string>
     <string name="accept_settings_title">Автоподтверждение</string>
-    <string name="accept_setting_summary_on">Передачи будут приняты автоматически</string>
-    <string name="accept_setting_summary_off">Каждая передача должна быть подтверждена вами</string>
-    <string name="background_settings_title">Работа в фоновом режиме</string>
+    <string name="accept_settings_summary_on">Передачи будут приняты автоматически</string>
+    <string name="accept_settings_summary_off">Каждая передача должна быть подтверждена вами</string>
     <string name="boot_settings_title">Запускать автоматически</string>
-    <string name="stop_svc_when_leaving">Автозавершение службы</string>
-    <string name="stop_svc_when_leaving_summary_on">Служба будет автоматически остановлена при очистке приложения из недавних, а также после определённого промежутка бездействия</string>
-    <string name="stop_svc_when_leaving_summary_off">После запуска служба будет продолжать работать до момента остановки вручную</string>
-    <string name="export_log_settings_tile">Записывать лог в файл</string>
+    <string name="stop_service_when_leaving_title">Автозавершение службы</string>
+    <string name="stop_service_when_leaving_summary_on">Служба будет автоматически остановлена при очистке приложения из недавних, а также после определённого промежутка бездействия</string>
+    <string name="stop_service_when_leaving_summary_off">После запуска служба будет продолжать работать до момента остановки вручную</string>
+    <string name="export_log_settings_title">Записывать лог в файл</string>
     <string name="group_code_settings_title">Групповой код</string>
     <string name="port_settings_title">Порт для переводов</string>
     <string name="theme_settings_title">Тема</string>
     <string name="notification_settings_summary">Может зависеть от настроек уведомлений Android</string>
     <string name="port_range_warning">Номер порта должен быть от 1024 до 65535</string>
     <string name="requires_restart_warning">Для изменения этой настройки требуется перезапуск приложения</string>
-    <string name="required_dialog_not_found">Производитель вашего телефона не осуществил требуемый диалог. Это будет исправлено в следующем выпуске.</string>
     <string name="overwrite_settings_summary_on">Входящие файлы с уже имеющимся именем перезапишут существующие</string>
     <string name="overwrite_settings_summary_off">Входящие файлы с уже имеющимся именем будут переименованы</string>
-    <string name="custom">Другое</string>
-    <string name="unsupported_provider">Вы выбрали неподдерживаемого поставщика контента. Пожалуйста, выберите каталог во внутренней памяти.</string>
-    <!--  Theme settings -->
-    <string name="sysDefault">Системная по умолчанию</string>
-    <string name="lightTheme">Светлая внешность</string>
-    <string name="darkTheme">Тёмная внешность</string>
-    <!--  Notification  -->
+    <string name="system_default_theme">Системная по умолчанию</string>
+    <string name="light_theme">Светлая внешность</string>
+    <string name="dark_theme">Тёмная внешность</string>
     <string name="warpinator_notification_title">Служба Warpinator запущена</string>
     <string name="warpinator_notification_button">Остановить</string>
-    <string name="transfers_complete">Все передачи завершены</string>
     <string name="transfer_notification">%1$.1f%%, кол-во передач: %2$d, %3$s/сек</string>
-    <string name="incoming_transfer">Входящая передача от %s</string>
-    <string name="num_files">Кол-во файлов: %d</string>
+    <string name="incoming_transfer_notification">Входящая передача от %s</string>
     <string name="service_running">Служба запущена</string>
     <string name="notification_channel_description">Постоянное уведомление о службе</string>
     <string name="incoming_transfer_channel">Входящая передача</string>
     <string name="transfer_progress_channel">Ход передачи</string>
-    <!--  Content descriptions  -->
-    <string name="reconnect_button_cnt_des">Переподключение</string>
-    <string name="status_image_cnt_des">Состояние подключения</string>
-    <string name="profile_image_cnt_des">Изображение профиля</string>
-    <string name="application_icon_cnt_des">Значок приложения</string>
-    <string name="meh_face_cnt_des">Значок разочарованного лица</string>
-    <string name="selected_picture_cnt_des">Выбранное изображение</string>
-    <string name="decline_button_cnt_des">Отклонить передачу</string>
-    <string name="accept_button_cnt_des">Подтвердить передачу</string>
-    <string name="stop_button_cnt_des">Остановить передачу</string>
-    <string name="retry_button_cnt_des">Повторить передачу</string>
-    <!--  Other  -->
-    <string name="please_select_download_dir">Скорее всего, вы впервые запустили это приложение. Пожалуйста, выберите папку, в который вы бы хотели, чтобы Warpinator сохранял файлы.</string>
-    <string name="error_download_dir">Вы должны выбрать папку для загрузок в настройках</string>
-    <string name="error_network_unavailable">Сеть недоступна - попробовать точку доступа?</string>
-    <string name="error_service_not_running">Служба не работает</string>
-    <string name="cert_not_received">Не удалось получить сертификат от %1$s. Обязательно разрешите трафик UDP (а также TCP) через порт %2$d в удаленном брандмауэре.</string>
-    <string-array name="connected_states">
-        <item>Подключено</item>
-        <item>Отключено</item>
-        <item>Подключение</item>
-        <item>Ошибка подключения</item>
-        <item>Ожидание двусторонней связи</item>
-    </string-array>
-    <string-array name="transfer_states">
-        <item>Инициализация</item>
-        <item>Ожидание подтверждения…</item>
-        <item>Отклонено</item>
-        <item>Передаётся</item>
-        <item>Приостановлено</item>
-        <item>Остановлено</item>
-        <item>Не выполнено (нажмите, чтобы посмотреть ошибки)</item>
-        <item>Неизвестная ошибка</item>
-        <item>Файл не найден</item>
-        <item>Завершено</item>
-        <item>Завершено с ошибками (нажмите, чтобы посмотреть)</item>
-    </string-array>
-    <string name="warning_lastmod">Расположение не по умолчанию не поддерживает сохранение временных меток последних изменений. Вы можете вернуться к настройкам по умолчанию с помощью кнопки сброса.</string>
-    <string name="send_folder_toast">Выберите папку для отправки</string>
-    <string name="reset_cnt_des">Сбросить к значению по умолчанию</string>
-    <string name="clear_transfers">Очистить завершенные передачи</string>
+    <string name="reconnect_button_label">Переподключение</string>
     <string name="auth_port_settings_title">Порт для регистрации</string>
-    <string name="devices_outside_group">Устройства за пределами вашей группы: %1$d</string>
     <string name="compression_settings_title">Попробуйте использовать сжатие</string>
-    <string name="save_log">Сохранить лог</string>
+    <string name="save_log_label">Сохранить лог</string>
     <string name="manual_connect_text">Отсканируйте QR-код на другом устройстве и перейдите по ссылке или введите следующий адрес:</string>
-    <string name="initiate_connection">Новое соединение</string>
-    <string name="manual_connection">Подключиться вручную</string>
-    <string name="enter_address">Введите адрес и порт</string>
-    <string name="address_copied">Адрес скопирован в буфер обмена</string>
-    <string name="qr_code_cnt_des">QR-код</string>
-    <string name="same_network_hint">Устройства должны находиться в одной сети</string>
-    <string name="manual_connect_hint">Попробуйте ручное подключение в меню</string>
-    <string name="confirm_connection">Подключиться к \'%s\'?</string>
-    <string name="qs_discovered_count">%d подключен</string>
+    <string name="manual_connection_label">Подключиться вручную</string>
     <string name="network_interface_settings_title">Предпочтительный сетевой интерфейс</string>
     <string name="network_interface_settings_summary">%s (переходит на автоматический режим, если недоступно)</string>
-    <string name="error_no_duplex">Другое устройство не подключилось. Может быть, оно нас не видит?</string>
 </resources>

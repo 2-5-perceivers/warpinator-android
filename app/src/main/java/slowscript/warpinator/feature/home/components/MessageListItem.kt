@@ -155,15 +155,15 @@ fun MessageListItem(
     }
 
     val semanticCustomActions = listOf(
-        CustomAccessibilityAction("Delete message") {
+        CustomAccessibilityAction(stringResource(R.string.delete_message_action)) {
             onDelete()
             true
         },
-        CustomAccessibilityAction("Copy message") {
+        CustomAccessibilityAction(stringResource(R.string.copy_message_action)) {
             onCopy()
             true
         },
-        CustomAccessibilityAction("Share message") {
+        CustomAccessibilityAction(stringResource(R.string.share_message_action)) {
             onShare()
             true
         },
@@ -202,7 +202,7 @@ fun MessageListItem(
                         TooltipIconButton(
                             onClick = onCopy,
                             icon = Icons.Rounded.ContentCopy,
-                            description = "Copy",
+                            description = stringResource(R.string.copy_label),
                         )
                     }
                 },
@@ -226,7 +226,13 @@ fun MessageListItem(
                         ) {
                             Column {
                                 ListItem(
-                                    headlineContent = { Text(if (isSending) "Sent message" else "Received message") },
+                                    headlineContent = {
+                                        Text(
+                                            if (isSending) stringResource(R.string.sent_message_state) else stringResource(
+                                                R.string.received_message_state,
+                                            ),
+                                        )
+                                    },
                                     supportingContent = { Text(timeString) },
                                     colors = ListItemDefaults.colors(containerColor = Color.Transparent),
                                 )
@@ -252,7 +258,7 @@ fun MessageListItem(
                                         modifier = Modifier.size(ButtonDefaults.IconSize),
                                     )
                                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                    Text("Copy")
+                                    Text(stringResource(R.string.copy_label))
                                 }
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Button(
@@ -269,7 +275,7 @@ fun MessageListItem(
                                         modifier = Modifier.size(ButtonDefaults.IconSize),
                                     )
                                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                                    Text("Share")
+                                    Text(stringResource(R.string.share_label))
                                 }
 
                             }

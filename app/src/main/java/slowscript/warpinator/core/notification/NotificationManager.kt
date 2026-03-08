@@ -89,8 +89,8 @@ class WarpinatorNotificationManager @Inject constructor(
 
         return NotificationCompat.Builder(context, CHANNEL_SERVICE)
             .setContentTitle(context.getString(R.string.warpinator_notification_title))
-            .setContentText("Tap to open").setSmallIcon(R.drawable.ic_notification)
-            .setContentIntent(pendingIntent).addAction(
+            .setContentText(context.getString(R.string.warpinator_notification_subtitle))
+            .setSmallIcon(R.drawable.ic_notification).setContentIntent(pendingIntent).addAction(
                 0,
                 context.getString(R.string.warpinator_notification_button),
                 stopPendingIntent,
@@ -123,18 +123,28 @@ class WarpinatorNotificationManager @Inject constructor(
         )
 
         val contentText = if (fileCount == 1L) singleFileName
-        else context.getString(R.string.num_files, fileCount)
+        else context.resources.getQuantityString(
+            R.plurals.notification_file_count,
+            fileCount.toInt(), fileCount,
+        )
 
-        val notification = NotificationCompat.Builder(context, CHANNEL_INCOMING_TRANSFERS)
-            .setContentTitle(context.getString(R.string.incoming_transfer, remoteName ?: "Unknown"))
-            .setContentText(contentText).setSmallIcon(android.R.drawable.stat_sys_download_done)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-            .setContentIntent(pendingIntent).setAutoCancel(true).setGroup(GROUP_INCOMING).setExtras(
-                Bundle().apply {
-                    putString("remote", remoteUuid)
-                },
-            ).build()
+        val notification =
+            NotificationCompat.Builder(context, CHANNEL_INCOMING_TRANSFERS).setContentTitle(
+                context.getString(
+                    R.string.incoming_transfer_notification,
+                    remoteName ?: context.getString(
+                        R.string.unknown,
+                    ),
+                ),
+            ).setContentText(contentText).setSmallIcon(android.R.drawable.stat_sys_download_done)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setContentIntent(pendingIntent).setAutoCancel(true).setGroup(GROUP_INCOMING)
+                .setExtras(
+                    Bundle().apply {
+                        putString("remote", remoteUuid)
+                    },
+                ).build()
 
         notificationMgr.notify(notificationId, notification)
     }
@@ -165,9 +175,12 @@ class WarpinatorNotificationManager @Inject constructor(
             PendingIntent.FLAG_IMMUTABLE,
         )
 
-        val notification = NotificationCompat.Builder(context, CHANNEL_MESSAGES)
-            .setContentTitle("New message from " + (remoteName ?: "Unknown"))
-            .setContentText(message).setSmallIcon(android.R.drawable.stat_sys_download_done)
+        val notification = NotificationCompat.Builder(context, CHANNEL_MESSAGES).setContentTitle(
+            context.getString(
+                R.string.new_message_from,
+                remoteName ?: context.getString(R.string.unknown),
+            ),
+        ).setContentText(message).setSmallIcon(android.R.drawable.stat_sys_download_done)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
             .setContentIntent(pendingIntent).setAutoCancel(true).setGroup(GROUP_MESSAGES).setExtras(
@@ -266,7 +279,7 @@ class WarpinatorNotificationManager @Inject constructor(
 
             val messagesChannel = NotificationChannel(
                 CHANNEL_MESSAGES,
-                "Messages",
+                context.getString(R.string.messages_channel),
                 NotificationManager.IMPORTANCE_HIGH,
             )
 
