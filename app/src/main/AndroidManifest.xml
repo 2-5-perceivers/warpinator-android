@@ -54,7 +54,6 @@
             android:exported="true"
             android:launchMode="singleTask"
             android:theme="@style/Theme.Warpinator"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|density"
             android:resizeableActivity="true"
             android:windowSoftInputMode="adjustResize"
             tools:targetApi="24">
