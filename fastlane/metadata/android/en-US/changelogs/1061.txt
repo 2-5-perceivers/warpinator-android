@@ -1,3 +1,0 @@
-- Significantly improved transfer speed
-- Updated translations
-- Minor fixes

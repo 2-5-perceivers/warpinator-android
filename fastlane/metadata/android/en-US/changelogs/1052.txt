@@ -1,2 +1,0 @@
-- Fixed (again) a crash when sending some files
-- Translation updates

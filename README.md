@@ -1,33 +1,21 @@
-# Warpinator for Android (unofficial)
+# Warpinator Android Perceivers
 
-This is an unofficial reimplementation of Linux Mint's file sharing tool [Warpinator](https://github.com/linuxmint/warpinator) for Android.
+This is an unofficial android client for [Warpinator](https://github.com/linuxmint/warpinator). Forked from [slowscript/warpinator-android](https://github.com/slowscript/warpinator-android) and migrated to Jetpack Compose, Material 3 Expressive and the [Warpinator Perceivers](https://github.com/2-5-perceivers/warpinator-lib) engine.
 
-## ⚠️ Warning: Fake/malicious website
 
-`http://warpinator.com` is a fake website, potentially malicious!
+## Note
+As the rest of the Warpinator Perceivers projects, this is still in early development and may be unstable. Please report any issues you encounter.
 
-Do **NOT** download or run any software from it!
+## Core Library
 
-We do not know who maintains it. See [notice from the Linux Mint team](https://github.com/linuxmint/warpinator?tab=readme-ov-file#%EF%B8%8F-warning-fakemalicious-website).
+For protocol development and issue tracking regarding the underlying implementation, please refer to the core library repository:
+[warpinator-lib](https://github.com/2-5-perceivers/warpinator-lib)
 
-## Download
-Get the APK from the [Releases](https://github.com/slowscript/warpinator-android/releases) page
+## Other clients
 
-Also available on F-Droid and Google Play  
-<a href='https://f-droid.org/en/packages/slowscript.warpinator'><img src='https://fdroid.gitlab.io/artwork/badge/get-it-on.png' width='170px'/></a>
-<a href='https://play.google.com/store/apps/details?id=slowscript.warpinator'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="170px"/></a>
+- The official one: https://github.com/linuxmint/warpinator
+- Our cross-platform port: https://github.com/2-5-perceivers/warpinator-tauri
 
-## Building
+## Contributions
 
-Build with Android Studio or with this command (you will need to install Android SDK yourself though):
-
-```
-export ANDROID_SDK_ROOT=$HOME/Android/Sdk
-./gradlew :app:assembleDebug
-```
-
-## Translations
-
-Translations are now being done through [Weblate](https://hosted.weblate.org/projects/warpinator-android/)
-
-[![Weblate](https://hosted.weblate.org/widgets/warpinator-android/-/app/88x31-white.png)](https://hosted.weblate.org/engage/warpinator-android/)
+Contributions are welcome. Feel free to open an issue to report bugs, request features, or submit a pull request with your changes.

@@ -1,3 +1,0 @@
-- Option to connect manually when mDNS is blocked by network
-- Updated translations
-- Bug fixes

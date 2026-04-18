@@ -1,7 +1,0 @@
-- Implemented V2 connection API
-- Implemented compression
-- Made sending folders more intuitive
-- Fixed handling of the group code
-- Improved handling of lost network
-- Fixed some bugs and crashes
-- Updated translations
