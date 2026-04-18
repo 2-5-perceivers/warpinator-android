@@ -134,6 +134,7 @@
     <string name="manual_connection_success_label">Device connected</string>
     <string name="manual_connection_connecting_title">Connecting to</string>
     <string name="manual_connection_already_connected">Device already connected</string>
+    <string name="manual_connection_already_connecting">Connection already in progress</string>
     <string name="manual_connection_failed">Connection failed</string>
     <string name="manual_connection_not_same_subnet">Device not on same subnet</string>
     <string name="manual_connection_not_supported">Device does not support manual connection</string>
@@ -404,6 +405,7 @@
     <string name="transfer_state_waiting_permission">Waiting for permission…</string>
     <string name="transfer_state_waiting_permission_overwrite_warning">Waiting for permission… (File will be overwritten)</string>
     <string name="transfer_state_declined">Declined</string>
+    <string name="transfer_state_canceled">Canceled</string>
     <string name="transfer_state_paused">Paused</string>
     <string name="transfer_state_stopped">Stopped</string>
     <string name="transfer_state_failed">Failed</string>
