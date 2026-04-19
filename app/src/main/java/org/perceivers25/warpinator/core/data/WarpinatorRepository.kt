@@ -30,6 +30,7 @@ import org.perceivers25.warpinator.core.model.ui.RemoteUi
 import org.perceivers25.warpinator.core.model.ui.TransferKindUi
 import org.perceivers25.warpinator.core.model.ui.TransferUi
 import org.perceivers25.warpinator.core.model.ui.UiMessage
+import org.perceivers25.warpinator.core.system.AutoAcceptValue
 import org.perceivers25.warpinator.core.system.PreferenceManager
 import org.perceivers25.warpinator.core.system.WarpinatorPowerManager
 import org.perceivers25.warpinator.core.system.WarpinatorVirtualFilesystem
@@ -172,35 +173,53 @@ class WarpinatorRepository @Inject constructor(
                 ) {
                     try {
                         val transfer = server!!.transfer(remoteUuid, transferUuid)
+
+                        val transferUi = TransferUi(
+                            uuid = transfer.uuid,
+                            remoteUuid = transfer.remoteUuid,
+                            state = transfer.state,
+                            timestamp = transfer.timestamp.toLong(),
+                            totalBytes = transfer.totalBytes.toLong(),
+                            bytesTransferred = transfer.bytesTransferred.toLong(),
+                            bytesPerSecond = transfer.bytesPerSecond.toLong(),
+                            fileCount = transfer.fileCount.toLong(),
+                            entryNames = transfer.entryNames,
+                            singleName = transfer.singleName,
+                            singleMimeType = transfer.singleMimeType,
+                            kind = when (transfer.kind) {
+                                is TransferKind.Incoming -> TransferKindUi.Incoming
+                                is TransferKind.Outgoing -> TransferKindUi.Outgoing
+                            },
+                            overwriteWarning = if (transfer.kind is TransferKind.Incoming && prefs.downloadDirUri != null) checkWillOverwrite(
+                                appContext,
+                                transfer.entryNames,
+                                prefs.downloadDirUri!!.toUri(),
+                            ) else false,
+                        )
+
                         addOrUpdateTransfer(
                             remoteUuid,
-                            TransferUi(
-                                uuid = transfer.uuid,
-                                remoteUuid = transfer.remoteUuid,
-                                state = transfer.state,
-                                timestamp = transfer.timestamp.toLong(),
-                                totalBytes = transfer.totalBytes.toLong(),
-                                bytesTransferred = transfer.bytesTransferred.toLong(),
-                                bytesPerSecond = transfer.bytesPerSecond.toLong(),
-                                fileCount = transfer.fileCount.toLong(),
-                                entryNames = transfer.entryNames,
-                                singleName = transfer.singleName,
-                                singleMimeType = transfer.singleMimeType,
-                                kind = when (transfer.kind) {
-                                    is TransferKind.Incoming -> TransferKindUi.Incoming
-                                    is TransferKind.Outgoing -> TransferKindUi.Outgoing
-                                },
-                                overwriteWarning = if (transfer.kind is TransferKind.Incoming && prefs.downloadDirUri != null) checkWillOverwrite(
-                                    appContext,
-                                    transfer.entryNames,
-                                    prefs.downloadDirUri!!.toUri(),
-                                ) else false,
-                            ),
+                            transferUi,
                         )
 
                         if (transfer.kind is TransferKind.Incoming) {
                             updateRemote(remoteUuid) {
                                 it.copy(unreadTransfers = true)
+                            }
+
+                            if (!transferUi.overwriteWarning) {
+                                when (prefs.autoAccept) {
+                                    AutoAcceptValue.Nobody -> {}
+                                    AutoAcceptValue.Favourites -> {
+                                        if (prefs.favourites.contains(SavedFavourite(remoteUuid))) {
+                                            acceptTransfer(remoteUuid, transferUuid)
+                                        }
+                                    }
+
+                                    AutoAcceptValue.Everyone -> {
+                                        acceptTransfer(remoteUuid, transferUuid)
+                                    }
+                                }
                             }
                         }
                     } catch (e: WarpException) {

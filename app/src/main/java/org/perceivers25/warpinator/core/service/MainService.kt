@@ -80,10 +80,7 @@ class MainService : LifecycleService() {
         )
         Log.v(TAG, "Entered foreground")
 
-        // {
-        //     // TODO: start server
         repository.start()
-        // }
 
         listenOnNetworkChanges()
 
@@ -298,19 +295,12 @@ class MainService : LifecycleService() {
     }
 
     private val isAutoStopEnabled: Boolean
-        get() = repository.prefs.autoStop && !repository.prefs.bootStart
-
-    fun notifyDeviceCountUpdate() {
-        // TODO(raresvanca): remove this function and subscribe to the repos client manager for updates
-    }
+        get() = repository.prefs.autoStop
 
     companion object {
         private const val TAG = "SERVICE"
 
         const val ACTION_STOP: String = "StopSvc"
-
-        var pingTime: Long = 10000
-        var reconnectTime: Long = 40000
     }
 }
 
