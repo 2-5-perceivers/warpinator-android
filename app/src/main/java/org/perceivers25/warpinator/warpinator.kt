@@ -1012,6 +1012,9 @@ internal object IntegrityCheckingUniffiLib {
     external fun uniffi_warpinator_checksum_method_warpinator_remote(
     ): Short
 
+    external fun uniffi_warpinator_checksum_method_warpinator_remote_picture(
+    ): Short
+
     external fun uniffi_warpinator_checksum_method_warpinator_remotes(
     ): Short
 
@@ -1157,6 +1160,11 @@ internal object UniffiLib {
     ): Long
 
     external fun uniffi_warpinator_fn_method_warpinator_remote(
+        ptr: Long,
+        uuid: RustBuffer.ByValue,
+    ): Long
+
+    external fun uniffi_warpinator_fn_method_warpinator_remote_picture(
         ptr: Long,
         uuid: RustBuffer.ByValue,
     ): Long
@@ -1492,6 +1500,9 @@ private fun uniffiCheckApiChecksums(lib: IntegrityCheckingUniffiLib) {
     if (lib.uniffi_warpinator_checksum_method_warpinator_remote() != 4515.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
+    if (lib.uniffi_warpinator_checksum_method_warpinator_remote_picture() != 64160.toShort()) {
+        throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    }
     if (lib.uniffi_warpinator_checksum_method_warpinator_remotes() != 44038.toShort()) {
         throw RuntimeException("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     }
@@ -1784,7 +1795,7 @@ inline fun <T : Disposable?, R> T.use(block: (T) -> R) = try {
     }
 }
 
-/** 
+/**
  * Placeholder object used to signal that we're constructing an interface with a FFI handle.
  *
  * This is the first argument for interface constructors that input a raw handle. It exists is that
@@ -1795,7 +1806,7 @@ inline fun <T : Disposable?, R> T.use(block: (T) -> R) = try {
  * */
 object UniffiWithHandle
 
-/** 
+/**
  * Used to instantiate an interface without an actual pointer, for fakes in tests, mostly.
  *
  * @suppress
@@ -2228,7 +2239,11 @@ object FfiConverterDuration : FfiConverterRustBuffer<java.time.Duration> {
 
 interface WarpinatorInterface {
 
-    suspend fun acceptTransfer(remoteUuid: String, transferUuid: String, path: String)
+    suspend fun acceptTransfer(
+        remoteUuid: String,
+        transferUuid: String,
+        path: String,
+    )
 
     suspend fun cancelTransfer(remoteUuid: String, transferUuid: String)
 
@@ -2241,6 +2256,8 @@ interface WarpinatorInterface {
     suspend fun messages(remoteUuid: String): List<Message>
 
     suspend fun remote(uuid: String): Remote
+
+    suspend fun remotePicture(uuid: String): ByteArray
 
     suspend fun remotes(): List<Remote>
 
@@ -2256,7 +2273,11 @@ interface WarpinatorInterface {
 
     fun stop()
 
-    suspend fun stopTransfer(remoteUuid: String, transferUuid: String, error: Boolean)
+    suspend fun stopTransfer(
+        remoteUuid: String,
+        transferUuid: String,
+        error: Boolean,
+    )
 
     suspend fun transfer(remoteUuid: String, transferUuid: String): Transfer
 
@@ -2387,7 +2408,11 @@ open class Warpinator : Disposable, AutoCloseable, WarpinatorInterface {
 
     @Throws(WarpException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun acceptTransfer(remoteUuid: String, transferUuid: String, path: String) {
+    override suspend fun acceptTransfer(
+        remoteUuid: String,
+        transferUuid: String,
+        path: String,
+    ) {
         return uniffiRustCallAsync(
             callWithHandle { uniffiHandle ->
                 UniffiLib.uniffi_warpinator_fn_method_warpinator_accept_transfer(
@@ -2611,6 +2636,37 @@ open class Warpinator : Disposable, AutoCloseable, WarpinatorInterface {
 
     @Throws(WarpException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
+    override suspend fun remotePicture(uuid: String): ByteArray {
+        return uniffiRustCallAsync(
+            callWithHandle { uniffiHandle ->
+                UniffiLib.uniffi_warpinator_fn_method_warpinator_remote_picture(
+                    uniffiHandle,
+                    FfiConverterString.lower(uuid),
+                )
+            },
+            { future, callback, continuation ->
+                UniffiLib.ffi_warpinator_rust_future_poll_rust_buffer(
+                    future,
+                    callback,
+                    continuation,
+                )
+            },
+            { future, continuation ->
+                UniffiLib.ffi_warpinator_rust_future_complete_rust_buffer(
+                    future,
+                    continuation,
+                )
+            },
+            { future -> UniffiLib.ffi_warpinator_rust_future_free_rust_buffer(future) },
+            // lift function
+            { FfiConverterByteArray.lift(it) },
+            // Error FFI converter
+            WarpException.ErrorHandler,
+        )
+    }
+
+    @Throws(WarpException::class)
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     override suspend fun remotes(): List<Remote> {
         return uniffiRustCallAsync(
             callWithHandle { uniffiHandle ->
@@ -2738,7 +2794,10 @@ open class Warpinator : Disposable, AutoCloseable, WarpinatorInterface {
 
     @Throws(WarpException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun sendTransferRequest(remoteUuid: String, paths: List<String>) {
+    override suspend fun sendTransferRequest(
+        remoteUuid: String,
+        paths: List<String>,
+    ) {
         return uniffiRustCallAsync(
             callWithHandle { uniffiHandle ->
                 UniffiLib.uniffi_warpinator_fn_method_warpinator_send_transfer_request(
@@ -2789,7 +2848,11 @@ open class Warpinator : Disposable, AutoCloseable, WarpinatorInterface {
 
     @Throws(WarpException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun stopTransfer(remoteUuid: String, transferUuid: String, error: Boolean) {
+    override suspend fun stopTransfer(
+        remoteUuid: String,
+        transferUuid: String,
+        error: Boolean,
+    ) {
         return uniffiRustCallAsync(
             callWithHandle { uniffiHandle ->
                 UniffiLib.uniffi_warpinator_fn_method_warpinator_stop_transfer(
@@ -2824,7 +2887,10 @@ open class Warpinator : Disposable, AutoCloseable, WarpinatorInterface {
 
     @Throws(WarpException::class)
     @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
-    override suspend fun transfer(remoteUuid: String, transferUuid: String): Transfer {
+    override suspend fun transfer(
+        remoteUuid: String,
+        transferUuid: String,
+    ): Transfer {
         return uniffiRustCallAsync(
             callWithHandle { uniffiHandle ->
                 UniffiLib.uniffi_warpinator_fn_method_warpinator_transfer(
@@ -3004,11 +3070,15 @@ data class Remote(
     var displayName: String,
     var username: String,
     var hostname: String,
-    var picture: ByteArray?,
+    /**
+     * Whether the remote has a picture or not
+     */
+    var picture: Boolean,
     var pictureVersion: UByte,
     var state: RemoteState,
     var serviceStatic: Boolean,
     var serviceAvailable: Boolean,
+    var messageSupport: Boolean,
 
     ) {
 
@@ -3029,9 +3099,10 @@ object FfiConverterTypeRemote : FfiConverterRustBuffer<Remote> {
             FfiConverterString.read(buf),
             FfiConverterString.read(buf),
             FfiConverterString.read(buf),
-            FfiConverterOptionalByteArray.read(buf),
+            FfiConverterBoolean.read(buf),
             FfiConverterUByte.read(buf),
             FfiConverterTypeRemoteState.read(buf),
+            FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
             FfiConverterBoolean.read(buf),
         )
@@ -3044,13 +3115,13 @@ object FfiConverterTypeRemote : FfiConverterRustBuffer<Remote> {
             value.serviceName,
         ) + FfiConverterString.allocationSize(value.displayName) + FfiConverterString.allocationSize(
             value.username,
-        ) + FfiConverterString.allocationSize(value.hostname) + FfiConverterOptionalByteArray.allocationSize(
+        ) + FfiConverterString.allocationSize(value.hostname) + FfiConverterBoolean.allocationSize(
             value.picture,
         ) + FfiConverterUByte.allocationSize(value.pictureVersion) + FfiConverterTypeRemoteState.allocationSize(
             value.state,
         ) + FfiConverterBoolean.allocationSize(value.serviceStatic) + FfiConverterBoolean.allocationSize(
             value.serviceAvailable,
-        ))
+        ) + FfiConverterBoolean.allocationSize(value.messageSupport))
 
     override fun write(value: Remote, buf: ByteBuffer) {
         FfiConverterString.write(value.uuid, buf)
@@ -3061,11 +3132,12 @@ object FfiConverterTypeRemote : FfiConverterRustBuffer<Remote> {
         FfiConverterString.write(value.displayName, buf)
         FfiConverterString.write(value.username, buf)
         FfiConverterString.write(value.hostname, buf)
-        FfiConverterOptionalByteArray.write(value.picture, buf)
+        FfiConverterBoolean.write(value.picture, buf)
         FfiConverterUByte.write(value.pictureVersion, buf)
         FfiConverterTypeRemoteState.write(value.state, buf)
         FfiConverterBoolean.write(value.serviceStatic, buf)
         FfiConverterBoolean.write(value.serviceAvailable, buf)
+        FfiConverterBoolean.write(value.messageSupport, buf)
     }
 }
 
@@ -5184,7 +5256,7 @@ fun setTracingSubscriber(tag: String, maxLevel: LogLevel) = uniffiRustCall { _st
         FfiConverterString.lower(tag), FfiConverterTypeLogLevel.lower(maxLevel), _status,
     )
 }
-    
-    
+
+
 
 
