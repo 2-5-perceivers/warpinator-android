@@ -15,6 +15,10 @@ import org.perceivers25.warpinator.core.model.preferences.toJson
 import javax.inject.Inject
 import javax.inject.Singleton
 
+enum class AutoAcceptValue {
+    Nobody, Favourites, Everyone
+}
+
 @Singleton
 class PreferenceManager @Inject constructor(
     @param:ApplicationContext val context: Context,
@@ -30,7 +34,6 @@ class PreferenceManager @Inject constructor(
 
     val debugLog: Boolean get() = prefs.getBoolean(KEY_DEBUG_LOG, false)
     val autoStop: Boolean get() = prefs.getBoolean(KEY_AUTO_STOP, true)
-    val bootStart: Boolean get() = prefs.getBoolean(KEY_START_ON_BOOT, false)
     val serviceUuid: String? get() = prefs.getString(KEY_UUID, null)
     val displayName: String
         get() = prefs.getString(KEY_DISPLAY_NAME, DEFAULT_DISPLAY_NAME) ?: DEFAULT_DISPLAY_NAME
@@ -44,8 +47,13 @@ class PreferenceManager @Inject constructor(
         ) ?: "AUTO"
     val groupCode: String
         get() = prefs.getString(KEY_GROUP_CODE, DEFAULT_GROUP_CODE) ?: DEFAULT_GROUP_CODE
-    val allowOverwrite: Boolean get() = prefs.getBoolean(KEY_ALLOW_OVERWRITE, false)
-    val autoAccept: Boolean get() = prefs.getBoolean(KEY_AUTO_ACCEPT, false)
+    val autoAccept: AutoAcceptValue
+        get() = AutoAcceptValue.entries.getOrNull(
+            prefs.getInt(
+                KEY_AUTO_ACCEPT,
+                0,
+            ),
+        ) ?: AutoAcceptValue.Nobody
     val useCompression: Boolean get() = prefs.getBoolean(KEY_USE_COMPRESSION, false)
     val notifyIncoming: Boolean get() = prefs.getBoolean(KEY_NOTIFY_INCOMING, true)
     val downloadDirUri: String? get() = prefs.getString(KEY_DOWNLOAD_DIR, null)
@@ -65,11 +73,6 @@ class PreferenceManager @Inject constructor(
         // Ensure defaults exist
         if (!prefs.contains(KEY_PROFILE_PICTURE)) {
             prefs.edit { putString(KEY_PROFILE_PICTURE, DEFAULT_PROFILE_PICTURE) }
-        }
-
-        // Boot/AutoStop logic migration
-        if (bootStart && autoStop) {
-            prefs.edit { putBoolean(KEY_AUTO_STOP, false) }
         }
 
         // Load Complex Data
@@ -160,22 +163,10 @@ class PreferenceManager @Inject constructor(
 
     fun setNotifyIncoming(value: Boolean) = prefs.edit { putBoolean(KEY_NOTIFY_INCOMING, value) }
 
-    fun setAllowOverwrite(value: Boolean) = prefs.edit { putBoolean(KEY_ALLOW_OVERWRITE, value) }
-
-    fun setAutoAccept(value: Boolean) = prefs.edit { putBoolean(KEY_AUTO_ACCEPT, value) }
+    fun setAutoAccept(value: AutoAcceptValue) =
+        prefs.edit { putInt(KEY_AUTO_ACCEPT, value.ordinal) }
 
     fun setUseCompression(value: Boolean) = prefs.edit { putBoolean(KEY_USE_COMPRESSION, value) }
-
-    fun setStartOnBoot(value: Boolean) {
-        if (value) {
-            prefs.edit {
-                putBoolean(KEY_START_ON_BOOT, true)
-                putBoolean(KEY_AUTO_STOP, false)
-            }
-        } else {
-            prefs.edit { putBoolean(KEY_START_ON_BOOT, false) }
-        }
-    }
 
     fun setAutoStop(value: Boolean) = prefs.edit { putBoolean(KEY_AUTO_STOP, value) }
 
@@ -194,17 +185,13 @@ class PreferenceManager @Inject constructor(
     fun setDynamicColors(value: Boolean) = prefs.edit { putBoolean(KEY_DYNAMIC_COLORS, value) }
 
     companion object {
-        private const val TAG = "Prefs"
-
         const val KEY_UUID = "uuid"
         const val KEY_DISPLAY_NAME = "displayName"
         const val KEY_PROFILE_PICTURE = "profile"
         const val KEY_DOWNLOAD_DIR = "downloadDir"
         const val KEY_NOTIFY_INCOMING = "notifyIncoming"
-        const val KEY_ALLOW_OVERWRITE = "allowOverwrite"
         const val KEY_AUTO_ACCEPT = "autoAccept"
         const val KEY_USE_COMPRESSION = "useCompression"
-        const val KEY_START_ON_BOOT = "bootStart"
         const val KEY_AUTO_STOP = "autoStop"
         const val KEY_DEBUG_LOG = "debugLog"
         const val KEY_GROUP_CODE = "groupCode"

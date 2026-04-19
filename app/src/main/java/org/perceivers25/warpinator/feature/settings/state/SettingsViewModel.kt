@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.perceivers25.warpinator.core.model.preferences.ThemeOptions
 import org.perceivers25.warpinator.core.model.ui.UiMessage
+import org.perceivers25.warpinator.core.system.AutoAcceptValue
 import org.perceivers25.warpinator.core.system.PreferenceManager
 import org.perceivers25.warpinator.core.utils.Utils
 import org.perceivers25.warpinator.feature.settings.messages.FailedToSaveProfilePicture
@@ -49,14 +50,12 @@ data class SettingsUiState(
     val downloadDirSummary: String = "",
     val canResetDir: Boolean = false,
     val notifyIncoming: Boolean = true,
-    val allowOverwrite: Boolean = false,
-    val autoAccept: Boolean = false,
+    val autoAccept: AutoAcceptValue = AutoAcceptValue.Nobody,
     val useCompression: Boolean = false,
 
     // App Behavior / Boot
     val startOnBoot: Boolean = false,
     val autoStop: Boolean = true,
-    val isAutoStopEnabled: Boolean = true,
     val debugLog: Boolean = false,
 
     // Network
@@ -115,8 +114,6 @@ class SettingsViewModel @Inject constructor(
             ).absolutePath
         }
 
-        val isStartOnBootEnabled = preferenceManager.bootStart
-
         _uiState.update { state ->
             state.copy(
                 // Identity
@@ -129,14 +126,11 @@ class SettingsViewModel @Inject constructor(
                 downloadDirSummary = downloadPathSummary,
                 canResetDir = isCustomDir,
                 notifyIncoming = preferenceManager.notifyIncoming,
-                allowOverwrite = preferenceManager.allowOverwrite,
                 autoAccept = preferenceManager.autoAccept,
                 useCompression = preferenceManager.useCompression,
 
                 // Boot / App Behavior
-                startOnBoot = isStartOnBootEnabled,
                 autoStop = preferenceManager.autoStop,
-                isAutoStopEnabled = !isStartOnBootEnabled,
                 debugLog = preferenceManager.debugLog,
 
                 // Network
@@ -189,20 +183,12 @@ class SettingsViewModel @Inject constructor(
         preferenceManager.setNotifyIncoming(value)
     }
 
-    fun setAllowOverwrite(value: Boolean) {
-        preferenceManager.setAllowOverwrite(value)
-    }
-
-    fun setAutoAccept(value: Boolean) {
+    fun setAutoAccept(value: AutoAcceptValue) {
         preferenceManager.setAutoAccept(value)
     }
 
     fun setUseCompression(value: Boolean) {
         preferenceManager.setUseCompression(value)
-    }
-
-    fun setStartOnBoot(value: Boolean) {
-        preferenceManager.setStartOnBoot(value)
     }
 
     fun setAutoStop(value: Boolean) {

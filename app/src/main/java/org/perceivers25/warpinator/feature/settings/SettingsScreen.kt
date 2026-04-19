@@ -8,14 +8,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Restore
+import androidx.compose.material3.ButtonGroupDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -28,6 +32,7 @@ import androidx.compose.material3.SegmentedListItem
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,11 +41,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -52,6 +60,7 @@ import org.perceivers25.warpinator.core.design.components.MessagesHandlerEffect
 import org.perceivers25.warpinator.core.design.shapes.segmentedDynamicShapes
 import org.perceivers25.warpinator.core.design.theme.WarpinatorTheme
 import org.perceivers25.warpinator.core.model.preferences.ThemeOptions
+import org.perceivers25.warpinator.core.system.AutoAcceptValue
 import org.perceivers25.warpinator.core.utils.ProfilePicturePainter
 import org.perceivers25.warpinator.feature.settings.components.OptionsDialog
 import org.perceivers25.warpinator.feature.settings.components.ProfilePictureDialog
@@ -101,10 +110,8 @@ fun SettingsScreen(
         onPickDownloadDir = { dirPickerLauncher.launch(null) },
         onResetDownloadDir = viewModel::resetDirectory,
         onNotifyIncomingChange = viewModel::setNotifyIncoming,
-        onAllowOverwriteChange = viewModel::setAllowOverwrite,
         onAutoAcceptChange = viewModel::setAutoAccept,
         onUseCompressionChange = viewModel::setUseCompression,
-        onStartOnBootChange = viewModel::setStartOnBoot,
         onAutoStopChange = viewModel::setAutoStop,
         onDebugLogChange = viewModel::setDebugLog,
         onGroupCodeChange = viewModel::setGroupCode,
@@ -128,10 +135,8 @@ fun SettingsScreenContent(
     onPickDownloadDir: () -> Unit,
     onResetDownloadDir: () -> Unit,
     onNotifyIncomingChange: (Boolean) -> Unit,
-    onAllowOverwriteChange: (Boolean) -> Unit,
-    onAutoAcceptChange: (Boolean) -> Unit,
+    onAutoAcceptChange: (AutoAcceptValue) -> Unit,
     onUseCompressionChange: (Boolean) -> Unit,
-    onStartOnBootChange: (Boolean) -> Unit,
     onAutoStopChange: (Boolean) -> Unit,
     onDebugLogChange: (Boolean) -> Unit,
     onGroupCodeChange: (String) -> Unit,
@@ -258,24 +263,48 @@ fun SettingsScreenContent(
                     colors = listItemColors,
                 )
 
-                SwitchListItem(
-                    title = stringResource(R.string.overwrite_settings_title),
-                    summary = if (state.allowOverwrite) stringResource(R.string.overwrite_settings_summary_on)
-                    else stringResource(R.string.overwrite_settings_summary_off),
-                    checked = state.allowOverwrite,
-                    onCheckedChange = onAllowOverwriteChange,
-                    shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
-                    colors = listItemColors,
-                )
+                SegmentedListItem(
+                    onClick = { onAutoAcceptChange(AutoAcceptValue.entries[(state.autoAccept.ordinal + 1) % AutoAcceptValue.entries.size]) },
+                    content = { Text("Automatically accept transfers from") },
+                    supportingContent = {
+                        val acceptOptions = AutoAcceptValue.entries.map {
+                            when (it) {
+                                AutoAcceptValue.Nobody -> "Nobody"
+                                AutoAcceptValue.Favourites -> "Favourites"
+                                AutoAcceptValue.Everyone -> "Everyone"
+                            }
+                        }
 
-                SwitchListItem(
-                    title = stringResource(R.string.accept_settings_title),
-                    summary = if (state.autoAccept) stringResource(R.string.accept_settings_summary_on)
-                    else stringResource(R.string.accept_settings_summary_off),
-                    checked = state.autoAccept,
-                    onCheckedChange = onAutoAcceptChange,
+                        Row(
+                            modifier = Modifier.padding(top = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(
+                                ButtonGroupDefaults.ConnectedSpaceBetween,
+                                alignment = Alignment.CenterHorizontally,
+                            ),
+                        ) {
+
+                            acceptOptions.forEachIndexed { index, label ->
+                                ToggleButton(
+                                    checked = state.autoAccept.ordinal == index,
+                                    onCheckedChange = { onAutoAcceptChange(AutoAcceptValue.entries[index]) },
+                                    modifier = Modifier
+                                        .weight(1f)
+                                        .widthIn(max = 50.dp)
+                                        .semantics { role = Role.RadioButton },
+                                    shapes = when (index) {
+                                        0 -> ButtonGroupDefaults.connectedLeadingButtonShapes()
+                                        acceptOptions.lastIndex -> ButtonGroupDefaults.connectedTrailingButtonShapes()
+                                        else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
+                                    },
+                                ) {
+                                    Text(label)
+                                }
+                            }
+                        }
+                    },
                     shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
                     colors = listItemColors,
+                    modifier = Modifier.padding(bottom = ListItemDefaults.SegmentedGap),
                 )
 
                 SwitchListItem(
@@ -290,28 +319,13 @@ fun SettingsScreenContent(
             item {
                 SettingsCategoryLabel(stringResource(R.string.app_behavior_settings_category))
 
-                // Boot Start (Only for Android < 15/Vanilla Ice Cream)
-                val isBootStartSupported =
-                    Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM
-
-                SwitchListItem(
-                    title = stringResource(R.string.boot_settings_title),
-                    summary = if (isBootStartSupported) null else stringResource(R.string.boot_settings_summary_a15),
-                    checked = state.startOnBoot,
-                    enabled = isBootStartSupported,
-                    onCheckedChange = onStartOnBootChange,
-                    shapes = ListItemDefaults.segmentedDynamicShapes(0, 3),
-                    colors = listItemColors,
-                )
-
                 SwitchListItem(
                     title = stringResource(R.string.stop_service_when_leaving_title),
                     summary = if (state.autoStop) stringResource(R.string.stop_service_when_leaving_summary_on)
                     else stringResource(R.string.stop_service_when_leaving_summary_off),
                     checked = state.autoStop,
-                    enabled = state.isAutoStopEnabled, // DISABLED if BootStart is ON
                     onCheckedChange = onAutoStopChange,
-                    shapes = ListItemDefaults.segmentedDynamicShapes(1, 3),
+                    shapes = ListItemDefaults.segmentedDynamicShapes(0, 2),
                     colors = listItemColors,
                 )
 
@@ -320,7 +334,7 @@ fun SettingsScreenContent(
                     summary = "Android/data/org.perceivers25.warpinator/files/", // Hardcoded per XML
                     checked = state.debugLog,
                     onCheckedChange = onDebugLogChange,
-                    shapes = ListItemDefaults.segmentedDynamicShapes(2, 3),
+                    shapes = ListItemDefaults.segmentedDynamicShapes(1, 2),
                     colors = listItemColors,
                 )
 
@@ -474,10 +488,8 @@ fun SettingsScreenPreview() {
             onPickDownloadDir = {},
             onResetDownloadDir = {},
             onNotifyIncomingChange = {},
-            onAllowOverwriteChange = {},
             onAutoAcceptChange = {},
             onUseCompressionChange = {},
-            onStartOnBootChange = {},
             onAutoStopChange = {},
             onDebugLogChange = {},
             onGroupCodeChange = {},
