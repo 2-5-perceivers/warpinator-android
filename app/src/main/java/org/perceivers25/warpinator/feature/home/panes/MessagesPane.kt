@@ -195,8 +195,7 @@ private fun MessagesPaneContent(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     val sendingEnabled =
-                        messageText.isNotBlank() && remote.state == RemoteState.Connected
-                    // && remote.supportsTextMessages TODO
+                        messageText.isNotBlank() && remote.state == RemoteState.Connected && remote.messageSupport
                     val onSend = {
                         if (messageText.isNotBlank()) {
                             onSendMessage(messageText)
@@ -231,7 +230,7 @@ private fun MessagesPaneContent(
 
                     val sendButtonClickLabel = stringResource(R.string.send_action)
                     val sendButtonStateDescription = when {
-                        // !remote.supportsTextMessages -> stringResource(R.string.device_does_not_support_text_messages_state) TODO
+                        !remote.messageSupport -> stringResource(R.string.device_does_not_support_text_messages_state)
                         remote.state != RemoteState.Connected -> stringResource(R.string.device_is_disconnected_state)
                         messageText.isBlank() -> stringResource(R.string.message_is_empty_state)
                         else -> ""

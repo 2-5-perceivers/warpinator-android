@@ -282,7 +282,7 @@ private fun TransferPaneContent(
                             keyCode = KeyEvent.KEYCODE_M, ctrl = true,
                             text = stringResource(R.string.messages),
                         ),
-                        // enabled = remote.supportsTextMessages, TODO
+                        enabled = remote.messageSupport,
                         addBadge = remote.unreadMessages,
                     )
                 },

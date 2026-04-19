@@ -122,15 +122,16 @@ class WarpinatorRepository @Inject constructor(
                                 displayName = remote.displayName,
                                 username = remote.username,
                                 hostname = remote.hostname,
-                                picture = remote.picture?.let {
+                                picture = if (remote.picture) server!!.remotePicture(uuid).let {
                                     BitmapFactory.decodeByteArray(
                                         it,
                                         0,
                                         it.size,
                                     )
-                                },
+                                } else null,
                                 pictureVersion = remote.pictureVersion.toByte(),
                                 state = remote.state,
+                                messageSupport = remote.messageSupport,
                                 isFavorite = prefs.favourites.contains(SavedFavourite(uuid)),
                             ),
                         )
@@ -142,19 +143,22 @@ class WarpinatorRepository @Inject constructor(
                 override suspend fun onRemoteUpdated(uuid: String) {
                     try {
                         val remote = server!!.remote(uuid)
-                        updateRemote(uuid) {
+
+                        updateRemoteSuspend(uuid) {
                             it.copy(
                                 ip = remote.ip,
                                 displayName = remote.displayName,
                                 username = remote.username,
                                 hostname = remote.hostname,
                                 state = remote.state,
-                                picture = remote.picture?.let { picture ->
-                                    if (remote.pictureVersion.toByte() != it.pictureVersion) {
-                                        BitmapFactory.decodeByteArray(picture, 0, picture.size)
-                                    } else it.picture
-                                },
+                                picture = if (remote.picture) server!!.remotePicture(uuid)
+                                    .let { picture ->
+                                        if (remote.pictureVersion.toByte() != it.pictureVersion) {
+                                            BitmapFactory.decodeByteArray(picture, 0, picture.size)
+                                        } else it.picture
+                                    } else null,
                                 pictureVersion = remote.pictureVersion.toByte(),
+                                messageSupport = remote.messageSupport,
                             )
                         }
                     } catch (e: WarpException) {
@@ -384,6 +388,20 @@ class WarpinatorRepository @Inject constructor(
         _remoteListState.update { currentList ->
             val newList = currentList.map {
                 if (it.uuid == uuid) transform(it) else it
+            }
+            sortRemotes(newList)
+        }
+    }
+
+    suspend fun updateRemoteSuspend(
+        uuid: String,
+        suspendTransform: suspend (RemoteUi) -> RemoteUi,
+    ) {
+        _remoteListState.update { currentList ->
+            val newList = currentList.map {
+                if (it.uuid == uuid) {
+                    suspendTransform(it)
+                } else it
             }
             sortRemotes(newList)
         }

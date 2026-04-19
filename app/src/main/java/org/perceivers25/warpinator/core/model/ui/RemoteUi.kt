@@ -12,6 +12,7 @@ data class RemoteUi(
     var picture: Bitmap? = null,
     var pictureVersion: Byte = 0,
     var state: RemoteState = RemoteState.Connected,
+    var messageSupport: Boolean = false,
     var isFavorite: Boolean = false,
     var unreadTransfers: Boolean = false,
     var unreadMessages: Boolean = false,

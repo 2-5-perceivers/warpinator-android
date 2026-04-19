@@ -186,7 +186,7 @@ fun HomeScreen(
                     null,
                 )).collectAsStateWithLifecycle(initialValue = null)
 
-                // if (selectedRemote?.supportsTextMessages != true) return@extraPane // TODO: actually check for support
+                if (selectedRemote?.messageSupport != true) return@extraPane
 
                 AnimatedPane(
                     Modifier
